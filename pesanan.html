@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pemesanan Cilok</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .qris {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .qris img {
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pesan Cilok Seribuan</h1>
+
+  <form action="https://script.google.com/macros/s/AKfycbwGg0gMx3sPRL_lUctZtwLUMQeh64AE8wYXf-DxRLGiMCNOUeb1UOHMpq3h8CC-zafKnA/exec" method="POST">
+    <label for="nama">Nama:</label>
+    <input type="text" name="nama" required>
+
+    <label for="alamat">Alamat Lengkap:</label>
+    <textarea name="alamat" rows="3" required></textarea>
+
+    <label for="jumlah">Jumlah Cilok:</label>
+    <input type="number" name="jumlah" required>
+
+    <label for="bukti">Link / Foto Bukti Pembayaran (opsional):</label>
+    <input type="text" name="bukti">
+
+    <label for="catatan">Catatan Tambahan:</label>
+    <textarea name="catatan" rows="2"></textarea>
+
+    <button type="submit">Kirim Pesanan</button>
+  </form>
+
+  <div class="qris">
+    <p><strong>Scan QRIS untuk bayar</strong></p>
+    <p>(Gambar QRIS akan ditampilkan di sini nanti)</p>
+    <!-- <img src="qris.png" alt="QRIS"> -->
+  </div>
+</body>
+</html>
