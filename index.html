@@ -1,240 +1,146 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cilok Isian Gajih - Arya Foods</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arya foods</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-    }
-
-    header {
-      background: #fff;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 2;
-    }
-
-    .menu-btn {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 25px;
-      padding: 6px 15px;
-      cursor: pointer;
-      font-weight: 600;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .content {
-      padding: 80px 20px 40px;
-    }
-
-    .btn {
-      display: inline-block;
-      margin: 20px auto;
-      padding: 12px 20px;
-      background: green;
+      font-family: sans-serif;
+      background-color: black;
       color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 25px;
-      text-decoration: none;
+    }
+
+    .hero-section {
+      position: relative;
+      height: 50vh;
+      background: url('https://aryafoods.shop/ciloksaji.jpeg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .promo-text {
       text-align: center;
-      transition: background 0.3s;
-    }
-
-    .btn:hover {
-      background: darkgreen;
-    }
-
-    .section-title {
+      margin-top: 5vh;
+      font-size: 24px;
       font-weight: bold;
-      margin-top: 30px;
-      font-size: 18px;
+      text-shadow: 0 0 6px black;
+      padding: 0 20px;
+    }
+
+    .info, .sidebar {
+      position: absolute;
+      bottom: 20px;
+    }
+
+    .info {
+      left: 10px;
+    }
+
+    .info .location {
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .info .username {
+      font-weight: bold;
+    }
+
+    .info .desc {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .info .music {
+      font-size: 12px;
+      color: #ffbb00;
     }
 
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background: #333;
-      color: white;
-      overflow-y: auto;
-      transition: all 0.3s ease;
-      z-index: 3;
-      padding-top: 60px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .sidebar a {
-      display: block;
-      padding: 15px;
-      border-bottom: 1px solid #444;
+    .sidebar div {
+      margin: 8px 0;
+      font-size: 12px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      font-size: 12px;
+      z-index: 999;
+    }
+
+    .bottom-bar a {
       color: white;
       text-decoration: none;
-    }
-
-    .sidebar.show {
-      left: 0;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      z-index: 2;
-    }
-
-    .overlay.show {
-      display: block;
-    }
-
-    video, img {
-      max-width: 100%;
-      margin-top: 15px;
-      border-radius: 10px;
-      border: 2px solid #ccc;
-      background: #fff;
-    }
-
-    footer {
-      background: #fff;
       text-align: center;
-      padding: 15px;
-      font-size: 14px;
-      color: #555;
-      border-top: 1px solid #ccc;
-      margin-top: 40px;
     }
 
-    #live-location {
-      padding: 15px;
-      font-size: 14px;
-      background: #f0f0f0;
-      margin-top: 20px;
+    .gallery {
+      background: #111;
+      padding: 20px 10px 80px; /* extra bottom padding for bar */
+    }
+
+    .gallery img {
+      width: 100%;
+      max-width: 500px;
+      display: block;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <button class="menu-btn" onclick="toggleMenu()">Menu</button>
-    <div class="logo"></div>
-  </header>
+  <section class="hero-section">
+    <div class="promo-text">
+      Selamat datang di halaman <br />
+   <strong>Nasuka Foods</strong>
+    </div>
 
-  <div class="sidebar" id="sidebar-menu">
-    <a href="https://aryafoods.shop/foods.html">CILOK ISIAN GAJIH</a>
-    <a href="/ax.html"> NASUKA KAWASAKI LABS</a>
-    <a href="https://aryafoods.shop/booster.html">BOOSTER SOCIAL MEDIA</a>
-    <a href="/tentang.html">TENTANG NASUKA FOODS</a>
-    <a href="/tentang.html">TEST NEW PAGES</a>
+    <div class="info">
+      <div class="location">📍Bandung | Jawa Barat</div>
+      <div class="username">@aryafoods</div>
+      <div class="desc">Promo cilok hangat & siap saji!</div>
+      <div class="music">🎵 suara asli - arya foods</div>
+    </div>
+
+    <div class="sidebar">
+      <div>❤️ 3.k</div>
+      <div>💬 402</div>
+      <div>🔗 Share</div>
+    </div>
+  </section>
+
+<p>Kami nasuka foods yang berdiri sejak 17 agustus 2020 memperkenalkan produk andalan kami - Cilok Isian Gajih, Dengan slogan : Rasa yang dulu pernah ada</p>
+<p>Cilok yang menurut kami dan beberapa pelanggan bilang : Enak, Lezat, Dan Mantul ( Mantap Betul)</p>
+<p>Kami memahami bahwa setiap orang berbeda selera tapi cobalah cilok legendaris dengan citarasa yang sama sejak kami masa kecil nikmati (era 1980an)</p>
+  <section class="gallery">
+    <img src="https://aryafoods.shop/ciloksaji.jpeg" alt="Cilok Sajian 1" />
+    <img src="https://aryafoods.shop/cilok2.jpeg" alt="Cilok Sajian 2" />
+    <img src="https://aryafoods.shop/cilok3.jpeg" alt="Cilok Sajian 3" />
+  </section>
+
+  <div class="bottom-bar">
+    <a href="https://aryafoods.shop">🏠<br>Home</a>
+    <div>🔍<br>Discover</div>
+    <div>➕<br>Upload</div>
+    <div>📨<br>Inbox</div>
+    <div>👤<br>Profile</div>
   </div>
-
-  <div class="overlay" id="overlay" onclick="closeAll()"></div>
-
-  <div class="content">
-    <h1 style="text-align:center;">Selamat datang di NASUKA FOODS</h1>
-    <p style="text-align:center;">Cilok Isian Gajih – Gurih, pedas, dan meleleh di mulut! Yuk coba sekarang!</p>
-    
-    <div style="text-align:center;">
-      <a class="btn" href="https://wa.me/62859109819017" target="_blank">Pesan Sekarang via WhatsApp</a>
-    </div>
-
-    <p class="section-title">Cilok Isian Gajih</p>
-    <img src="http://aryafoods.github.io/ciloksaji.jpeg" alt="Promo TikTok">
-    <p>Dengan resep istimewa dan rasa yang kuat, bumbu kacang murni</p>
-        
-    <p>Dikemas dengan kemasan istimewa</p>
-
-    <p class="section-title">Kemasan ekslusif</p>
-    <img src="http://aryafoods.github.io/paketcilok.jpg" alt="nasuka foods">
-    <p>1 box isi 100 pcs, harga Rp 100.000</p>
-    <p>✅ Bumbu kacang murni (terpisah)</p>
-    <p>✅ Free booster sosial media (tiktok) 1M viewers untuk 100 video kamu</p>
-    <p>✅ saus kecap cabe bubuk bumbu bubuk (terpisah)</p>
-    <p>✅ Untuk kualitas terbaik pesan 1 hari sebelumnya agar kami buatkan versi yang 100% fresh, angkat dari panci, kemas, antar</p>
-    
-    <p class="section-title">Jualan keliling</p>
-    <img src="http://aryafoods.github.io/ciloktvri.jpg" alt="nasuka foods">
-    <p>Siang menjelang sore kadang di gapura cibaduyut permai seberang TVRI</p>
-    
-    <img src="http://aryafoods.github.io/ciloknahjussalam.jpg" alt="nasuka foods">
-    <p>Kalau malam dari jam 20:00 - 24:00 kadang di depan masjid Nahjussalam - Ciparay Tengah</p>
-
-    <p class="section-title">Gratis booster sosial media</p>
-    <p>Apa kamu suka main sosmed, TikTok misalnya, ada free layanan rekayasa viewer system, jadi video-video TikTok kamu seolah banyak views-nya, 1M views untuk 100 video kamu. Klaim reward ini via WhatsApp.</p>
-    
-    <p class="section-title">Dibawah ini sample video yang Nasuka</p>
-    <div>
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@cilokisiangajih/video/7507262945236094214" data-video-id="7507262945236094214" style="max-width: 100%;">
-        <section>
-          <a target="_blank" title="@cilokisiangajih" href="https://www.tiktok.com/@cilokisiangajih">@cilokisiangajih</a>
-        </section>
-      </blockquote>
-      <script async src="https://www.tiktok.com/embed.js"></script>
-      <img src="arya//nas.github.ioods.site/officim.ltiktok.jpg" alt="nasuka foods">
-    </div>
-
-    <p>Layanan ini gratis untuk pelanggan Cilok Isian Gajih - Arya Foods</p>
-
-    <!-- Live Location -->
-    <div id="live-location">
-      Lokasi Anda: <span id="latitude">-</span>, <span id="longitude">-</span>
-    </div>
-
-  </div>    
-
-  <footer>
-    &copy; Arya Wiralodra 2025
-  </footer>
-
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('sidebar-menu');
-      const overlay = document.getElementById('overlay');
-      menu.classList.toggle('show');
-      overlay.classList.toggle('show');
-    }
-
-    function closeAll() {
-      document.getElementById('sidebar-menu').classList.remove('show');
-      document.getElementById('overlay').classList.remove('show');
-    }
-
-    // Live Location Script
-    function updateLocation(position) {
-      document.getElementById("latitude").textContent = position.coords.latitude.toFixed(6);
-      document.getElementById("longitude").textContent = position.coords.longitude.toFixed(6);
-    }
-
-    function handleError(error) {
-      document.getElementById("live-location").textContent = "Gagal mendapatkan lokasi: " + error.message;
-    }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(updateLocation, handleError, {
-        enableHighAccuracy: true
-      });
-    } else {
-      document.getElementById("live-location").textContent = "Geolocation tidak didukung browser ini.";
-    }
-  </script>
 
 </body>
 </html>
