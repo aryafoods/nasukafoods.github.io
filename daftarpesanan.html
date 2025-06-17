@@ -35,42 +35,38 @@
 </head>
 <body>
   <h2>📦 Daftar Pesanan Masuk</h2>
-  <table>
-    <tr>
-      <th>Waktu</th>
-      <th>Nama</th>
-      <th>Alamat</th>
-      <th>Jumlah</th>
-      <th>Catatan</th>
-    </tr>
-    <tr>
-      <td>16 Mei 2025 22:00</td>
-      <td>Fatimah</td>
-      <td>Jl Cibaduyut Lama</td>
-      <td>10</td>
-      <td>kirim jam 6 sore</td>
-    </tr>
-    <tr>
-      <td>16 Mei 2025 22:00</td>
-      <td>Maryati</td>
-      <td>Cibaduyut sebelah masjid nahjussalam</td>
-      <td>20</td>
-      <td>kirim jam 7 pagi ya</td>
-    </tr>
-    <tr>
-      <td>16 Mei 2025 22:10</td>
-      <td>Halimah</td>
-      <td>Cibaduyut seberang tvri</td>
-      <td>50</td>
-      <td>secepatnya</td>
-    </tr>
-    <tr>
-      <td>16 Mei 2025 22:25</td>
-      <td>Anisa</td>
-      <td>h</td>
-      <td>15</td>
-      <td>catat ya</td>
-    </tr>
+  <table id="tabel-pesanan">
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>Jumlah</th>
+        <th>Bukti</th>
+        <th>Catatan</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
   </table>
+
+  <script>
+    fetch("https://script.google.com/macros/s/AKfycbxpqIQ0LcHUzAOdOtBd_q3co6gA9-ViQvSumN2qbD8KD1K6aBZQync_mxejtfEiWWszPQ/exec")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector("#tabel-pesanan tbody");
+        data.forEach(baris => {
+          const tr = document.createElement("tr");
+          baris.forEach(selisih => {
+            const td = document.createElement("td");
+            td.textContent = selisih;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        console.error("Gagal mengambil data:", err);
+      });
+  </script>
 </body>
 </html>
