@@ -7,68 +7,61 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
       padding: 20px;
+      background-color: #f2f2f2;
       max-width: 500px;
       margin: auto;
     }
-    h2 {
-      color: #333;
-      text-align: center;
-    }
     input, textarea, button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin-top: 10px;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 16px;
     }
     button {
-      background-color: #28a745;
+      background-color: green;
       color: white;
       border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
     }
     #status {
       margin-top: 15px;
       font-weight: bold;
-      text-align: center;
+      color: red;
     }
   </style>
 </head>
 <body>
   <h2>Form Pemesanan Cilok</h2>
   <form id="pesananForm">
-    <input type="text" name="nama" placeholder="Nama Anda" required />
-    <textarea name="alamat" placeholder="Alamat Lengkap" required></textarea>
-    <input type="number" name="jumlah" placeholder="Jumlah Porsi" required />
-    <textarea name="catatan" placeholder="Catatan Tambahan (opsional)"></textarea>
+    <input type="text" name="nama" placeholder="Nama" required>
+    <textarea name="alamat" placeholder="Alamat" required></textarea>
+    <input type="number" name="jumlah" placeholder="Jumlah" required>
+    <textarea name="catatan" placeholder="Catatan (opsional)"></textarea>
     <button type="submit">Kirim Pesanan</button>
   </form>
   <p id="status"></p>
 
   <script>
-    const form = document.getElementById("pesananForm");
-    const status = document.getElementById("status");
     const scriptURL = "https://script.google.com/macros/s/AKfycbwzXytHNKkC-FWIFs96ec40zp_OAUoftDL8OvnlBFuZ/exec";
+    const form = document.getElementById('pesananForm');
+    const status = document.getElementById('status');
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
       const data = new FormData(form);
       const params = new URLSearchParams(data);
-      status.textContent = "Mengirim pesanan...";
+      status.textContent = "Mengirim...";
+      
       fetch(scriptURL + "?" + params.toString())
-        .then((res) => res.text())
-        .then((msg) => {
-          status.textContent = msg;
+        .then(res => res.text())
+        .then(text => {
+          status.textContent = text;
           form.reset();
         })
-        .catch((err) => {
-          console.error(err);
+        .catch(err => {
+          console.error('ERROR!', err);
           status.textContent = "Gagal mengirim pesanan.";
         });
     });
