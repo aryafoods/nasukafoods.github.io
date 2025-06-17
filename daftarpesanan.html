@@ -3,44 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <title>Daftar Pesanan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      font-family: sans-serif;
+      margin: 0;
       padding: 20px;
+      background-color: #f4f4f4;
     }
+
     h2 {
       text-align: center;
-      color: #333;
+      margin-bottom: 20px;
     }
+
     table {
-      border-collapse: collapse;
       width: 100%;
+      border-collapse: collapse;
       background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+
     th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
+      padding: 10px;
       text-align: left;
       font-size: 14px;
     }
+
     th {
-      background-color: #4CAF50;
+      background-color: #007BFF;
       color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
     }
+
     tr:nth-child(even) {
-      background-color: #f2f2f2;
+      background-color: #f9f9f9;
     }
-    .error {
-      text-align: center;
-      padding: 20px;
-      color: red;
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+      }
+
+      td::before {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        text-align: left;
+      }
+
+      td:nth-of-type(1)::before { content: "Nama"; }
+      td:nth-of-type(2)::before { content: "Alamat"; }
+      td:nth-of-type(3)::before { content: "Handphone"; }
+      td:nth-of-type(4)::before { content: "Jumlah"; }
+      td:nth-of-type(5)::before { content: "Catatan"; }
+      td:nth-of-type(6)::before { content: "Keterangan"; }
+      td:nth-of-type(7)::before { content: "Masukan"; }
+      td:nth-of-type(8)::before { content: "Komplain"; }
+      td:nth-of-type(9)::before { content: "Kerjasama"; }
+      td:nth-of-type(10)::before { content: "Waktu"; }
     }
   </style>
 </head>
 <body>
+
   <h2>Daftar Pesanan</h2>
-  <table id="tabelPesanan">
+
+  <table id="tabel-pesanan">
     <thead>
       <tr>
         <th>Nama</th>
@@ -55,45 +99,41 @@
         <th>Waktu</th>
       </tr>
     </thead>
-    <tbody id="isiTabel">
-      <tr><td colspan="10" class="error">Memuat data...</td></tr>
-    </tbody>
+    <tbody></tbody>
   </table>
 
   <script>
-    fetch("https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec")
-      .then(response => response.json())
+    const URL = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
+
+    fetch(URL)
+      .then(res => res.json())
       .then(data => {
-        const isiTabel = document.getElementById("isiTabel");
-        isiTabel.innerHTML = "";
+        const tbody = document.querySelector("#tabel-pesanan tbody");
+        tbody.innerHTML = ""; // Clear
 
-        if (data.length === 0) {
-          isiTabel.innerHTML = '<tr><td colspan="10" class="error">Tidak ada data</td></tr>';
-          return;
-        }
+        data.forEach(item => {
+          const row = document.createElement("tr");
 
-        data.forEach(row => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${row.nama || ""}</td>
-            <td>${row.alamat || ""}</td>
-            <td>${row.handphone || ""}</td>
-            <td>${row.jumlah || ""}</td>
-            <td>${row.catatan || ""}</td>
-            <td>${row.keterangan || ""}</td>
-            <td>${row.masukan || ""}</td>
-            <td>${row.komplain || ""}</td>
-            <td>${row.kerjasama || ""}</td>
-            <td>${row.waktu || ""}</td>
+          row.innerHTML = `
+            <td>${item.nama || ""}</td>
+            <td>${item.alamat || ""}</td>
+            <td>${item.handphone || ""}</td>
+            <td>${item.jumlah || ""}</td>
+            <td>${item.catatan || ""}</td>
+            <td>${item.keterangan || ""}</td>
+            <td>${item.masukan || ""}</td>
+            <td>${item.komplain || ""}</td>
+            <td>${item.kerjasama || ""}</td>
+            <td>${item.waktu || ""}</td>
           `;
-          isiTabel.appendChild(tr);
+
+          tbody.appendChild(row);
         });
       })
-      .catch(error => {
-        console.error("Gagal mengambil data:", error);
-        document.getElementById("isiTabel").innerHTML =
-          '<tr><td colspan="10" class="error">Gagal mengambil data</td></tr>';
+      .catch(err => {
+        alert("Gagal memuat data: " + err);
       });
   </script>
+
 </body>
 </html>
