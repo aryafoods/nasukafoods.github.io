@@ -3,21 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <title>Formulir Pemesanan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #status {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      form {
+        padding: 15px;
+      }
+
+      input, button {
+        font-size: 15px;
+      }
+    }
+  </style>
 </head>
 <body>
   <h2>Formulir Pemesanan</h2>
   <form id="form-pesanan">
-    <label>Nama Lengkap:</label><br>
-    <input type="text" name="nama" required><br><br>
+    <label for="nama">Nama Lengkap:</label>
+    <input type="text" name="nama" id="nama" required>
 
-    <label>Alamat Lengkap:</label><br>
-    <input type="text" name="alamat" required><br><br>
+    <label for="alamat">Alamat Lengkap:</label>
+    <input type="text" name="alamat" id="alamat" required>
 
-    <label>Jumlah Pesanan:</label><br>
-    <input type="number" name="jumlah" required><br><br>
+    <label for="jumlah">Jumlah Pesanan:</label>
+    <input type="number" name="jumlah" id="jumlah" required>
 
-    <label>No. HP:</label><br>
-    <input type="text" name="nohp" required><br><br>
+    <label for="nohp">No. HP:</label>
+    <input type="text" name="nohp" id="nohp" required>
 
     <button type="submit">Kirim Pesanan</button>
   </form>
