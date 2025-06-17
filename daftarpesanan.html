@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Daftar Pesanan Masuk</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      background-color: #f8f9fa;
+      margin: 0;
       padding: 20px;
     }
-    h2 {
+    h1 {
       text-align: center;
       color: #333;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      background-color: white;
+      margin-top: 20px;
     }
     th, td {
       border: 1px solid #ddd;
@@ -25,45 +26,52 @@
       text-align: left;
     }
     th {
-      background-color: #f8f8f8;
-      color: #333;
+      background-color: #343a40;
+      color: white;
     }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
+    td {
+      background-color: #fff;
     }
   </style>
 </head>
 <body>
-  <h2>📦 Daftar Pesanan Masuk</h2>
+  <h1>📦 Daftar Pesanan Masuk</h1>
   <table id="pesanan">
-    <tr>
-      <th>Waktu</th>
-      <th>Nama</th>
-      <th>Alamat</th>
-      <th>Jumlah</th>
-      <th>Bukti</th>
-      <th>Catatan</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>Jumlah</th>
+        <th>Bukti</th>
+        <th>Catatan</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
   </table>
 
   <script>
     fetch("https://script.google.com/macros/s/AKfycbxpqIQ0LcHUzAOdOtBd_q3co6gA9-ViQvSumN2qbD8KD1K6aBZQync_mxejtfEiWWszPQ/exec")
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => {
-        const table = document.getElementById("pesanan");
+        const tbody = document.querySelector("#pesanan tbody");
         data.forEach(row => {
           const tr = document.createElement("tr");
           row.forEach(cell => {
             const td = document.createElement("td");
-            td.textContent = cell;
+            if (typeof cell === "string" && cell.startsWith("http")) {
+              td.innerHTML = `<a href="${cell}" target="_blank">Lihat</a>`;
+            } else {
+              td.textContent = cell;
+            }
             tr.appendChild(td);
           });
-          table.appendChild(tr);
+          tbody.appendChild(tr);
         });
       })
-      .catch(err => {
+      .catch(error => {
         alert("Gagal memuat data pesanan.");
-        console.error(err);
+        console.error("Error:", error);
       });
   </script>
 </body>
