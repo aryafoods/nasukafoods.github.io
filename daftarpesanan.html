@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Daftar Pesanan - Nasuka Foods</title>
+  <title>Daftar Pesanan Masuk</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
       padding: 20px;
-      background-color: #f3f3f3;
     }
     h2 {
       text-align: center;
@@ -17,69 +17,60 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
-      margin-top: 20px;
+      background-color: white;
     }
     th, td {
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
-      font-size: 14px;
       text-align: left;
     }
     th {
-      background-color: #eee;
+      background-color: #f8f8f8;
+      color: #333;
     }
-    .loading {
-      text-align: center;
-      color: #666;
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
     }
   </style>
 </head>
 <body>
-
   <h2>📦 Daftar Pesanan Masuk</h2>
-
-  <div class="loading">Memuat data pesanan...</div>
-  <table id="pesanan" style="display:none;">
-    <thead>
-      <tr>
-        <th>Waktu</th>
-        <th>Nama</th>
-        <th>Jumlah</th>
-        <th>Alamat</th>
-        <th>Catatan</th>
-      </tr>
-    </thead>
-    <tbody id="data-body"></tbody>
+  <table>
+    <tr>
+      <th>Waktu</th>
+      <th>Nama</th>
+      <th>Alamat</th>
+      <th>Jumlah</th>
+      <th>Catatan</th>
+    </tr>
+    <tr>
+      <td>16 Mei 2025 22:00</td>
+      <td>Fatimah</td>
+      <td>Jl Cibaduyut Lama</td>
+      <td>10</td>
+      <td>kirim jam 6 sore</td>
+    </tr>
+    <tr>
+      <td>16 Mei 2025 22:00</td>
+      <td>Maryati</td>
+      <td>Cibaduyut sebelah masjid nahjussalam</td>
+      <td>20</td>
+      <td>kirim jam 7 pagi ya</td>
+    </tr>
+    <tr>
+      <td>16 Mei 2025 22:10</td>
+      <td>Halimah</td>
+      <td>Cibaduyut seberang tvri</td>
+      <td>50</td>
+      <td>secepatnya</td>
+    </tr>
+    <tr>
+      <td>16 Mei 2025 22:25</td>
+      <td>Anisa</td>
+      <td>h</td>
+      <td>15</td>
+      <td>catat ya</td>
+    </tr>
   </table>
-
-  <script>
-    const sheetURL = "https://docs.google.com/spreadsheets/d/1wRul3lwWBXsMs-qwW3SRqLk0GYAYEeq-iAgKbeevbUs/gviz/tq?tqx=out:json";
-
-    fetch(sheetURL)
-      .then(res => res.text())
-      .then(text => {
-        const json = JSON.parse(text.substring(47).slice(0, -2));
-        const rows = json.table.rows;
-        const tbody = document.getElementById("data-body");
-
-        rows.forEach(row => {
-          const tr = document.createElement("tr");
-          row.c.forEach(cell => {
-            const td = document.createElement("td");
-            td.textContent = cell ? cell.v : '';
-            tr.appendChild(td);
-          });
-          tbody.appendChild(tr);
-        });
-
-        document.querySelector(".loading").style.display = "none";
-        document.getElementById("pesanan").style.display = "table";
-      })
-      .catch(err => {
-        document.querySelector(".loading").textContent = "Gagal memuat data. Pastikan spreadsheet dapat diakses publik.";
-      });
-  </script>
-
 </body>
 </html>
