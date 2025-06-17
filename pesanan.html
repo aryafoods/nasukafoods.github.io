@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pesan Cilok - NasukaFoods</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #fff8f0;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fffdf7;
+      color: #333;
     }
 
     header {
@@ -19,41 +23,61 @@
       text-align: center;
     }
 
-    main {
-      padding: 20px;
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 1em;
+    }
+
+    .container {
+      padding: 15px;
     }
 
     iframe {
-      border: none;
       width: 100%;
-      height: 1200px;
+      height: 1000px;
+      border: none;
     }
 
     footer {
       background-color: #ff7043;
       color: white;
       text-align: center;
-      padding: 10px;
-      margin-top: 40px;
+      padding: 15px;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.4em;
+      }
+
+      iframe {
+        height: 1200px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Pemesanan Cilok NasukaFoods</h1>
-    <p>Isi formulir di bawah ini untuk memesan cilok favoritmu</p>
+    <p>Isi formulir di bawah ini untuk memesan cilok favoritmu 🍢</p>
   </header>
 
-  <main>
+  <div class="container">
     <iframe 
-      src="https://docs.google.com/forms/d/e/1FAIpQLSd08c6m23cs6Y3Lwom-c9lM1hoB60dJkkC2daQcgBniX_RbPQ/viewform?embedded=true"
+      src="https://docs.google.com/forms/d/e/1FAIpQLScaKXh1uAmlYHqHAGcbXPDDDUKInKTRt2sC4h_LiLjsCecjRw/viewform?embedded=true" 
       allowfullscreen>
       Memuat…
     </iframe>
-  </main>
+  </div>
 
   <footer>
-    &copy; 2025 NasukaFoods. Semua hak dilindungi.
+    &copy; 2025 NasukaFoods | Jajan Asik, Harga Bersahabat 😋
   </footer>
 </body>
 </html>
