@@ -1,38 +1,47 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uji Kirim Pesanan</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    input, button {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      font-size: 16px;
-    }
-    button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-    }
-  </style>
+  <title>Formulir Pemesanan</title>
 </head>
 <body>
-  <h2>Uji Kirim ke Spreadsheet</h2>
-  <form action="https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec" method="post">
-    <label>Nama</label>
-    <input type="text" name="nama" value="Tes Nama">
-    <label>Alamat</label>
-    <input type="text" name="alamat" value="Jl. Contoh 123">
-    <label>Jumlah</label>
-    <input type="number" name="jumlah" value="2">
-    <button type="submit">Kirim Sekarang</button>
+  <h2>Formulir Pemesanan</h2>
+  <form id="form-pesanan">
+    <label>Nama Lengkap:</label><br>
+    <input type="text" name="nama" required><br><br>
+
+    <label>Alamat Lengkap:</label><br>
+    <input type="text" name="alamat" required><br><br>
+
+    <label>Jumlah Pesanan:</label><br>
+    <input type="number" name="jumlah" required><br><br>
+
+    <label>No. HP:</label><br>
+    <input type="text" name="nohp" required><br><br>
+
+    <button type="submit">Kirim Pesanan</button>
   </form>
+
+  <p id="status"></p>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
+    const form = document.getElementById('form-pesanan');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = new FormData(form);
+      fetch(scriptURL, { method: 'POST', body: data })
+        .then(response => {
+          status.innerHTML = "✅ Pesanan berhasil dikirim!";
+          form.reset();
+        })
+        .catch(error => {
+          status.innerHTML = "❌ Gagal mengirim pesanan.";
+          console.error('Error!', error.message);
+        });
+    });
+  </script>
 </body>
 </html>
