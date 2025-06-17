@@ -1,47 +1,39 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Daftar Pesanan</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-    table { width: 100%; border-collapse: collapse; background: #fff; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th { background: #ffc107; }
-    tr:nth-child(even) { background: #f9f9f9; }
-  </style>
+  <title>Form Pesanan</title>
 </head>
 <body>
-  <h2>Daftar Pesanan</h2>
-  <table id="tabel">
-    <thead>
-      <tr>
-        <th>Waktu</th>
-        <th>Nama</th>
-        <th>Alamat</th>
-        <th>Jumlah</th>
-        <th>Catatan</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <h2>Formulir Pemesanan</h2>
+  <form id="form-pesanan">
+    <input type="text" name="nama" placeholder="Nama" required><br>
+    <input type="text" name="alamat" placeholder="Alamat" required><br>
+    <input type="text" name="menu" placeholder="Menu" required><br>
+    <input type="number" name="jumlah" placeholder="Jumlah" required><br>
+    <textarea name="catatan" placeholder="Catatan"></textarea><br>
+    <button type="submit">Kirim</button>
+  </form>
+
+  <p id="status"></p>
+
   <script>
-    fetch("https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec")
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.querySelector("tbody");
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        row.forEach(cell => {
-          const td = document.createElement("td");
-          td.textContent = cell;
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
+    document.getElementById('form-pesanan').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(this).entries());
+      fetch("https://script.google.com/macros/s/AKfycbXYZ1234567890/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(res => {
+        document.getElementById("status").textContent = res;
+        document.getElementById("form-pesanan").reset();
+      })
+      .catch(err => {
+        document.getElementById("status").textContent = "Gagal mengirim";
       });
-    }).catch(() => {
-      document.body.innerHTML += "<p style='color:red;'>Gagal memuat data.</p>";
     });
   </script>
 </body>
