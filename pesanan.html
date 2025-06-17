@@ -1,36 +1,87 @@
-<script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec";
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pesan Cilok</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f2f2f2;
+      max-width: 500px;
+      margin: auto;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: green;
+      color: white;
+      border: none;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Form Pemesanan Cilok</h2>
+  <form id="form-pesanan">
+    <input type="text" id="nama" placeholder="Nama" required>
+    <input type="text" id="hp" placeholder="No HP" required>
+    <input type="text" id="alamat" placeholder="Alamat" required>
+    <select id="menu" required>
+      <option value="">-- Pilih Menu --</option>
+      <option value="Cilok Original">Cilok Original</option>
+      <option value="Cilok Pedas">Cilok Pedas</option>
+    </select>
+    <input type="number" id="jumlah" placeholder="Jumlah" required>
+    <textarea id="catatan" placeholder="Catatan (opsional)"></textarea>
+    <button type="submit">Kirim Pesanan</button>
+  </form>
+  <p id="status"></p>
 
-  document.getElementById("form-pesanan").addEventListener("submit", e => {
-    e.preventDefault();
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec";
+    const form = document.getElementById('form-pesanan');
+    const status = document.getElementById('status');
 
-    const formData = {
-      nama: document.getElementById("nama").value,
-      hp: document.getElementById("hp").value,
-      alamat: document.getElementById("alamat").value,
-      menu: document.getElementById("menu").value,
-      jumlah: document.getElementById("jumlah").value,
-      catatan: document.getElementById("catatan").value
-    };
-
-    fetch(scriptURL, {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => response.text())
-    .then(result => {
-      if (result.includes("SUKSES")) {
-        alert("Pesanan berhasil dikirim.");
-        document.getElementById("form-pesanan").reset();
-      } else {
-        alert("Gagal mengirim pesanan: " + result);
-      }
-    })
-    .catch(error => {
-      alert("Gagal mengirim pesanan: " + error.message);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = {
+        nama: document.getElementById("nama").value,
+        hp: document.getElementById("hp").value,
+        alamat: document.getElementById("alamat").value,
+        menu: document.getElementById("menu").value,
+        jumlah: document.getElementById("jumlah").value,
+        catatan: document.getElementById("catatan").value
+      };
+      status.textContent = "Mengirim...";
+      fetch(scriptURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(text => {
+        status.textContent = text.includes("SUKSES") ? "Pesanan berhasil dikirim." : "Gagal: " + text;
+        if (text.includes("SUKSES")) form.reset();
+      })
+      .catch(err => {
+        console.error('ERROR!', err);
+        status.textContent = "Gagal mengirim pesanan.";
+      });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
