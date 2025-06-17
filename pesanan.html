@@ -2,81 +2,81 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Form Pemesanan Cilok</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pesan Cilok</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
+      background: #f2f2f2;
       padding: 20px;
-      background-color: #f8f9fa;
     }
-    h2 {
-      text-align: center;
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    input, select, textarea {
-      display: block;
+    input, textarea, select, button {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
     button {
-      background-color: green;
+      background: #28a745;
       color: white;
-      padding: 10px;
-      border: none;
-      width: 100%;
+      font-weight: bold;
     }
     #status {
       text-align: center;
+      font-weight: bold;
       margin-top: 15px;
-      color: red;
     }
   </style>
 </head>
 <body>
-  <h2>Form Pemesanan Cilok</h2>
-  <form id="form">
-    <input name="nama" placeholder="Nama" required />
-    <input name="hp" placeholder="No HP" required />
-    <input name="alamat" placeholder="Alamat" required />
+  <form id="form-pesanan">
+    <h2>Form Pemesanan Cilok</h2>
+    <input type="text" name="nama" placeholder="Nama Pemesan" required>
+    <input type="text" name="nohp" placeholder="Nomor HP/WA" required>
+    <textarea name="alamat" placeholder="Alamat Lengkap" required></textarea>
     <select name="menu" required>
+      <option value="">-- Pilih Menu --</option>
       <option value="Cilok Original">Cilok Original</option>
-      <option value="Cilok Pedas">Cilok Pedas</option>
+      <option value="Cilok Isi Ayam">Cilok Isi Ayam</option>
+      <option value="Cilok Bumbu Kacang">Cilok Bumbu Kacang</option>
     </select>
-    <input name="jumlah" type="number" placeholder="Jumlah" required />
-    <textarea name="catatan" placeholder="Catatan tambahan"></textarea>
+    <input type="number" name="jumlah" placeholder="Jumlah Porsi" required min="1">
+    <textarea name="catatan" placeholder="Catatan Tambahan (opsional)"></textarea>
     <button type="submit">Kirim Pesanan</button>
     <div id="status"></div>
   </form>
 
   <script>
-    const scriptURL = "PASTE_DI_SINI_LINK_WEB_APP_KAMU";
-    const form = document.getElementById("form");
-    const status = document.getElementById("status");
-
-    form.addEventListener("submit", e => {
+    document.getElementById("form-pesanan").addEventListener("submit", function(e) {
       e.preventDefault();
-      status.innerText = "Mengirim...";
 
-      fetch(scriptURL, {
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      fetch("https://script.google.com/macros/s/AKfycbxYkV8EYLVNtgLOMhdQGc6PiOtBQ4mTW6jgpB5T2NugAhAmv7hShCFNZBK3Ch6EqI6L/exec", {
         method: "POST",
-        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json"
         }
       })
       .then(res => res.text())
-      .then(response => {
-        if (response.includes("SUKSES")) {
-          status.style.color = "green";
-          status.innerText = "Pesanan berhasil dikirim.";
-          form.reset();
-        } else {
-          status.innerText = response;
-        }
+      .then(res => {
+        document.getElementById("status").innerText = res === "BERHASIL" ? "Pesanan berhasil dikirim!" : "Gagal mengirim pesanan.";
+        this.reset();
       })
       .catch(err => {
-        status.innerText = "Gagal mengirim pesanan: " + err;
+        document.getElementById("status").innerText = "Terjadi kesalahan!";
       });
     });
   </script>
