@@ -2,84 +2,81 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pesan Cilok</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Pemesanan Cilok</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #f2f2f2;
-      max-width: 500px;
-      margin: auto;
+      background-color: #f8f9fa;
     }
-    input, select, textarea, button {
+    h2 {
+      text-align: center;
+    }
+    input, select, textarea {
+      display: block;
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      margin: 10px 0;
     }
     button {
       background-color: green;
       color: white;
+      padding: 10px;
       border: none;
+      width: 100%;
     }
     #status {
+      text-align: center;
       margin-top: 15px;
-      font-weight: bold;
       color: red;
     }
   </style>
 </head>
 <body>
   <h2>Form Pemesanan Cilok</h2>
-  <form id="form-pesanan">
-    <input type="text" id="nama" placeholder="Nama" required>
-    <input type="text" id="hp" placeholder="No HP" required>
-    <input type="text" id="alamat" placeholder="Alamat" required>
-    <select id="menu" required>
-      <option value="">-- Pilih Menu --</option>
+  <form id="form">
+    <input name="nama" placeholder="Nama" required />
+    <input name="hp" placeholder="No HP" required />
+    <input name="alamat" placeholder="Alamat" required />
+    <select name="menu" required>
       <option value="Cilok Original">Cilok Original</option>
       <option value="Cilok Pedas">Cilok Pedas</option>
     </select>
-    <input type="number" id="jumlah" placeholder="Jumlah" required>
-    <textarea id="catatan" placeholder="Catatan (opsional)"></textarea>
+    <input name="jumlah" type="number" placeholder="Jumlah" required />
+    <textarea name="catatan" placeholder="Catatan tambahan"></textarea>
     <button type="submit">Kirim Pesanan</button>
+    <div id="status"></div>
   </form>
-  <p id="status"></p>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec";
-    const form = document.getElementById('form-pesanan');
-    const status = document.getElementById('status');
+    const scriptURL = "PASTE_DI_SINI_LINK_WEB_APP_KAMU";
+    const form = document.getElementById("form");
+    const status = document.getElementById("status");
 
-    form.addEventListener('submit', e => {
+    form.addEventListener("submit", e => {
       e.preventDefault();
-      const data = {
-        nama: document.getElementById("nama").value,
-        hp: document.getElementById("hp").value,
-        alamat: document.getElementById("alamat").value,
-        menu: document.getElementById("menu").value,
-        jumlah: document.getElementById("jumlah").value,
-        catatan: document.getElementById("catatan").value
-      };
-      status.textContent = "Mengirim...";
+      status.innerText = "Mengirim...";
+
       fetch(scriptURL, {
         method: "POST",
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
         headers: {
           "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        }
       })
       .then(res => res.text())
-      .then(text => {
-        status.textContent = text.includes("SUKSES") ? "Pesanan berhasil dikirim." : "Gagal: " + text;
-        if (text.includes("SUKSES")) form.reset();
+      .then(response => {
+        if (response.includes("SUKSES")) {
+          status.style.color = "green";
+          status.innerText = "Pesanan berhasil dikirim.";
+          form.reset();
+        } else {
+          status.innerText = response;
+        }
       })
       .catch(err => {
-        console.error('ERROR!', err);
-        status.textContent = "Gagal mengirim pesanan.";
+        status.innerText = "Gagal mengirim pesanan: " + err;
       });
     });
   </script>
