@@ -35,37 +35,35 @@
 </head>
 <body>
   <h2>📦 Daftar Pesanan Masuk</h2>
-  <table id="tabel-pesanan">
-    <thead>
-      <tr>
-        <th>Waktu</th>
-        <th>Nama</th>
-        <th>Alamat</th>
-        <th>Jumlah</th>
-        <th>Bukti</th>
-        <th>Catatan</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
+  <table id="pesanan">
+    <tr>
+      <th>Waktu</th>
+      <th>Nama</th>
+      <th>Alamat</th>
+      <th>Jumlah</th>
+      <th>Bukti</th>
+      <th>Catatan</th>
+    </tr>
   </table>
 
   <script>
     fetch("https://script.google.com/macros/s/AKfycbxpqIQ0LcHUzAOdOtBd_q3co6gA9-ViQvSumN2qbD8KD1K6aBZQync_mxejtfEiWWszPQ/exec")
       .then(res => res.json())
       .then(data => {
-        const tbody = document.querySelector("#tabel-pesanan tbody");
-        data.forEach(baris => {
+        const table = document.getElementById("pesanan");
+        data.forEach(row => {
           const tr = document.createElement("tr");
-          baris.forEach(selisih => {
+          row.forEach(cell => {
             const td = document.createElement("td");
-            td.textContent = selisih;
+            td.textContent = cell;
             tr.appendChild(td);
           });
-          tbody.appendChild(tr);
+          table.appendChild(tr);
         });
       })
       .catch(err => {
-        console.error("Gagal mengambil data:", err);
+        alert("Gagal memuat data pesanan.");
+        console.error(err);
       });
   </script>
 </body>
