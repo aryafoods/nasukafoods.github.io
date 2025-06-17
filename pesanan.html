@@ -1,60 +1,83 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pesan Cilok</title>
   <style>
     body {
       font-family: sans-serif;
-      background-color: #f5f5f5;
-      padding: 20px;
-    }
-
-    form {
+      background: #fefefe;
       max-width: 500px;
-      margin: auto;
-      background: white;
+      margin: 40px auto;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border: 1px solid #ddd;
+      border-radius: 10px;
     }
-
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
     input, textarea {
       width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      padding: 8px;
+      margin-top: 5px;
     }
-
     button {
-      background-color: #28a745;
-      color: white;
-      padding: 12px;
-      border: none;
+      margin-top: 20px;
+      padding: 10px;
       width: 100%;
+      background: green;
+      color: white;
+      font-size: 16px;
+      border: none;
       border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #218838;
     }
   </style>
 </head>
 <body>
 
   <h2>Form Pemesanan Cilok</h2>
+  <form id="formPesanan">
+    <label for="nama">Nama</label>
+    <input type="text" name="nama" required>
 
-  <form action="https://script.google.com/macros/s/AKfycbxn12QeqD02VTTQmNr8g5NNH30lVmSyFcCyzBc3AX5zTPfjQHyAZTpl-_itFKxAGRoPqA/exec" method="POST">
-    <input type="text" name="nama" placeholder="Nama Anda" required />
-    <input type="text" name="alamat" placeholder="Alamat Lengkap" required />
-    <input type="number" name="jumlah" placeholder="Jumlah Pesanan (misal: 10)" required />
-    <input type="text" name="bukti" placeholder="Link atau nama file bukti pembayaran" required />
-    <textarea name="catatan" placeholder="Catatan tambahan (opsional)"></textarea>
+    <label for="alamat">Alamat</label>
+    <textarea name="alamat" required></textarea>
+
+    <label for="jumlah">Jumlah (Rp1.000 per tusuk)</label>
+    <input type="number" name="jumlah" min="1" required>
+
+    <label for="bukti">Link Bukti Pembayaran (upload QRIS ke hosting lalu salin link)</label>
+    <input type="url" name="bukti" required>
+
+    <label for="catatan">Catatan Tambahan</label>
+    <textarea name="catatan"></textarea>
+
     <button type="submit">Kirim Pesanan</button>
   </form>
+
+  <p id="status"></p>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxpqIQ0LcHUzAOdOtBd_q3co6gA9-ViQvSumN2qbD8KD1K6aBZQync_mxejtfEiWWszPQ/exec";
+    const form = document.getElementById("formPesanan");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          status.innerHTML = "✅ Pesanan berhasil dikirim!";
+          form.reset();
+        })
+        .catch(error => {
+          status.innerHTML = "❌ Gagal mengirim. Coba lagi.";
+          console.error('Error!', error.message);
+        });
+    });
+  </script>
 
 </body>
 </html>
