@@ -1,67 +1,57 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Form Pemesanan Cilok</title>
+  <title>Formulir Pemesanan Cilok</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      padding: 20px;
+      font-family: sans-serif;
       max-width: 500px;
       margin: auto;
+      padding: 20px;
+      background: #f4f4f4;
     }
     input, textarea, button {
       width: 100%;
+      margin: 8px 0;
       padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
       font-size: 16px;
     }
     button {
-      background-color: #28a745;
+      background: green;
       color: white;
       border: none;
-      cursor: pointer;
     }
-    #status {
-      margin-top: 15px;
-      font-weight: bold;
-    }
+    .msg { color: red; font-weight: bold; }
   </style>
 </head>
 <body>
   <h2>Formulir Pemesanan Cilok</h2>
-  <form id="form-pesanan">
-    <input type="text" name="nama" placeholder="Nama" required />
-    <input type="text" name="alamat" placeholder="Alamat" required />
-    <input type="text" name="menu" placeholder="Menu" required />
-    <input type="number" name="jumlah" placeholder="Jumlah" required />
-    <textarea name="catatan" placeholder="Catatan (opsional)"></textarea>
-    <button type="submit">Kirim Pesanan</button>
-  </form>
-  <p id="status"></p>
+  <input type="text" id="nama" placeholder="Nama" required>
+  <input type="text" id="alamat" placeholder="Alamat" required>
+  <input type="text" id="menu" placeholder="Menu" required>
+  <input type="number" id="jumlah" placeholder="Jumlah" required>
+  <textarea id="catatan" placeholder="Catatan"></textarea>
+  <button onclick="kirimPesanan()">Kirim Pesanan</button>
+  <p class="msg" id="status"></p>  <script>
+    async function kirimPesanan() {
+      const url = 'https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec';
+      const data = {
+        nama: document.getElementById("nama").value,
+        alamat: document.getElementById("alamat").value,
+        menu: document.getElementById("menu").value,
+        jumlah: document.getElementById("jumlah").value,
+        catatan: document.getElementById("catatan").value
+      };
 
-  <script>
-    document.getElementById('form-pesanan').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(this).entries());
-      fetch("https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => res.text())
-      .then(res => {
-        document.getElementById("status").textContent = res;
-        this.reset();
-      })
-      .catch(() => {
-        document.getElementById("status").textContent = "Gagal mengirim pesanan.";
-      });
-    });
-  </script>
-</body>
-</html>
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        const hasil = await res.text();
+        document.getElementById("status").textContent = hasil === "BERHASIL" ? "Pesanan Terkirim!" : "Gagal mengirim.";
+      } catch {
+        document.getElementById("status").textContent = "Gagal mengirim.";
