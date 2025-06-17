@@ -1,81 +1,79 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pemesanan NasukaFoods</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fffaf5;
+      background-color: #fff8f0;
       padding: 20px;
-    }
-    h1 {
-      color: #ff5722;
       text-align: center;
     }
-    form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    h2 {
+      color: #d33a00;
     }
-    input, textarea, button {
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input, button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin: 8px 0;
       box-sizing: border-box;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 5px;
     }
     button {
       background-color: #ff5722;
       color: white;
+      font-weight: bold;
       border: none;
       cursor: pointer;
     }
     button:hover {
       background-color: #e64a19;
     }
-    .qris {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .qris img {
-      max-width: 200px;
-      border-radius: 8px;
-    }
   </style>
 </head>
 <body>
-  <h1>Pemesanan NasukaFoods</h1>
-  <form id="form-pesanan">
-    <input type="text" name="nama" placeholder="Nama lengkap" required>
-    <input type="text" name="alamat" placeholder="Alamat lengkap" required>
-    <input type="number" name="jumlah" placeholder="Jumlah pesanan" required>
-    <textarea name="catatan" placeholder="Catatan tambahan (opsional)"></textarea>
-    <button type="submit">Pesan Sekarang</button>
+
+  <h2>Pemesanan NasukaFoods</h2>
+  <form id="formPesanan">
+    <input type="text" name="nama" placeholder="Nama lengkap" required />
+    <input type="text" name="alamat" placeholder="Alamat lengkap" required />
+    <input type="number" name="jumlah" placeholder="Jumlah pesanan" required min="1" />
+    <button type="submit">Kirim Pesanan</button>
   </form>
 
-  <div class="qris">
-    <p>Setelah mengisi form, silakan bayar via QRIS di bawah ini:</p>
-    <img src="QRIS_IMAGE_URL" alt="QRIS NasukaFoods">
-  </div>
-
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec;
-    const form = document.getElementById('form-pesanan');
-
-    form.addEventListener('submit', e => {
+    document.getElementById('formPesanan').addEventListener('submit', function(e) {
       e.preventDefault();
-      fetch(scriptURL, {
+      const form = e.target;
+      const data = new FormData(form);
+      const url = 'https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec';
+
+      fetch(url, {
         method: 'POST',
-        body: new FormData(form)
+        body: data
       })
-      .then(response => alert('Pesanan berhasil dikirim!'))
-      .catch(error => alert('Gagal mengirim pesanan.'));
-      form.reset();
+      .then(response => response.text())
+      .then(result => {
+        alert("Pesanan berhasil dikirim!");
+        form.reset();
+      })
+      .catch(error => {
+        alert("Gagal mengirim pesanan. Silakan coba lagi.");
+        console.error(error);
+      });
     });
   </script>
+
 </body>
 </html>
