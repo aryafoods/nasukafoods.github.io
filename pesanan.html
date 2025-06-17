@@ -1,104 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pesan Cilok</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #f3f3f3;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
       padding: 20px;
       max-width: 500px;
       margin: auto;
     }
     h2 {
-      text-align: center;
       color: #333;
+      text-align: center;
     }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-    }
-    input, textarea {
+    input, textarea, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      border-radius: 5px;
       font-size: 16px;
     }
-    .info-qris {
-      background: #e0f7fa;
-      padding: 10px;
-      margin-top: 20px;
-      border-left: 4px solid #00acc1;
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-
-  <h2>Formulir Pemesanan Cilok</h2>
-
-  <form id="form-pesanan">
-    <label for="nama">Nama Pembeli</label>
-    <input type="text" name="nama" required>
-
-    <label for="jumlah">Jumlah Pesanan (pcs)</label>
-    <input type="number" name="jumlah" min="1" required>
-
-    <label for="alamat">Alamat Lengkap</label>
-    <textarea name="alamat" rows="3" required></textarea>
-
-    <label for="catatan">Catatan Tambahan (Opsional)</label>
-    <textarea name="catatan" rows="2"></textarea>
-
-    <div class="info-qris">
-      <strong>📌 Info Pembayaran:</strong><br>
-      Transfer via QRIS ke gambar yang akan muncul setelah klik tombol "Kirim Pesanan".<br>
-      Tidak perlu unggah bukti, pesanan akan diproses setelah pembayaran diterima.
-    </div>
-
+  <h2>Form Pemesanan Cilok</h2>
+  <form id="pesananForm">
+    <input type="text" name="nama" placeholder="Nama Anda" required />
+    <textarea name="alamat" placeholder="Alamat Lengkap" required></textarea>
+    <input type="number" name="jumlah" placeholder="Jumlah Porsi" required />
+    <textarea name="catatan" placeholder="Catatan Tambahan (opsional)"></textarea>
     <button type="submit">Kirim Pesanan</button>
   </form>
-
-  <div id="status" style="margin-top:20px;text-align:center;"></div>
+  <p id="status"></p>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxpqIQ0LcHUzAOdOtBd_q3co6gA9-ViQvSumN2qbD8KD1K6aBZQync_mxejtfEiWWszPQ/exec';
-    const form = document.getElementById('form-pesanan');
-    const status = document.getElementById('status');
+    const form = document.getElementById("pesananForm");
+    const status = document.getElementById("status");
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwzXytHNKkC-FWIFs96ec40zp_OAUoftDL8OvnlBFuZ/exec";
 
-    form.addEventListener('submit', e => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-      fetch(scriptURL, {
-        method: 'POST',
-        body: new FormData(form)
-      })
-      .then(response => {
-        status.innerHTML = `
-          <p><strong>✅ Pesanan berhasil dikirim!</strong></p>
-          <p>Silakan transfer ke QRIS berikut:</p>
-          <img src="https://nasukafoods.site/qris.jpg" alt="QRIS" style="max-width:100%;border:1px solid #ccc;">
-          <p>Pesanan akan diproses setelah pembayaran diterima.</p>
-        `;
-        form.reset();
-      })
-      .catch(error => {
-        status.innerHTML = '<p style="color:red;">❌ Gagal mengirim pesanan. Coba lagi nanti.</p>';
-      });
+      const data = new FormData(form);
+      const params = new URLSearchParams(data);
+      status.textContent = "Mengirim pesanan...";
+      fetch(scriptURL + "?" + params.toString())
+        .then((res) => res.text())
+        .then((msg) => {
+          status.textContent = msg;
+          form.reset();
+        })
+        .catch((err) => {
+          console.error(err);
+          status.textContent = "Gagal mengirim pesanan.";
+        });
     });
   </script>
-
 </body>
 </html>
