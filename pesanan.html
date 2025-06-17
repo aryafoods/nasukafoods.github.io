@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pesan Cilok</title>
+  <title>Form Pemesanan Cilok</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f2f2f2;
+      background-color: #f7f7f7;
       max-width: 500px;
       margin: auto;
+      padding: 20px;
     }
-    input, textarea, button {
+    h2 {
+      text-align: center;
+    }
+    input, textarea, select, button {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border-radius: 6px;
       border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 16px;
     }
     button {
@@ -26,43 +29,58 @@
       border: none;
     }
     #status {
+      text-align: center;
       margin-top: 15px;
       font-weight: bold;
-      color: red;
     }
   </style>
 </head>
 <body>
   <h2>Form Pemesanan Cilok</h2>
   <form id="pesananForm">
-    <input type="text" name="nama" placeholder="Nama" required>
-    <textarea name="alamat" placeholder="Alamat" required></textarea>
-    <input type="number" name="jumlah" placeholder="Jumlah" required>
+    <input type="text" name="nama" placeholder="Nama Lengkap" required />
+    <textarea name="alamat" placeholder="Alamat Lengkap" required></textarea>
+    <input type="text" name="hp" placeholder="Nomor HP" required />
+    <select name="produk" required>
+      <option value="">-- Pilih Produk --</option>
+      <option value="Cilok Original">Cilok Original</option>
+      <option value="Cilok Pedas">Cilok Pedas</option>
+      <option value="Cilok Keju">Cilok Keju</option>
+    </select>
+    <input type="number" name="jumlah" placeholder="Jumlah Pesanan" required />
     <textarea name="catatan" placeholder="Catatan (opsional)"></textarea>
     <button type="submit">Kirim Pesanan</button>
   </form>
   <p id="status"></p>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzy2QQz08AwWWpP097QNCX04SJWv0N8Q_dqQe1-ksuy7Zew-a1j5M8VymutCaqVGNz3aQ/exec";
-    const form = document.getElementById('pesananForm');
-    const status = document.getElementById('status');
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec";
 
-    form.addEventListener('submit', e => {
+    const form = document.getElementById("pesananForm");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const data = new FormData(form);
-      const params = new URLSearchParams(data);
       status.textContent = "Mengirim...";
-      
-      fetch(scriptURL + "?" + params.toString())
-        .then(res => res.text())
-        .then(text => {
-          status.textContent = text;
-          form.reset();
-        })
-        .catch(err => {
-          status.textContent = "Gagal mengirim pesanan.";
-        });
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => res.text())
+      .then((text) => {
+        status.textContent = text;
+        form.reset();
+      })
+      .catch((err) => {
+        console.error(err);
+        status.textContent = "Gagal mengirim pesanan.";
+      });
     });
   </script>
 </body>
