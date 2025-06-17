@@ -51,16 +51,57 @@
       font-size: 16px;
       border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    button:hover {
+    button:hover:enabled {
       background-color: #218838;
+    }
+
+    button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
     }
 
     #status {
       text-align: center;
       margin-top: 15px;
       font-weight: bold;
+      color: #333;
+    }
+
+    #pembayaran {
+      max-width: 500px;
+      margin: 20px auto;
+      text-align: center;
+      display: none;
+    }
+
+    #pembayaran img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    #pembayaran p {
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    #pembayaran a {
+      display: inline-block;
+      padding: 12px 20px;
+      background-color: #25d366;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #pembayaran a:hover {
+      background-color: #1ebe5d;
     }
 
     @media (max-width: 480px) {
@@ -81,39 +122,57 @@
 <body>
   <h2>Formulir Pemesanan</h2>
   <form id="form-pesanan">
-    <label for="nama">Nama Lengkap:</label>
+    <label for="nama">Nama:</label>
     <input type="text" name="nama" id="nama" required>
 
-    <label for="alamat">Alamat Lengkap:</label>
+    <label for="alamat">Alamat Pengiriman :</label>
     <input type="text" name="alamat" id="alamat" required>
 
-    <label for="jumlah">Jumlah Pesanan:</label>
+    <label for="jumlah">Jumlah Pesanan: / Porsi</label>
     <input type="number" name="jumlah" id="jumlah" required>
 
-    <label for="nohp">No. HP:</label>
+    <label for="nohp">Catatan :</label>
     <input type="text" name="nohp" id="nohp" required>
-
+<p><li>Minimal pembelian 1 porsi 30pcs = Rp 30.000</li></p></p>
+<p><li>Gratis ongkir wilayah cibaduyut</li></p>
+<p><li>Max : 2.KM dari TVRI</li></p>
     <button type="submit">Kirim Pesanan</button>
   </form>
 
   <p id="status"></p>
 
+  <div id="pembayaran">
+    <img src="https://nasukafoods.site/qris.jpg" alt="QRIS Pembayaran">
+    <p>Silakan lakukan pembayaran dengan scan QRIS di atas atau klik tombol di bawah untuk konfirmasi.</p>
+    <a href="https://wa.me/62859109819017" target="_blank">Konfirmasi via WhatsApp</a>
+  </div>
+
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
     const form = document.getElementById('form-pesanan');
     const status = document.getElementById('status');
+    const pembayaran = document.getElementById('pembayaran');
+    const button = form.querySelector('button');
 
     form.addEventListener('submit', e => {
       e.preventDefault();
+      button.disabled = true;
+      button.textContent = "Mengirim...";
+
       const data = new FormData(form);
       fetch(scriptURL, { method: 'POST', body: data })
         .then(response => {
           status.innerHTML = "✅ Pesanan berhasil dikirim!";
+          pembayaran.style.display = 'block';
           form.reset();
+          button.disabled = false;
+          button.textContent = "Kirim Pesanan";
         })
         .catch(error => {
-          status.innerHTML = "❌ Gagal mengirim pesanan.";
+          status.innerHTML = "❌ Gagal mengirim pesanan. Silakan coba lagi.";
           console.error('Error!', error.message);
+          button.disabled = false;
+          button.textContent = "Kirim Pesanan";
         });
     });
   </script>
