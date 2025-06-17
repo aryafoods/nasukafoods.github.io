@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daftar Pesanan - Nasuka Foods</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f3f3f3;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 14px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    .loading {
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📦 Daftar Pesanan Masuk</h2>
+
+  <div class="loading">Memuat data pesanan...</div>
+  <table id="pesanan" style="display:none;">
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Nama</th>
+        <th>Jumlah</th>
+        <th>Alamat</th>
+        <th>Catatan</th>
+      </tr>
+    </thead>
+    <tbody id="data-body"></tbody>
+  </table>
+
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/1wRul3lwWBXsMs-qwW3SRqLk0GYAYEeq-iAgKbeevbUs/gviz/tq?tqx=out:json";
+
+    fetch(sheetURL)
+      .then(res => res.text())
+      .then(text => {
+        const json = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+        const tbody = document.getElementById("data-body");
+
+        rows.forEach(row => {
+          const tr = document.createElement("tr");
+          row.c.forEach(cell => {
+            const td = document.createElement("td");
+            td.textContent = cell ? cell.v : '';
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+
+        document.querySelector(".loading").style.display = "none";
+        document.getElementById("pesanan").style.display = "table";
+      })
+      .catch(err => {
+        document.querySelector(".loading").textContent = "Gagal memuat data. Pastikan spreadsheet dapat diakses publik.";
+      });
+  </script>
+
+</body>
+</html>
