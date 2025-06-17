@@ -1,100 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>Daftar Pesanan</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: sans-serif;
-      margin: 20px;
-      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
     }
     h2 {
       text-align: center;
+      color: #333;
     }
     table {
-      width: 100%;
       border-collapse: collapse;
-      background-color: white;
+      width: 100%;
+      background-color: #fff;
     }
     th, td {
-      padding: 10px;
-      border: 1px solid #ddd;
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: left;
       font-size: 14px;
     }
     th {
-      background-color: #28a745;
+      background-color: #4CAF50;
       color: white;
     }
     tr:nth-child(even) {
-      background-color: #f9f9f9;
+      background-color: #f2f2f2;
     }
-    .container {
-      max-width: 1000px;
-      margin: auto;
+    .error {
+      text-align: center;
+      padding: 20px;
+      color: red;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Daftar Pesanan</h2>
-    <table id="tabel-pesanan">
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Alamat</th>
-          <th>Handphone</th>
-          <th>Jumlah</th>
-          <th>Catatan</th>
-          <th>Keterangan</th>
-          <th>Masukan</th>
-          <th>Komplain</th>
-          <th>Kerjasama</th>
-          <th>Waktu</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="10" align="center">Memuat data...</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Daftar Pesanan</h2>
+  <table id="tabelPesanan">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>Handphone</th>
+        <th>Jumlah</th>
+        <th>Catatan</th>
+        <th>Keterangan</th>
+        <th>Masukan</th>
+        <th>Komplain</th>
+        <th>Kerjasama</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody id="isiTabel">
+      <tr><td colspan="10" class="error">Memuat data...</td></tr>
+    </tbody>
+  </table>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
-
-    fetch(scriptURL)
-      .then(res => res.json())
+    fetch("https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec")
+      .then(response => response.json())
       .then(data => {
-        const tbody = document.querySelector('#tabel-pesanan tbody');
-        tbody.innerHTML = "";
+        const isiTabel = document.getElementById("isiTabel");
+        isiTabel.innerHTML = "";
 
         if (data.length === 0) {
-          tbody.innerHTML = "<tr><td colspan='10' align='center'>Belum ada data</td></tr>";
+          isiTabel.innerHTML = '<tr><td colspan="10" class="error">Tidak ada data</td></tr>';
           return;
         }
 
         data.forEach(row => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td>${row.nama || ''}</td>
-            <td>${row.alamat || ''}</td>
-            <td>${row.handphone || ''}</td>
-            <td>${row.jumlah || ''}</td>
-            <td>${row.catatan || ''}</td>
-            <td>${row.keterangan || ''}</td>
-            <td>${row.masukan || ''}</td>
-            <td>${row.komplain || ''}</td>
-            <td>${row.kerjasama || ''}</td>
-            <td>${row.waktu || ''}</td>
+            <td>${row.nama || ""}</td>
+            <td>${row.alamat || ""}</td>
+            <td>${row.handphone || ""}</td>
+            <td>${row.jumlah || ""}</td>
+            <td>${row.catatan || ""}</td>
+            <td>${row.keterangan || ""}</td>
+            <td>${row.masukan || ""}</td>
+            <td>${row.komplain || ""}</td>
+            <td>${row.kerjasama || ""}</td>
+            <td>${row.waktu || ""}</td>
           `;
-          tbody.appendChild(tr);
+          isiTabel.appendChild(tr);
         });
       })
       .catch(error => {
-        const tbody = document.querySelector('#tabel-pesanan tbody');
-        tbody.innerHTML = `<tr><td colspan="10" align="center">Gagal mengambil data</td></tr>`;
-        console.error('Error:', error);
+        console.error("Gagal mengambil data:", error);
+        document.getElementById("isiTabel").innerHTML =
+          '<tr><td colspan="10" class="error">Gagal mengambil data</td></tr>';
       });
   </script>
 </body>
