@@ -1,110 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Formulir Pemesanan Cilok</title>
+  <title>Formulir Pemesanan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: sans-serif;
-      background-color: #f4f4f4;
       padding: 20px;
       margin: 0;
+      background-color: #f9f9f9;
     }
+
     h2 {
       text-align: center;
       color: #333;
     }
+
     form {
-      max-width: 500px;
+      max-width: 600px;
       margin: 0 auto;
-      background: white;
+      background: #fff;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+
     label {
-      font-weight: bold;
       display: block;
-      margin-top: 10px;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: bold;
     }
+
     input, textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font-size: 16px;
       box-sizing: border-box;
     }
+
     button {
-      margin-top: 20px;
       width: 100%;
       padding: 12px;
       background-color: #28a745;
+      border: none;
       color: white;
       font-size: 16px;
-      border: none;
       border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
+    button:hover:enabled {
+      background-color: #218838;
+    }
+
     button:disabled {
-      background-color: #888;
+      background-color: #6c757d;
+      cursor: not-allowed;
     }
+
     #status {
       text-align: center;
       margin-top: 15px;
       font-weight: bold;
+      color: #333;
     }
+
     #pembayaran {
-      display: none;
+      max-width: 600px;
+      margin: 20px auto;
       text-align: center;
-      margin-top: 30px;
+      display: none;
     }
+
     #pembayaran img {
-      width: 100%;
-      max-width: 300px;
+      max-width: 100%;
+      height: auto;
       border-radius: 8px;
+      margin-bottom: 10px;
     }
+
+    #pembayaran p {
+      color: #444;
+      margin-bottom: 15px;
+    }
+
     #pembayaran a {
       display: inline-block;
-      margin-top: 10px;
       padding: 12px 20px;
       background-color: #25d366;
       color: white;
+      font-size: 16px;
       border-radius: 6px;
       text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #pembayaran a:hover {
+      background-color: #1ebe5d;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      form {
+        padding: 15px;
+      }
+
+      input, button, textarea {
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
-  <h2>Formulir Pemesanan Cilok</h2>
+  <h2>Formulir Pemesanan</h2>
   <form id="form-pesanan">
-    <label for="nama">Nama (wajib):</label>
+    <label for="nama">Nama:</label>
     <input type="text" name="nama" id="nama" required>
 
-    <label for="alamat">Alamat Pengiriman:</label>
+    <label for="alamat">Alamat:</label>
     <input type="text" name="alamat" id="alamat">
 
-    <label for="handphone">No. Handphone:</label>
+    <label for="handphone">Nomor HP:</label>
     <input type="text" name="handphone" id="handphone">
 
-    <label for="jumlah">Jumlah Pesanan (porsi):</label>
-    <input type="number" name="jumlah" id="jumlah">
+    <label for="jumlah">Jumlah / Porsi:</label>
+    <input type="number" name="jumlah" id="jumlah" min="1">
 
     <label for="catatan">Catatan:</label>
-    <input type="text" name="catatan" id="catatan">
+    <textarea name="catatan" id="catatan"></textarea>
 
     <label for="keterangan">Keterangan Tambahan:</label>
-    <input type="text" name="keterangan" id="keterangan">
+    <textarea name="keterangan" id="keterangan"></textarea>
 
     <label for="masukan">Masukan:</label>
-    <input type="text" name="masukan" id="masukan">
+    <textarea name="masukan" id="masukan"></textarea>
 
     <label for="komplain">Komplain:</label>
-    <input type="text" name="komplain" id="komplain">
+    <textarea name="komplain" id="komplain"></textarea>
 
-    <label for="kerjasama">Penawaran Kerjasama:</label>
-    <input type="text" name="kerjasama" id="kerjasama">
+    <label for="kerjasama">Ajakan Kerjasama:</label>
+    <textarea name="kerjasama" id="kerjasama"></textarea>
 
     <button type="submit">Kirim Pesanan</button>
   </form>
@@ -112,31 +156,37 @@
   <p id="status"></p>
 
   <div id="pembayaran">
-    <img src="https://nasukafoods.site/qris.jpg" alt="QRIS">
-    <p>Scan QRIS untuk membayar, lalu klik konfirmasi di bawah:</p>
+    <img src="https://nasukafoods.site/qris.jpg" alt="QRIS Pembayaran">
+    <p>Silakan lakukan pembayaran dengan scan QRIS di atas atau klik tombol di bawah untuk konfirmasi.</p>
     <a href="https://wa.me/62859109819017" target="_blank">Konfirmasi via WhatsApp</a>
   </div>
 
   <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
     const form = document.getElementById('form-pesanan');
     const status = document.getElementById('status');
     const pembayaran = document.getElementById('pembayaran');
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
+    const button = form.querySelector('button');
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-      status.textContent = "Mengirim...";
-      const data = new FormData(form);
+      button.disabled = true;
+      button.textContent = "Mengirim...";
 
+      const data = new FormData(form);
       fetch(scriptURL, { method: 'POST', body: data })
         .then(response => {
-          status.textContent = "✅ Pesanan berhasil dikirim!";
+          status.innerHTML = "✅ Pesanan berhasil dikirim!";
           pembayaran.style.display = 'block';
           form.reset();
+          button.disabled = false;
+          button.textContent = "Kirim Pesanan";
         })
         .catch(error => {
+          status.innerHTML = "❌ Gagal mengirim pesanan. Silakan coba lagi.";
           console.error('Error!', error.message);
-          status.textContent = "❌ Gagal mengirim pesanan.";
+          button.disabled = false;
+          button.textContent = "Kirim Pesanan";
         });
     });
   </script>
