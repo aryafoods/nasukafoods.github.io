@@ -1,79 +1,38 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pemesanan NasukaFoods</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uji Kirim Pesanan</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #fff8f0;
+      font-family: sans-serif;
       padding: 20px;
-      text-align: center;
-    }
-    h2 {
-      color: #d33a00;
-    }
-    form {
-      max-width: 400px;
-      margin: 0 auto;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     input, button {
+      display: block;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 8px 0;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      font-size: 16px;
     }
     button {
-      background-color: #ff5722;
+      background-color: #28a745;
       color: white;
-      font-weight: bold;
       border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #e64a19;
     }
   </style>
 </head>
 <body>
-
-  <h2>Pemesanan NasukaFoods</h2>
-  <form id="formPesanan">
-    <input type="text" name="nama" placeholder="Nama lengkap" required />
-    <input type="text" name="alamat" placeholder="Alamat lengkap" required />
-    <input type="number" name="jumlah" placeholder="Jumlah pesanan" required min="1" />
-    <button type="submit">Kirim Pesanan</button>
+  <h2>Uji Kirim ke Spreadsheet</h2>
+  <form action="https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec" method="post">
+    <label>Nama</label>
+    <input type="text" name="nama" value="Tes Nama">
+    <label>Alamat</label>
+    <input type="text" name="alamat" value="Jl. Contoh 123">
+    <label>Jumlah</label>
+    <input type="number" name="jumlah" value="2">
+    <button type="submit">Kirim Sekarang</button>
   </form>
-
-  <script>
-    document.getElementById('formPesanan').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      const url = 'https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec';
-
-      fetch(url, {
-        method: 'POST',
-        body: data
-      })
-      .then(response => response.text())
-      .then(result => {
-        alert("Pesanan berhasil dikirim!");
-        form.reset();
-      })
-      .catch(error => {
-        alert("Gagal mengirim pesanan. Silakan coba lagi.");
-        console.error(error);
-      });
-    });
-  </script>
-
 </body>
 </html>
