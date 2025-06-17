@@ -1,83 +1,47 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pesan Cilok</title>
+  <title>Daftar Pesanan</title>
   <style>
-    body {
-      font-family: sans-serif;
-      background: #f2f2f2;
-      padding: 20px;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 500px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, textarea, select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      background: #28a745;
-      color: white;
-      font-weight: bold;
-    }
-    #status {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 15px;
-    }
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background: #ffc107; }
+    tr:nth-child(even) { background: #f9f9f9; }
   </style>
 </head>
 <body>
-  <form id="form-pesanan">
-    <h2>Form Pemesanan Cilok</h2>
-    <input type="text" name="nama" placeholder="Nama Pemesan" required>
-    <input type="text" name="nohp" placeholder="Nomor HP/WA" required>
-    <textarea name="alamat" placeholder="Alamat Lengkap" required></textarea>
-    <select name="menu" required>
-      <option value="">-- Pilih Menu --</option>
-      <option value="Cilok Original">Cilok Original</option>
-      <option value="Cilok Isi Ayam">Cilok Isi Ayam</option>
-      <option value="Cilok Bumbu Kacang">Cilok Bumbu Kacang</option>
-    </select>
-    <input type="number" name="jumlah" placeholder="Jumlah Porsi" required min="1">
-    <textarea name="catatan" placeholder="Catatan Tambahan (opsional)"></textarea>
-    <button type="submit">Kirim Pesanan</button>
-    <div id="status"></div>
-  </form>
-
+  <h2>Daftar Pesanan</h2>
+  <table id="tabel">
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>Jumlah</th>
+        <th>Catatan</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
   <script>
-    document.getElementById("form-pesanan").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const formData = new FormData(this);
-      const data = {};
-      formData.forEach((value, key) => data[key] = value);
-
-      fetch("https://script.google.com/macros/s/AKfycbxYkV8EYLVNtgLOMhdQGc6PiOtBQ4mTW6jgpB5T2NugAhAmv7hShCFNZBK3Ch6EqI6L/exec", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(res => res.text())
-      .then(res => {
-        document.getElementById("status").innerText = res === "BERHASIL" ? "Pesanan berhasil dikirim!" : "Gagal mengirim pesanan.";
-        this.reset();
-      })
-      .catch(err => {
-        document.getElementById("status").innerText = "Terjadi kesalahan!";
+    fetch("https://script.google.com/macros/s/AKfycbwhqehmZ6QuSWEAlEge8UZIYGPKs8l-6JDuSNZWFCzLgT6uUvh11pG8czdChYry8Qc/exec")
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector("tbody");
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+          const td = document.createElement("td");
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
       });
+    }).catch(() => {
+      document.body.innerHTML += "<p style='color:red;'>Gagal memuat data.</p>";
     });
   </script>
 </body>
