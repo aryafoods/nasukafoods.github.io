@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Daftar Pesanan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      font-family: sans-serif;
+      background-color: #f2f2f2;
       margin: 0;
       padding: 20px;
     }
@@ -17,134 +17,101 @@
       color: #333;
     }
 
-    .pesanan-container {
-      max-width: 1000px;
-      margin: auto;
-      overflow-x: auto;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
       background-color: white;
     }
 
     th, td {
       padding: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       text-align: left;
       font-size: 14px;
     }
 
     th {
-      background-color: #28a745;
+      background-color: #007bff;
       color: white;
-      position: sticky;
-      top: 0;
-      z-index: 1;
     }
 
     tr:nth-child(even) {
       background-color: #f9f9f9;
     }
 
+    .loading {
+      text-align: center;
+      color: #555;
+    }
+
     @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
+      th, td {
+        font-size: 12px;
+        padding: 6px;
       }
-
-      th {
-        display: none;
-      }
-
-      td {
-        position: relative;
-        padding-left: 50%;
-        border: none;
-        border-bottom: 1px solid #ddd;
-      }
-
-      td::before {
-        position: absolute;
-        left: 10px;
-        width: 45%;
-        white-space: nowrap;
-        font-weight: bold;
-        color: #555;
-      }
-
-      td:nth-of-type(1)::before { content: "Nama"; }
-      td:nth-of-type(2)::before { content: "Alamat"; }
-      td:nth-of-type(3)::before { content: "Handphone"; }
-      td:nth-of-type(4)::before { content: "Jumlah"; }
-      td:nth-of-type(5)::before { content: "Catatan"; }
-      td:nth-of-type(6)::before { content: "Keterangan"; }
-      td:nth-of-type(7)::before { content: "Masukan"; }
-      td:nth-of-type(8)::before { content: "Komplain"; }
-      td:nth-of-type(9)::before { content: "Kerjasama"; }
-      td:nth-of-type(10)::before { content: "Waktu"; }
     }
   </style>
 </head>
 <body>
-  <h2>Daftar Pesanan Masuk</h2>
-  <div class="pesanan-container">
-    <table id="tabel-pesanan">
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Alamat</th>
-          <th>Handphone</th>
-          <th>Jumlah</th>
-          <th>Catatan</th>
-          <th>Keterangan</th>
-          <th>Masukan</th>
-          <th>Komplain</th>
-          <th>Kerjasama</th>
-          <th>Waktu</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="10" style="text-align:center;">Memuat data...</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Daftar Pesanan</h2>
+  <div class="loading" id="loading">Mengambil data...</div>
+  <table id="tabel-pesanan" style="display: none;">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>HP</th>
+        <th>Jumlah</th>
+        <th>Catatan</th>
+        <th>Keterangan</th>
+        <th>Masukan</th>
+        <th>Komplain</th>
+        <th>Kerjasama</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody id="isi-tabel"></tbody>
+  </table>
 
   <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec";
+    const endpoint = 'https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec';
 
     fetch(endpoint)
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
-        const tbody = document.querySelector("#tabel-pesanan tbody");
-        tbody.innerHTML = "";
+        const tbody = document.getElementById('isi-tabel');
+        const loading = document.getElementById('loading');
+        const table = document.getElementById('tabel-pesanan');
 
         if (data.length === 0) {
-          tbody.innerHTML = "<tr><td colspan='10' style='text-align:center;'>Belum ada pesanan.</td></tr>";
+          loading.textContent = "Belum ada data pesanan.";
           return;
         }
 
-        data.forEach(row => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${row.nama || ""}</td>
-            <td>${row.alamat || ""}</td>
-            <td>${row.handphone || ""}</td>
-            <td>${row.jumlah || ""}</td>
-            <td>${row.catatan || ""}</td>
-            <td>${row.keterangan || ""}</td>
-            <td>${row.masukan || ""}</td>
-            <td>${row.komplain || ""}</td>
-            <td>${row.kerjasama || ""}</td>
-            <td>${row.waktu || ""}</td>
+        loading.style.display = 'none';
+        table.style.display = '';
+
+        data.forEach(pesanan => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${pesanan.nama || ''}</td>
+            <td>${pesanan.alamat || ''}</td>
+            <td>${pesanan.handphone || ''}</td>
+            <td>${pesanan.jumlah || ''}</td>
+            <td>${pesanan.catatan || ''}</td>
+            <td>${pesanan.keterangan || ''}</td>
+            <td>${pesanan.masukan || ''}</td>
+            <td>${pesanan.komplain || ''}</td>
+            <td>${pesanan.kerjasama || ''}</td>
+            <td>${pesanan.waktu || ''}</td>
           `;
-          tbody.appendChild(tr);
+          tbody.appendChild(row);
         });
       })
       .catch(err => {
-        const tbody = document.querySelector("#tabel-pesanan tbody");
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; color:red;">Gagal memuat data.</td></tr>`;
-        console.error("Gagal mengambil data:", err);
+        document.getElementById('loading').textContent = "❌ Gagal mengambil data.";
+        console.error('Error:', err);
       });
   </script>
 </body>
