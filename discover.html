@@ -1,183 +1,313 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Produk dan layanan</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background-color: lightgray;
-      color: white;
-    }
-
-    .hero-section {
-      position: relative;
-      height: 20vh;
-      background: url('https://nasukafoods.site/fotodiscovery.jpg') no-repeat center center/cover;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .promo-text {
-      text-align: center;
-      margin-top: 3vh;
-      font-size: 24px;
-      font-weight: bold;
-      text-shadow: 0 0 6px black;
-      padding: 0 20px;
-    }
-
-    .info, .sidebar {
-      position: absolute;
-      bottom: 20px;
-    }
-
-    .info {
-      left: 10px;
-    }
-
-    .info .location {
-      font-size: 12px;
-      color: #ccc;
-    }
-
-    .info .username {
-      font-weight: bold;
-    }
-
-    .info .desc {
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .info .music {
-      font-size: 12px;
-      color: #ffbb00;
-    }
-
-    .sidebar {
-      right: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .sidebar div {
-      margin: 8px 0;
-      font-size: 12px;
-    }
-
-    .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
-      font-size: 12px;
-      z-index: 999;
-    }
-
-    .bottom-bar a {
-      color: white;
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .scroll-gallery {
-      overflow-x: auto;
-      display: flex;
-      gap: 20px;
-      padding: 10px 20px;
-    }
-
-    .scroll-item {
-      flex: 0 0 auto;
-      background-color: #222;
-      border-radius: 10px;
-      padding: 10px;
-      width: 220px;
-    }
-
-    .scroll-item img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .scroll-item h4 {
-      font-size: 16px;
-      margin: 0 0 5px;
-    }
-
-    .scroll-item p {
-      font-size: 13px;
-      margin: 0 0 10px;
-    }
-
-    .scroll-item a {
-      color: #00ffcc;
-      text-decoration: none;
-    }
-
-    h3 {
-      text-align: center;
-      margin: 10px 0 5px;
-    }
-
-    p.intro {
-      padding: 5px 15px;
-      margin: 5px 0;
-      color: black;
-    }
-  </style>
-</head>
-<body>
-
-  <section class="hero-section">
-    <div class="promo-text"><br /><strong></strong></div>
-
-    <div class="info">
-      <div class="location">📍Cibaduyut | Bandung | Jawa Barat</div>
-      <div class="username">✅ Produk dan layanan</div>
-      <div class="desc"># Layanan khusus </div>
-      <div class="music">© Copyright - Nasuka foods</div>
+<!DOCTYPE html>    
+<html lang="id">    
+<head>    
+  <meta charset="UTF-8" />    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>    
+  <title>Produk dan layanan</title>    
+  <style>    
+    body {    
+      margin: 0;    
+      font-family: sans-serif;    
+      background-color: lightgray;    
+      color: white;    
+    }    
+    
+    .hero-section {    
+      position: relative;    
+      height: 20vh;    
+      background: url('https://nasukafoods.site/fotodiscovery.jpg') no-repeat center center/cover;    
+      display: flex;    
+      flex-direction: column;    
+      justify-content: space-between;    
+      margin-bottom: 10px;    
+    }    
+    
+    .promo-text {    
+      text-align: center;    
+      margin-top: 3vh;    
+      font-size: 24px;    
+      font-weight: bold;    
+      text-shadow: 0 0 6px black;    
+      padding: 0 20px;    
+    }    
+    
+    .info, .sidebar {    
+      position: absolute;    
+      bottom: 20px;    
+    }    
+    
+    .info {    
+      left: 10px;    
+    }    
+    
+    .info .location {    
+      font-size: 12px;    
+      color: #ccc;    
+    }    
+    
+    .info .username {    
+      font-weight: bold;    
+    }    
+    
+    .info .desc {    
+      font-size: 14px;    
+      margin-top: 5px;    
+    }    
+    
+    .info .music {    
+      font-size: 12px;    
+      color: #ffbb00;    
+    }    
+    
+    .sidebar {    
+      right: 10px;    
+      display: flex;    
+      flex-direction: column;    
+      align-items: center;    
+    }    
+    
+    .sidebar div {    
+      margin: 8px 0;    
+      font-size: 12px;    
+    }    
+    
+    .bottom-bar {    
+      position: fixed;    
+      bottom: 0;    
+      width: 100%;    
+      background: rgba(0, 0, 0, 0.7);    
+      display: flex;    
+      justify-content: space-around;    
+      padding: 8px 0;    
+      font-size: 12px;    
+      z-index: 999;    
+    }    
+    
+    .bottom-bar a {    
+      color: white;    
+      text-decoration: none;    
+      text-align: center;    
+    }    
+    
+    .scroll-gallery {    
+      overflow-x: auto;    
+      display: flex;    
+      gap: 20px;    
+      padding: 10px 20px;    
+    }    
+    
+    .scroll-item {    
+      flex: 0 0 auto;    
+      background-color: #222;    
+      border-radius: 10px;    
+      padding: 10px;    
+      width: 220px;    
+    }    
+    
+    .scroll-item video, .scroll-item img {    
+      width: 100%;    
+      border-radius: 10px;    
+      margin-bottom: 10px;    
+      object-fit: cover;    
+    }    
+    
+    .scroll-item img {    
+      aspect-ratio: 1/1;    
+    }    
+    
+    .scroll-item h4 {    
+      font-size: 16px;    
+      margin: 0 0 5px;    
+    }    
+    
+    .scroll-item p {    
+      font-size: 13px;    
+      margin: 0 0 10px;    
+    }    
+    
+    .scroll-item a {    
+      color: #00ffcc;    
+      text-decoration: none;    
+    }    
+    
+    h3 {    
+      text-align: center;    
+      margin: 10px 0 5px;    
+    }    
+    
+    p.intro {    
+      padding: 5px 15px;    
+      margin: 5px 0;    
+      color: black;    
+    }    
+  </style>    
+</head>    
+<body>    
+    
+  <section class="hero-section">    
+    <div class="promo-text"><br /><strong></strong></div>    
+    
+    <div class="info">    
+      <div class="location">📍Cibaduyut | Bandung | Jawa Barat</div>    
+      <div class="username">✅ Produk dan layanan</div>    
+      <div class="desc"># Layanan khusus </div>    
+      <div class="music">© Copyright - Nasuka foods</div>    
     </div>
-
-    <div class="sidebar">
-      <div>❤️ 100.k</div>
-      <div>💬 1.M</div>
-    </div>
-  </section>
-
-  <p class="intro">Hai, ini halaman produk:</p>
-
-  
-  <div class="scroll-gallery">
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="1"><h4>Original</h4><p>Cilok klasik isi polos</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="2"><h4>Isi Keju</h4><p>Cilok lumer keju dalam</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="3"><h4>Isi Telur</h4><p>Cilok padat dan gurih</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="4"><h4>Paket Party</h4><p>Isi 100 pcs campur</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="5"><h4>Mini Pack</h4><p>Isi 10 pcs, untuk anak</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="6"><h4>Frozen</h4><p>Cocok dikirim antar kota</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="7"><h4>Saus Pedas</h4><p>Saus homemade</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="8"><h4>Kemitraan</h4><p>Paket reseller</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="9"><h4>Kupon Bonus</h4><p>Tukar dengan cilok</p><a href="#">Detail</a></div>
-    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="10"><h4>Paket Cilok Premium</h4><p>Isi campuran top</p><a href="#">Detail</a></div>
+    
+    <div class="sidebar">    
+      <div>❤️ 2.M</div>    
+      <div>💬 1.M</div>    
+    </div>    
+  </section>    
+    
+  <p class="intro">Hai, ini halaman produk:</p>    
+    
+  <!-- Galeri Video -->    
+  <div class="scroll-gallery">    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Original</h4><p>Cilok klasik isi polos</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Isi Keju</h4><p>Cilok lumer keju dalam</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Isi Telur</h4><p>Cilok padat dan gurih</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Paket Party</h4><p>Isi 100 pcs campur</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Mini Pack</h4><p>Isi 10 pcs, untuk anak</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Frozen</h4><p>Cocok dikirim antar kota</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Saus Pedas</h4><p>Saus homemade</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Kemitraan</h4><p>Paket reseller</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Kupon Bonus</h4><p>Tukar dengan cilok</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+    <div class="scroll-item">    
+      <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>    
+      <h4>Paket Cilok Premium</h4><p>Isi campuran top</p>    
+      <a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
+    </div>    
+  </div>    
+    
+  <!-- Galeri Foto -->    
+  <div class="scroll-gallery">    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 1"><h4>Cilok Original</h4><p>Isi polos</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 2"><h4>Isi Ayam</h4><p>Gurih berbumbu</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 3"><h4>Keju Lumer</h4><p>Pilihan anak-anak</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 4"><h4>Sosis Cilok</h4><p>Isi sosis besar</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 5"><h4>Telur Asin</h4><p>Cocok lauk nasi</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 6"><h4>Paket Mini</h4><p>Isi 5 pcs hemat</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 7"><h4>Sambal Pedas</h4><p>Level 3</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 8"><h4>Paket Combo</h4><p>3 rasa campur</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 9"><h4>Kemitraan</h4><p>Reseller pack</p></div>    
+    <div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 10"><h4>Promo Bulan Ini</h4><p>Beli 2 gratis 1</p></div>    
   </div>
+    
+         <!-- Kolom Spreadsheet -->    
+  <h3 style="color:black;">📋 Catatan nasuka</h3>    
+      
+  <div class="scroll-gallery">    
+    <div class="scroll-item"><h4>Website</h4><p>Membangun web mandiri</p></div>    
+    <div class="scroll-item"><h4>Story</h4><p>Perjalanan nasuka corporation</p></div>    
+    <div class="scroll-item"><h4>Google Apps Script</h4><p>Integrasi order online</p></div>    
+    <div class="scroll-item"><h4>Aluminium Composite Panel</h4><p>Proyekan facade</p></div>    
+    <div class="scroll-item"><h4>Cara Membuat Telor Gulung</h4><p>Tanpa sambal</p></div>    
+  </div>    
+    
+  <div class="scroll-gallery">    
+    <div class="scroll-item"><h4>Cara Membuat Cilok Gajih</h4><p>Klik disini</p></div>    
+    <div class="scroll-item"><h4>Cara Membuat Cilok Ayam</h4><p>Klik disini</p></div>    
+    <div class="scroll-item"><h4>Cara Membuat Cilok Goreng Telor</h4><p>Klik disini</p></div>    
+    <div class="scroll-item"><h4>Cara Membuat Telor Gulung</h4><p>Klik disini</p></div>    
+    <div class="scroll-item"><h4>Cara Membuat Pempek</h4><p>Klik disini</p></div>    
+  </div>    
+    
+    
+               <!-- Foto -->    
+<div style="text-align: center; padding-bottom: 20px;"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto Cilok" style="width: 200px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.5);" /></div>
 
-  <div class="bottom-bar">
-    <a href="https://nasukafoods.site/index.html">🏠<br>Home</a>
-    <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>
-    <a href="https://nasukafoods.site/pesanan.html">➕<br>Pesanan</a>
-    <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
-    <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
-  </div>
+    
+              <!-- Widget Jam -->    
+  <div style="text-align: center; padding: 15px; font-size: 16px; color: black;">    
+    <strong id="tanggal"></strong><br>    
+    <span id="jam"></span> </div>    
+             <!-------------->    
+    
 
-</body>
-</html>
+
+<!-- Artikel Tambahan -->
+<div style="padding: 15px; background-color: white; color: black; border-radius: 10px; margin: 0 15px 20px;">
+  <h3 style="text-align: center; margin-top: 0;">Tentang Produk dan Layanan Nasuka</h3>
+  <p>
+    Nasuka Foods adalah penyedia cilok modern dengan berbagai varian isi seperti keju, ayam, sosis, hingga telur asin.
+    Produk kami dibuat tanpa bahan pengawet, cocok untuk anak-anak hingga dewasa, dan bisa dinikmati kapan saja.
+  </p>
+  <p>
+    Selain produk siap santap, kami juga menyediakan <strong>paket frozen</strong> untuk pengiriman antar kota,
+    serta membuka peluang <strong>kemitraan reseller</strong> bagi Anda yang ingin menjalankan usaha makanan ringan.
+  </p>
+  <p>
+    Semua produk dikemas higienis, dikirim cepat, dan didampingi oleh layanan pelanggan yang responsif. Bergabunglah
+    bersama kami dalam menciptakan camilan yang lezat dan menguntungkan.
+  </p>
+</div>
+
+
+
+  <script>    
+        
+    function updateClock() {    
+      const now = new Date();    
+    
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };    
+      const tanggal = now.toLocaleDateString('id-ID', options);    
+    
+      const jam = now.toLocaleTimeString('id-ID', { hour12: false });    
+    
+      document.getElementById("tanggal").innerText = tanggal;    
+      document.getElementById("jam").innerText = jam;    
+    }    
+    
+    setInterval(updateClock, 1000);    
+    updateClock();    
+  </script>    
+    
+  <!-- Navigasi Bawah -->    
+  <div class="bottom-bar">    
+    <a href="https://nasukafoods.site/index.html">🏠<br>Home</a>    
+    <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>    
+    <a href="https://nasukafoods.site/pesanan.html">➕<br>Pesanan</a>    
+    <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>    
+    <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>    
+  </div>    
+    
+</body>    
+</html>    
+ 
