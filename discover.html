@@ -8,17 +8,18 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background-color: black;
+      background-color: lightgray;
       color: white;
     }
 
     .hero-section {
       position: relative;
-      height: 50vh;
+      height: 20vh;
       background: url('https://nasukafoods.site/fotodiscovery.jpg') no-repeat center center/cover;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      margin-bottom: 10px;
     }
 
     .promo-text {
@@ -88,110 +89,88 @@
       text-align: center;
     }
 
-    .gallery {
-      background: #111;
-      padding: 20px 10px 80px; /* extra bottom padding for bar */
+    .scroll-gallery {
+      overflow-x: auto;
+      display: flex;
+      gap: 20px;
+      padding: 10px 20px;
     }
 
-    .gallery img {
-      width: 100%;
-      max-width: 500px;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      margin: 20px auto;
+    .scroll-item {
+      flex: 0 0 auto;
+      background-color: #222;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      padding: 10px;
+      width: 220px;
+    }
+
+    .scroll-item img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .scroll-item h4 {
+      font-size: 16px;
+      margin: 0 0 5px;
+    }
+
+    .scroll-item p {
+      font-size: 13px;
+      margin: 0 0 10px;
+    }
+
+    .scroll-item a {
+      color: #00ffcc;
+      text-decoration: none;
+    }
+
+    h3 {
+      text-align: center;
+      margin: 10px 0 5px;
+    }
+
+    p.intro {
+      padding: 5px 15px;
+      margin: 5px 0;
+      color: black;
     }
   </style>
 </head>
 <body>
 
   <section class="hero-section">
-    <div class="promo-text">
-      <br />
-      <strong></strong>
-    </div>
+    <div class="promo-text"><br /><strong></strong></div>
 
     <div class="info">
       <div class="location">📍Cibaduyut | Bandung | Jawa Barat</div>
       <div class="username">✅ Produk dan layanan</div>
       <div class="desc"># Layanan khusus </div>
-      <div class="music">© Copyright- Nasuka foods</div>
+      <div class="music">© Copyright - Nasuka foods</div>
     </div>
 
     <div class="sidebar">
       <div>❤️ 100.k</div>
       <div>💬 1.M</div>
-   
     </div>
   </section>
-  <p>Hai, ini halaman produk dan layanan kami, kamu bisa lihat pada tabel dibawah ini<p/>
-   
-<h2 style="text-align:center; margin-top:30px;"></h2>
-<table style="width:90%; margin: 0 auto 30px auto; border-collapse: collapse; color:white; background-color:#222; border-radius: 10px; overflow:hidden;">
-  <thead>
-    <tr style="background-color:#333; text-align:left;">
-      <th style="padding:10px;"></th>
-      <th style="padding:10px;"></th>
-      <th style="padding:10px;"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding:10px;">Produk</td>
-      <td style="padding:10px;"></td>
-      <td style="padding:10px;"><a href="httpa://nasukafood.site/b.html" style="color:#00ffcc; text-decoration:none;">Lihat</a></td>
-    </tr>
-    <tr>
-      
-    </tr>
-    <tr>
-      <td style="padding:10px;">Reward for pelanggan</td>
-      <td style="padding:10px;"></td>
-      <td style="padding:10px;"><a href="#" style="color:#00ffcc; text-decoration:none;">Lihat</a></td>
-    </tr>
-   
-  </tbody>
-</table>
-    
-<h2 style="text-align:center; margin-top:30px;"></h2>
-<table style="width:90%; margin: 0 auto 30px auto; border-collapse: collapse; color:white; background-color:#222; border-radius: 10px; overflow:hidden;">
-  <thead>
-    <tr style="background-color:#333; text-align:left;">
-      <th style="padding:10px;"></th>
-      <th style="padding:10px;"></th>
-      <th style="padding:10px;"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding:10px;">Pesan antar</td>
-      <td style="padding:10px;">Premium</td>
-      <td style="padding:10px;"><a href="httpa://nasukafood.site/b.html" style="color:#00ffcc; text-decoration:none;">Lihat</a></td>
-    </tr>
-    <tr>
-      <td style="padding:10px;">Interface</td>
-      <td style="padding:10px;">Premium</td>
-      <td style="padding:10px;"><a href="https://nasukafoods.site/s.html" style="color:#00ffcc; text-decoration:none;">Lihat</a></td>
-    </tr>
-    <tr>
-     </a></td>
-    </tr>
-   
-  </tbody>
-</table>
-      
-   <p></strong>.</strong></p>
-  <a %20Arya%20" 
-     target="_blank" 
-     stylenline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoraon: none; font-weight: bold;">
-   
-  </a>
-</p>
 
-   
-  </section>
+  <p class="intro">Hai, ini halaman produk:</p>
+
+  
+  <div class="scroll-gallery">
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="1"><h4>Original</h4><p>Cilok klasik isi polos</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="2"><h4>Isi Keju</h4><p>Cilok lumer keju dalam</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="3"><h4>Isi Telur</h4><p>Cilok padat dan gurih</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="4"><h4>Paket Party</h4><p>Isi 100 pcs campur</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="5"><h4>Mini Pack</h4><p>Isi 10 pcs, untuk anak</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="6"><h4>Frozen</h4><p>Cocok dikirim antar kota</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="7"><h4>Saus Pedas</h4><p>Saus homemade</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="8"><h4>Kemitraan</h4><p>Paket reseller</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="9"><h4>Kupon Bonus</h4><p>Tukar dengan cilok</p><a href="#">Detail</a></div>
+    <div class="scroll-item"><img src="http://nasukafoods.site/paketcilok.jpg" alt="10"><h4>Paket Cilok Premium</h4><p>Isi campuran top</p><a href="#">Detail</a></div>
+  </div>
+
   <div class="bottom-bar">
     <a href="https://nasukafoods.site/index.html">🏠<br>Home</a>
     <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>
@@ -199,6 +178,6 @@
     <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
     <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
   </div>
-  
+
 </body>
 </html>
