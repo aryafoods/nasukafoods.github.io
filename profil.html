@@ -165,13 +165,62 @@
       display: none;
       margin-top: -5px;
     }
+
+    /* ==== POPUP STYLE ==== */
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .popup-content {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 90%;
+      color: white;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+      position: relative;
+    }
+
+    .popup-content h2 {
+      margin-top: 0;
+    }
+
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 18px;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    .close-popup:hover {
+      color: red;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Kanan Atas -->
+  <!-- SIDEBAR KANAN ATAS -->
   <div class="top-sidebar">
-    
+  </div>
+
+  <!-- POPUP -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="close-popup" id="closePopup">✖</span>
+      <h2>Halo Teman!</h2>
+      <p>Terima kasih sudah klik ❤️</p>
+      <p>Kalau kamu suka cilok atau butuh jasa aplikator, hubungi Arya ya!</p>
+    </div>
   </div>
 
   <section class="hero-section">
@@ -197,29 +246,27 @@
     </div>
   </section>
 
-  <p>Hai, gimana kabar hari ini? mudah mudahan kamu sekeluarga sehat selalu, Apa ada yang bisa arya bantu? Cuma kepo dengan website arya atau ada yang ingin kamu tanyakan, tanya aja gpp</p>
-  <p>Selain jualan cilok, Arya juga berprofesi sebagai Aplikator, Bekerja dibidang kontruksi divisi FACADE sebagai Ahli Aluminium Composite Panel</p>
-  <p>Dari pantai utara jawa barat, Arya pertama kali ke bandung 2018, Saat itu kebetulan terpesona dengan bumi parahyangan yang indah</p>
+  <p>Hai, gimana kabar hari ini? mudah mudahan kamu sekeluarga sehat selalu...</p>
+  <p>Selain jualan cilok, Arya juga berprofesi sebagai Aplikator...</p>
 
   <section class="gallery">
     <img src="https://nasukafoods.site/fotoarya2.jpeg" alt="Profil Arya" />
-    <p>Eh kebetulan pada saat itu datang tawaran menjadi bagian dari ekpansi pasukan hijau berbayar dengan intensif yang cukup menggiurkan, lalu akhirnya tergabung menjadi mitra GRAB</p>
+    <p>Eh kebetulan pada saat itu datang tawaran...</p>
     
     <img src="https://nasukafoods.site/kawasakiax.png" alt="Cilok Sajian 2" />
     <p>.</p>
     <p>.</p>
     <p><strong>Awal nasuka lahir :</strong></p>
-    <p>Tak berselang lama, Covid menginvasi planet bumi dan hampir memusnahkan peradaban manusia...</p>
-    <p>Dari puing-puing pasca kekacauan cosmic nun jauh di Sukajadi - Bandung, Lahirlah NASUKA FOODS 17 agustus 2020 </p>
+    <p>Tak berselang lama, Covid menginvasi...</p>
     
     <img src="https://nasukafoods.site/nasukakoki1.jpg" alt="Nasuka Koki" />
-    <p>Arya jualan cilok dengan citarasa yang sama dengan cilok yang sekarang...</p>
+    <p>Arya jualan cilok dengan citarasa yang sama...</p>
     
     <p><strong>Menjelajah ke Cibaduyut</strong></p>
     <img src="https://nasukafoods.site/fotocibaduyut.jpeg" alt="Cilok Sajian 3" />
-    <p>... membawa rasa yang dulu pernah ada untuk menyajikan cilok istimewa buat kamu</p>
+    <p>... membawa rasa yang dulu pernah ada...</p>
 
-    <p><strong>Kontak arya jika kamu ingin memesan Cilok Isian Gajih Atau Membutuhkan jasa aplikator Aluminium Composite Panel😊</strong></p>
+    <p><strong>Kontak arya jika kamu ingin memesan Cilok atau jasa aplikator</strong></p>
     
     <a href="https://wa.me/62859109819017?text=Hali%20Arya%20" 
        target="_blank" 
@@ -238,11 +285,19 @@
 
   <script>
     const loveIcon = document.getElementById("love-icon");
+    const popup = document.getElementById("popup");
+    const closePopup = document.getElementById("closePopup");
+
     loveIcon.addEventListener("click", () => {
       loveIcon.classList.add("glow");
+      popup.style.display = "flex";
       setTimeout(() => {
         loveIcon.classList.remove("glow");
       }, 600);
+    });
+
+    closePopup.addEventListener("click", () => {
+      popup.style.display = "none";
     });
 
     const commentIcon = document.getElementById("comment-icon");
