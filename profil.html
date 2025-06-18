@@ -22,19 +22,22 @@
       z-index: 1000;
     }
 
-    .top-sidebar a {
-      display: block;
+    .top-left-button {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.1);
       color: white;
-      text-decoration: none;
-      margin: 6px 0;
-      font-size: 13px;
       padding: 6px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 1001;
       transition: background 0.3s;
     }
 
-    .top-sidebar a:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .top-left-button:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .hero-section {
@@ -55,17 +58,6 @@
       padding: 0 20px;
     }
 
-    .promo-text a {
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s, text-decoration 0.3s;
-    }
-
-    .promo-text a:hover {
-      color: #ffbb00;
-      text-decoration: underline;
-    }
-
     .info, .sidebar {
       position: absolute;
       bottom: 20px;
@@ -84,11 +76,6 @@
       color: white;
       text-decoration: none;
       font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    .info .username a:hover {
-      color: #ffbb00;
     }
 
     .info .desc {
@@ -166,40 +153,41 @@
       margin-top: -5px;
     }
 
-    /* ==== POPUP STYLE ==== */
     .popup {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       display: none;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
+      padding-top: 5%;
       z-index: 2000;
     }
 
     .popup-content {
-      background: #222;
-      padding: 20px;
+      background: #000;
+      padding: 0;
       border-radius: 10px;
       max-width: 90%;
-      color: white;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+      max-height: 90%;
       position: relative;
     }
 
-    .popup-content h2 {
-      margin-top: 0;
+    .popup-content video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
     }
 
     .close-popup {
       position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 18px;
+      top: 8px;
+      right: 10px;
+      font-size: 20px;
       cursor: pointer;
-      color: #aaa;
+      color: white;
+      z-index: 10;
     }
 
     .close-popup:hover {
@@ -209,25 +197,25 @@
 </head>
 <body>
 
-  <!-- SIDEBAR KANAN ATAS -->
-  <div class="top-sidebar">
-  </div>
+  <!-- Tombol 📺 -->
+  <div class="top-left-button" id="tv-button">📺</div>
 
-  <!-- POPUP -->
+  <!-- Sidebar kanan atas -->
+  <div class="top-sidebar"></div>
+
+  <!-- POPUP Video -->
   <div class="popup" id="popup">
     <div class="popup-content">
       <span class="close-popup" id="closePopup">✖</span>
-      <h2>Halo Teman!</h2>
-      <p>Terima kasih sudah klik ❤️</p>
-      <p>Kalau kamu suka cilok atau butuh jasa aplikator, hubungi Arya ya!</p>
+      <video id="popupVideo" controls autoplay>
+        <source src="https://nasukafoods.site/mandor.mp4" type="video/mp4">
+        Browser Anda tidak mendukung video.
+      </video>
     </div>
   </div>
 
   <section class="hero-section">
-    <div class="promo-text">
-      <br />
-      <a href="https://nasukafoods.site/daftarpesanan.html"><strong></strong></a>
-    </div>
+    <div class="promo-text"></div>
 
     <div class="info">
       <div class="location">📍Indramayu | Jawa Barat</div>
@@ -246,29 +234,21 @@
     </div>
   </section>
 
-  <p>Hai, gimana kabar hari ini? mudah mudahan kamu sekeluarga sehat selalu...</p>
-  <p>Selain jualan cilok, Arya juga berprofesi sebagai Aplikator...</p>
-
   <section class="gallery">
     <img src="https://nasukafoods.site/fotoarya2.jpeg" alt="Profil Arya" />
-    <p>Eh kebetulan pada saat itu datang tawaran...</p>
-    
+    <p>Arya juga berprofesi sebagai Aplikator...</p>
+
     <img src="https://nasukafoods.site/kawasakiax.png" alt="Cilok Sajian 2" />
-    <p>.</p>
-    <p>.</p>
-    <p><strong>Awal nasuka lahir :</strong></p>
-    <p>Tak berselang lama, Covid menginvasi...</p>
-    
+    <p><strong>Awal nasuka lahir :</strong> Tak berselang lama, Covid menginvasi...</p>
+
     <img src="https://nasukafoods.site/nasukakoki1.jpg" alt="Nasuka Koki" />
     <p>Arya jualan cilok dengan citarasa yang sama...</p>
-    
-    <p><strong>Menjelajah ke Cibaduyut</strong></p>
-    <img src="https://nasukafoods.site/fotocibaduyut.jpeg" alt="Cilok Sajian 3" />
-    <p>... membawa rasa yang dulu pernah ada...</p>
 
-    <p><strong>Kontak arya jika kamu ingin memesan Cilok atau jasa aplikator</strong></p>
-    
-    <a href="https://wa.me/62859109819017?text=Hali%20Arya%20" 
+    <img src="https://nasukafoods.site/fotocibaduyut.jpeg" alt="Cibaduyut" />
+    <p>Membawa rasa yang dulu pernah ada...</p>
+
+    <p><strong>Kontak Arya jika ingin pesan cilok atau jasa aplikator:</strong></p>
+    <a href="https://wa.me/62859109819017?text=Halo%20Arya" 
        target="_blank" 
        style="display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">
       📲 Personal Contact
@@ -280,24 +260,33 @@
     <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>
     <a href="https://nasukafoods.site/pesanan.html">➕<br>Pesanan</a>
     <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
-    <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
+    <a href="https://nasukafoods.site/profil.html">👤<br>Profil</a>
   </div>
 
   <script>
     const loveIcon = document.getElementById("love-icon");
     const popup = document.getElementById("popup");
     const closePopup = document.getElementById("closePopup");
+    const popupVideo = document.getElementById("popupVideo");
+    const tvButton = document.getElementById("tv-button");
 
     loveIcon.addEventListener("click", () => {
       loveIcon.classList.add("glow");
-      popup.style.display = "flex";
+      alert("Terima kasih sudah klik ❤️");
       setTimeout(() => {
         loveIcon.classList.remove("glow");
       }, 600);
     });
 
+    tvButton.addEventListener("click", () => {
+      popup.style.display = "flex";
+      popupVideo.currentTime = 0;
+      popupVideo.play();
+    });
+
     closePopup.addEventListener("click", () => {
       popup.style.display = "none";
+      popupVideo.pause();
     });
 
     const commentIcon = document.getElementById("comment-icon");
@@ -307,6 +296,5 @@
       commentText.style.display = commentText.style.display === "none" ? "block" : "none";
     });
   </script>
-
 </body>
 </html>
