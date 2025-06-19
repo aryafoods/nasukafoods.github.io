@@ -1,66 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Form Unekunek</title>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Unekunek</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+    .container {
       max-width: 500px;
       margin: 40px auto;
+      background: #fff;
       padding: 20px;
-      border: 1px solid #ccc;
       border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    input, textarea {
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 4px;
+    }
+    input[type="text"],
+    textarea,
+    input[type="file"] {
       width: 100%;
-      padding: 8px;
-      margin: 6px 0 12px;
-      border-radius: 6px;
-      border: 1px solid #aaa;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
     }
     button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
       background-color: #007bff;
       color: white;
-      padding: 10px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      width: 100%;
     }
-    button:hover {
+    button:disabled {
+      background-color: #999;
+    }
+    button:hover:not(:disabled) {
       background-color: #0056b3;
+    }
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
     }
   </style>
 </head>
 <body>
-  <h2>Form Unekunek</h2>
-  <form id="unekunekForm">
-    <label>Nama:</label>
-    <input type="text" name="nama" required>
+  <div class="container">
+    <h2>Form Unekunek</h2>
+    <form id="unekunekForm">
+      <label for="nama">Nama:</label>
+      <input type="text" name="nama" required>
 
-    <label>Alamat:</label>
-    <input type="text" name="alamat" required>
+      <label for="alamat">Alamat:</label>
+      <input type="text" name="alamat" required>
 
-    <label>Nomor Handphone:</label>
-    <input type="text" name="handphone" required>
+      <label for="handphone">Nomor Handphone:</label>
+      <input type="text" name="handphone" required inputmode="numeric" pattern="[0-9]*">
 
-    <label>Unekunek:</label>
-    <textarea name="unekunek" rows="4" required></textarea>
+      <label for="unekunek">Unekunek:</label>
+      <textarea name="unekunek" rows="4" required></textarea>
 
-    <label>Upload Foto (opsional):</label>
-    <input type="file" id="foto" accept="image/*">
+      <label for="foto">Upload Foto (opsional):</label>
+      <input type="file" id="foto" accept="image/*">
 
-    <button type="submit">Kirim Unekunek</button>
-  </form>
-
-  <p id="status" style="font-weight: bold; margin-top: 20px;"></p>
+      <button type="submit" id="submitBtn">Kirim Unekunek</button>
+    </form>
+    <p id="status"></p>
+  </div>
 
   <script>
-    document.getElementById('unekunekForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    const form = document.getElementById('unekunekForm');
+    const status = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
 
-      const form = e.target;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Mengirim...";
+
       const file = document.getElementById('foto').files[0];
 
       const kirimData = (base64Foto) => {
@@ -77,11 +114,15 @@
         })
         .then(res => res.text())
         .then(text => {
-          document.getElementById("status").textContent = text;
+          status.textContent = text;
           form.reset();
         })
         .catch(err => {
-          document.getElementById("status").textContent = "Gagal mengirim: " + err;
+          status.textContent = "Gagal mengirim: " + err;
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Kirim Unekunek";
         });
       };
 
