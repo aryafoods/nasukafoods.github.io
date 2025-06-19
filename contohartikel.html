@@ -5,44 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Artikel</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    html, body {
+      height: 100%;
       margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       background-color: #0d1117;
       color: #c9d1d9;
+      display: flex;
+      flex-direction: column;
     }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      padding: 12px;
-      border-bottom: 1px solid #30363d;
-      font-size: 14px;
-      background-color: #161b22;
+  
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Tambahan ini membuat teks di tengah */
+    padding: 10px;
+    border-bottom: 1px solid #30363d;
+    font-size: 16px;
+    background-color: #161b22;
+  }
+
+      
     }
 
     .topbar img {
-      width: 20px;
+      width: 221px;
       margin-right: 8px;
     }
 
     .breadcrumb {
-      font-weight: 600;
+      font-weight: 500;
       color: #f0f6fc;
     }
 
     .repo-info {
-      padding: 16px;
+      padding: 10px;
       font-size: 13px;
       color: #8b949e;
-      border-bottom: 1px solid #30363d;
+      border-bottom: 10px solid #30363d;
     }
 
     .stats {
       display: flex;
-      gap: 12px;
+      gap: 36px;
       flex-wrap: wrap;
-      margin: 8px 0;
+      margin: 4px 0;
     }
 
     .badge {
@@ -96,11 +104,22 @@
       font-weight: 600;
     }
 
-    .file-list-scrollable {
-      padding: 0 16px;
-      max-height: 330px;
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       overflow-y: auto;
-      border-bottom: 1px solid #30363d;
+    }
+
+
+.content p {
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+    .file-list-scrollable {
+      padding: 0 10px;
+      overflow-y: auto;
     }
 
     .file-item {
@@ -124,11 +143,12 @@
     }
 
     .footer {
-      font-size: 12px;
+      font-size: 13px;
       color: #8b949e;
       padding: 12px 16px;
       border-top: 1px solid #30363d;
       background-color: #161b22;
+      text-align: center;
     }
 
     .icon {
@@ -140,55 +160,92 @@
 <body>
 
   <div class="topbar">
-    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
-    <span class="breadcrumb">nasuka book</span>
+    
+    <span class="breadcrumb">Nasuka Foods</span>
   </div>
 
   <div class="repo-info">
-    ⚖️ GPL-3.0 license
+   
     <div class="stats">
-      <div class="badge">❤️ 3.M</div>
-      <div class="badge">💬 4,2.M</div>
-      <div class="badge">👁️‍🗨️ 780.K</div>
-      <div class="badge">👀 6.M</div>
+      <div class="badge">👀 4.5.M</div>
+      <div class="badge">❤️ 2,1.M</div>
+      <div class="badge">💬 773.K</div>
+      <div class="badge">🔗 961.K</div>
     </div>
-    Public Information Nasuka Foods
   </div>
 
-  <div class="template-btn">
-    <button>Kartu Tanda Pengenal</button>
-  </div>
-
-  <div 
-
-  <div class="file-list-scrollable">
-    <div class="file-list-scrollable" style="overflow-y: auto;">
-  <div style="display: flex; flex-direction: column; gap: 24px;">
-
-    <div>
-      <img src="https://nasukafoods.site/ktp_nasuka.jpg" alt="Foto Artikel" style="width: 100%; border-radius: 8px;" />
-      <div style="margin-top: 12px; font-size: 14px; line-height: 1.6;">
-        <h3 style="margin: 0; font-size: 18px; color: #58a6ff;">Judul Artikel</h3>
-        <p>
-          Ini adalah contoh isi artikel yang menjelaskan sesuatu tentang topik tertentu. 
-          Artikel ini bisa panjang dan dapat di-scroll secara vertikal bersama dengan gambar di atasnya.
-        </p>
-        <p>
-          Anda dapat menambahkan paragraf tambahan di sini untuk menjelaskan lebih detail atau menampilkan berita terkini yang relevan dengan foto.
-        </p>
-      </div>
-    </div>
-
-    <div>
-     
-      </div>
-    </div>
-
-  </div>
-</div>
   
+  <div class="content">
+    <div class="file-list-scrollable">
+      <div style="display: flex; flex-direction: column; gap: 48px;">
+
+        <div>
+          <img src="https://nasukafoods.site/ktp_nasuka.jpg" alt="Foto Artikel" style="width: 100%; border-radius: 10px;" />
+          <div style="margin-top: 12px; font-size: 14px; line-height: 1.6;">
+            <h3 style="margin: 0; font-size: 36px; color: #58a6ff;"></h3>
+            <p>
+               Hallo, Perkenalkan saya ARYA – Siap Melayani Anda di Tiga Bidang Sekaligus!
+
+<p>Mungkin nama saya belum familiar di telinga Anda, tapi semoga setelah membaca ini, saya bisa jadi salah satu mitra kepercayaan Anda dalam tiga bidang utama yang saya tekuni:
+<p>Pedagang UMKM, ojek online : mitra pasif, dan aplikator ACP (Aluminium Composite Panel).
+<p><strong>1. Pedagang</strong></p>
+<p>Saya percaya bahwa berdagang bukan sekadar mencari untung, tapi membangun kepercayaan.
+<p>Semua saya pilih dan kemas sendiri, demi menjaga kualitas terbaik untuk pelanggan.
+
+
+<li>Barang berkualitas & harga terjangkau
+
+<li>Siap kirim area lokal & luar kota
+
+<li>Bisa pesan lewat WA atau marketplace
+
+<li>Respon cepat & pelayanan ramah
+</li>
+
+<p><strong>2. Sebagai Mitra Ojol (GRAB) Pasif</strong></p>
+<p>Di luar berdagang, saya juga sebagai mitra pengemudi Grab pasif melayani antar-jemput pengiriman barang (GrabExpress), hingga pesanan makanan (GrabFood). Dengan pelayanan ramah, tepat waktu, dan kendaraan yang fast mode single rider, saya selalu berusaha memberikan pengalaman terbaik bagi setiap penumpang atau pelanggan.
+
+<p>Jadi, kalau Anda butuh driver yang amanah dan profesional, jangan ragu kontak saya.
+
+<p><strong>3. Sebagai Aplikator ACP: Bangunan Lebih Keren & Modern</strong></p>
+
+<p>Satu lagi bidang yang saya tekuni adalah jasa pemasangan Aluminium Composite Panel (ACP) untuk bangunan seperti toko, showroom, kantor, atau fasad rumah.
+<p>ACP adalah solusi modern untuk tampilan eksterior yang elegan, kuat, dan tahan lama.
+
+<p>Saya dan tim telah mengerjakan berbagai proyek kecil hingga menengah, dan kami berkomitmen untuk selalu mengutamakan kerapian, kekuatan, dan kepuasan klien.
+
+<p><strong>➡️ Layanan kami meliputi:,</strong></p>
+
+<li>Konsultasi desain dan material
+
+<li>Pemasangan ACP dengan sistem yang presisi
+
+<li>Harga bersahabat sesuai anggaran proyek
+
+<li>Pengerjaan cepat & bergaransi
+
+
+<p>Apapun kebutuhan bangunan Anda, saya siap bantu wujudkan tampilan yang lebih profesional.</p>
+
+<p><strong>🔧 Percayakan Pada yang Punya Pengalaman & Integritas</strong><p>
+
+<p>Saya bukan yang paling hebat, tapi saya selalu berusaha jujur, disiplin, dan totalitas dalam setiap pekerjaan. Entah itu melayani pembeli, menjemput penumpang, atau memasang panel ACP, saya kerjakan dengan hati dan tanggung jawab.
+
+<p>📱 Hubungi saya untuk pemesanan, kerja sama, atau sekadar bertanya-tanya
+<p>WA/Telp: 0859109819017
+
+<p>🙏 Terima kasih sudah membaca. Saya tunggu kabar baik dari Anda
+
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="footer">
-    ARYA — ⚖️ GPL-3.0 license — Public book
+    © Hak Cipta - Arya Wilalodra 2025
   </div>
 
 </body>
