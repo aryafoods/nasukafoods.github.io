@@ -1,70 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Form Laporan</title>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Laporan</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      max-width: 500px;
-      margin: 40px auto;
+      margin: 0;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
+      background: #f9f9f9;
     }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
     input, textarea {
       width: 100%;
-      padding: 8px;
-      margin: 6px 0 12px;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
       border-radius: 6px;
-      border: 1px solid #aaa;
+      font-size: 16px;
     }
+
     button {
+      margin-top: 20px;
+      width: 100%;
       background-color: #28a745;
       color: white;
-      padding: 10px;
+      padding: 12px;
       border: none;
       border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
-      width: 100%;
     }
+
     button:disabled {
       background-color: #999;
       cursor: not-allowed;
     }
+
     #preview {
-      margin-top: 10px;
+      margin-top: 12px;
       text-align: center;
     }
+
     #preview img {
       max-width: 100%;
       max-height: 300px;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
+
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h2>Form Laporan</h2>
-  <form id="laporanForm">
-    <label>Nama:</label>
-    <input type="text" name="nama" required>
+  <div class="container">
+    <h2>Form Laporan</h2>
+    <form id="laporanForm">
+      <label>Nama:</label>
+      <input type="text" name="nama" required>
 
-    <label>Handphone:</label>
-    <input type="tel" name="handphone" id="handphone" required pattern="[0-9]*" inputmode="numeric">
+      <label>Handphone:</label>
+      <input type="tel" name="handphone" id="handphone" required pattern="[0-9]*" inputmode="numeric">
 
-    <label>Laporan:</label>
-    <textarea name="laporan" rows="4" required></textarea>
+      <label>Laporan:</label>
+      <textarea name="laporan" rows="4" required></textarea>
 
-    <label>Upload Foto:</label>
-    <input type="file" id="foto" accept="image/*" required>
+      <label>Upload Foto:</label>
+      <input type="file" id="foto" accept="image/*" required>
 
-    <div id="preview"><p><i>Preview Foto Akan Muncul di Sini</i></p></div>
+      <div id="preview"><p><i>Preview Foto Akan Muncul di Sini</i></p></div>
 
-    <button type="submit" id="submitBtn">Kirim Laporan</button>
-  </form>
+      <button type="submit" id="submitBtn">Kirim Laporan</button>
+    </form>
 
-  <p id="status"></p>
+    <p id="status"></p>
+  </div>
 
   <script>
     const fotoInput = document.getElementById('foto');
@@ -73,7 +112,6 @@
     const statusText = document.getElementById('status');
     const handphoneInput = document.getElementById('handphone');
 
-    // Cegah input selain angka di kolom handphone
     handphoneInput.addEventListener('input', function() {
       this.value = this.value.replace(/\D/g, '');
     });
