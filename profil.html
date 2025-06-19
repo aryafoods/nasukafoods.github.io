@@ -22,6 +22,31 @@
       z-index: 1000;
     }
 
+
+
+    .file-list-scrollable {
+      padding: 0 16px;
+      max-height: 200px; /* cukup untuk 5 baris */
+      overflow-y: auto;
+      border-bottom: 1px solid #d0d7de;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #d0d7de;
+      padding: 12px 0;
+      font-size: 14px;
+    }
+
+    .file-name {
+      display: flex;
+      align-items: center;
+      color: #0969da;
+      text-decoration: none;
+    }
+
     .top-left-button {
       position: fixed;
       top: 10px;
@@ -255,6 +280,25 @@
     </a>
   </section>
 
+
+<!-- Scrollable file list -->
+  <div class="file-list-scrollable">
+  <div class="file-item"><a class="file-name" href="https://nasukafoods.site/contohartikel.html"><img class="icon" src="https://nasukafoods.sit"/><span>KARTU TANDA PENGENAL</span></a><span>3 tahun yang lalu</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/document--v1.png"/><span>CNAME</span></a><span>4 days ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/document--v1.png"/><span>LICENSE.txt</span></a><span>4 days ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/document--v1.png"/><span>README.md</span></a><span>4 days ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/image.png"/><span>aida.jpeg</span></a><span>3 days ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/image.png"/><span>bumbukacang.jpeg</span></a><span>3 days ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/document--v1.png"/><span>daftarpesanan.html</span></a><span>yesterday</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/document--v1.png"/><span>discover.html</span></a><span>11 hours ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/image.png"/><span>fotoarya1.jpg</span></a><span>3 days ago</span></div>
+    <div class="file-item"><a class="file-name" href="#"><img class="icon" src="https://img.icons8.com/ios-filled/16/image.png"/><span>ARSg</span></a><span>3 days ago</span></div>
+  </div>
+
+
+
+
+
   <div class="bottom-bar">
     <a href="https://nasukafoods.site/index.html">🏠<br>Home</a>
     <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>
@@ -264,6 +308,13 @@
   </div>
 
   <script>
+      
+      
+             
+<input type="text" id="searchInput" class="repo-search" placeholder="Cari berkas..." onkeyup="filterRepos()" />
+</div>
+
+
     const loveIcon = document.getElementById("love-icon");
     const popup = document.getElementById("popup");
     const closePopup = document.getElementById("closePopup");
