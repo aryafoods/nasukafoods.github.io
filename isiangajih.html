@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artikel</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      margin: 0;
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #30363d;
+      font-size: 14px;
+      background-color: #161b22;
+    }
+
+    .topbar img {
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    .breadcrumb {
+      font-weight: 600;
+      color: #f0f6fc;
+    }
+
+    .repo-info {
+      padding: 16px;
+      font-size: 13px;
+      color: #8b949e;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+
+    .badge {
+      border: 1px solid #30363d;
+      border-radius: 2em;
+      padding: 2px 8px;
+      font-size: 12px;
+      background-color: #21262d;
+      color: #c9d1d9;
+    }
+
+    .template-btn {
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .template-btn button {
+      background-color: #238636;
+      color: #ffffff;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .file-list-scrollable {
+      padding: 0 16px;
+      max-height: 100%;
+      overflow-y: auto;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #8b949e;
+      padding: 12px 16px;
+      border-top: 1px solid #30363d;
+      background-color: #161b22;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+      background-color: #161b22;
+      margin: 20% auto;
+      padding: 20px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      width: 300px;
+      color: #c9d1d9;
+      text-align: center;
+    }
+
+    .close-btn {
+      margin-top: 12px;
+      background-color: #238636;
+      border: none;
+      padding: 6px 12px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+    <span class="breadcrumb">nasuka book</span>
+  </div>
+
+  <div class="repo-info">
+    ⚖️ GPL-3.0 license
+    <div class="stats">
+      <div class="badge">❤️ 3.M</div>
+      <div class="badge">💬 4,2.M</div>
+      <div class="badge">👁️‍🗨️ 780.K</div>
+      <div class="badge">👀 6.M</div>
+    </div>
+    Public Information Nasuka Foods
+  </div>
+
+  <div class="template-btn">
+    <button onclick="showModal()">Cara membuat cilok</button>
+  </div>
+
+  <div class="file-list-scrollable">
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div>
+        <img src="https://nasukafoods.site/isiangajih.png" alt="Foto Artikel" style="width: 100%; border-radius: 8px;" />
+        <div style="margin-top: 12px; font-size: 14px; line-height: 1.6;">
+          <h3 style="margin: 0; font-size: 18px; color: #58a6ff;">Bahan bahan</h3>
+          <ul>
+            <li>500 gr Tepung Terigu</li>
+            <li>250 gr Tepung Kanji</li>
+            <li>6 Siung Bawang Putih (di haluskan)</li>
+            <li>2 Sdm Kaldu Bubuk</li>
+            <li>2 Sdt Lada Bubuk</li>
+            <li>1.000 ml Air Putih</li>
+            <li>250 gram Gajih Sapi</li>
+            <li>4 Siung Bawang Merah</li>
+            <li>2 Sdm Kaldu Sapi</li>
+          </ul>
+
+          <h3 style="margin: 0; font-size: 18px; color: #58a6ff;">Cara membuat</h3>
+          <p>Masukkan air, bawang putih, kaldu bubuk ke dalam wajan dan masak hingga mendidih.</p>
+          <p>Ketika sudah mendidih, matikan kompor dan masukkan tepung terigu. Aduk cepat sampai semua tercampur rata, kemudian dinginkan adonan.</p>
+          <p>Ketika sudah dingin, masukkan tepung kanji dan aduk hingga merata.</p>
+          <p>Haluskan bawang merah dan bawang putih yang sudah digoreng sebelumnya, tumis sampai harum lalu masukkan air, kaldu bubuk, dan gajih sapi yang sudah dipotong kecil-kecil. Masak hingga matang dan air menyusut.</p>
+          <p>Ambil adonan, masukkan isian gajih lalu bulatkan.</p>
+          <p>Didihkan air, rebus cilok yang sudah dibulatkan hingga mengapung dan matang.</p>
+          <p>Tiriskan, lalu kukus cilok selama kurang lebih 15 menit.</p>
+          <p>Cilok isian gajih siap untuk dinikmati.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    ARYA — ⚖️ GPL-3.0 license — Public book
+  </div>
+
+  <!-- Modal -->
+  <div id="popupModal" class="modal">
+    <div class="modal-content">
+      <p>Estimasi Biaya: Rp 40.000 untuk 50 butir</p>
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    function showModal() {
+      document.getElementById("popupModal").style.display = "block";
+    }
+    function closeModal() {
+      document.getElementById("popupModal").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
