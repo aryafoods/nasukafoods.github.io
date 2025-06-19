@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daftar Laporan</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 10px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f9f9f9;
+    }
+    img {
+      max-width: 100px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Daftar Laporan</h2>
+  <table id="laporanTable">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Handphone</th>
+        <th>Laporan</th>
+        <th>Foto</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    const url = "https://script.google.com/macros/s/AKfycbzwskcSwGQBINGwJARSXqgvX8tz4qjvtd-znnRqjwipgE3C7pvQi_3I1hOoWnVB0IX_/exec";
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector("#laporanTable tbody");
+        tbody.innerHTML = "";
+
+        if (data.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>Belum ada data.</td></tr>";
+          return;
+        }
+
+        data.forEach(item => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${item.nama || "-"}</td>
+            <td>${item.handphone || "-"}</td>
+            <td>${item.laporan || "-"}</td>
+            <td>${item.foto ? `<a href="${item.foto}" target="_blank"><img src="${item.foto}" /></a>` : "-"}</td>
+            <td>${item.waktu || "-"}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        const tbody = document.querySelector("#laporanTable tbody");
+        tbody.innerHTML = `<tr><td colspan='5' style='color:red;text-align:center;'>Gagal mengambil data: ${err}</td></tr>`;
+      });
+  </script>
+</body>
+</html>

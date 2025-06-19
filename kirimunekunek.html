@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Unekunek</title>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0 12px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Form Unekunek</h2>
+  <form id="unekunekForm">
+    <label>Nama:</label>
+    <input type="text" name="nama" required>
+
+    <label>Alamat:</label>
+    <input type="text" name="alamat" required>
+
+    <label>Nomor Handphone:</label>
+    <input type="text" name="handphone" required>
+
+    <label>Unekunek:</label>
+    <textarea name="unekunek" rows="4" required></textarea>
+
+    <label>Upload Foto (opsional):</label>
+    <input type="file" id="foto" accept="image/*">
+
+    <button type="submit">Kirim Unekunek</button>
+  </form>
+
+  <p id="status" style="font-weight: bold; margin-top: 20px;"></p>
+
+  <script>
+    document.getElementById('unekunekForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const file = document.getElementById('foto').files[0];
+
+      const kirimData = (base64Foto) => {
+        const data = new URLSearchParams();
+        data.append("nama", form.nama.value);
+        data.append("alamat", form.alamat.value);
+        data.append("handphone", form.handphone.value);
+        data.append("unekunek", form.unekunek.value);
+        data.append("foto", base64Foto || "");
+
+        fetch("https://script.google.com/macros/s/AKfycbxeyqwpti1TOz3iN0W19u1KTbb9V4vTYNg22zr_b5WKbEt6cK3wGF2UJHVsolrEsAB5/exec", {
+          method: "POST",
+          body: data
+        })
+        .then(res => res.text())
+        .then(text => {
+          document.getElementById("status").textContent = text;
+          form.reset();
+        })
+        .catch(err => {
+          document.getElementById("status").textContent = "Gagal mengirim: " + err;
+        });
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Foto = reader.result.split(',')[1];
+          kirimData(base64Foto);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        kirimData("");
+      }
+    });
+  </script>
+</body>
+</html>
