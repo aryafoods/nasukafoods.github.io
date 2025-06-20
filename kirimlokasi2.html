@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kirim Lokasi Realtime</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .status {
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h2>Kirim Lokasi Realtime</h2>
+  <p class="status">Mengambil lokasi...</p>
+
+  <script type="module">
+    // Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
+      authDomain: "posisi-saya.firebaseapp.com",
+      projectId: "posisi-saya",
+      storageBucket: "posisi-saya.appspot.com",
+      messagingSenderId: "1090605644806",
+      appId: "1:1090605644806:web:7a257eee40570904135787"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const statusEl = document.querySelector('.status');
+
+    // Fungsi update ke Firestore
+    const updateLocation = (lat, lng) => {
+      const lokasiRef = doc(db, "lokasi_saya", "realtime");
+      setDoc(lokasiRef, {
+        lat: lat,
+        lng: lng,
+        waktu: new Date().toISOString()
+      }).then(() => {
+        statusEl.textContent = `Lokasi dikirim: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      }).catch(err => {
+        statusEl.textContent = 'Gagal kirim lokasi';
+        console.error(err);
+      });
+    };
+
+    // Ambil lokasi realtime dari GPS
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        updateLocation(lat, lng);
+      }, (err) => {
+        statusEl.textContent = "Izin lokasi ditolak atau gagal.";
+      }, {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 10000
+      });
+    } else {
+      statusEl.textContent = "Geolocation tidak didukung.";
+    }
+  </script>
+</body>
+</html>
