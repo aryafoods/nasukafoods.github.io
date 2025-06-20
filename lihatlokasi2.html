@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Posisi Saya - Realtime</title>
+  <title>Kirim Lokasi Realtime</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .status {
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h2>Kirim Lokasi Realtime</h2>
+  <p class="status">Mengambil lokasi...</p>
 
-  <!-- Firebase -->
   <script type="module">
-    // Import SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Konfigurasi Firebase kamu
     const firebaseConfig = {
       apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
       authDomain: "posisi-saya.firebaseapp.com",
@@ -22,43 +33,39 @@
       appId: "1:1090605644806:web:7a257eee40570904135787"
     };
 
-    // Inisialisasi Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const statusEl = document.querySelector('.status');
 
-    // Saat halaman siap
-    window.onload = () => {
-      const map = L.map('map').setView([-6.2, 106.8], 13); // posisi awal
-
-      // Tambah tile peta
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-      }).addTo(map);
-
-      const marker = L.marker([0, 0]).addTo(map).bindPopup("Lokasi Anda");
-
-      // Dengarkan perubahan realtime
+    const updateLocation = (lat, lng) => {
       const lokasiRef = doc(db, "lokasi_saya", "realtime");
-      onSnapshot(lokasiRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          const lat = data.lat || 0;
-          const lng = data.lng || 0;
-          marker.setLatLng([lat, lng]);
-          map.setView([lat, lng], 15);
-        }
+      setDoc(lokasiRef, {
+        lat: lat,
+        lng: lng,
+        waktu: new Date().toISOString()
+      }).then(() => {
+        statusEl.textContent = "Lokasi berhasil dikirim.";
+      }).catch(err => {
+        statusEl.textContent = "Gagal kirim lokasi.";
+        console.error(err);
       });
     };
-  </script>
 
-  <style>
-    html, body, #map {
-      height: 100%;
-      margin: 0;
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        updateLocation(lat, lng);
+      }, (err) => {
+        statusEl.textContent = "Izin lokasi ditolak atau gagal.";
+      }, {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 10000
+      });
+    } else {
+      statusEl.textContent = "Geolocation tidak didukung.";
     }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+  </script>
 </body>
 </html>
