@@ -1,17 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Kirim Lokasi Real-Time</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <title>Kirim Lokasi Realtime</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .status {
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+  </style>
 </head>
 <body>
-  <h2>Kirim Lokasi ke Firebase Firestore</h2>
-  <div id="status">Menunggu lokasi GPS...</div>
+  <h2>Kirim Lokasi Realtime</h2>
+  <p class="status">Mengambil lokasi...</p>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
     const firebaseConfig = {
-      apiKey: "AIzaSyC1pLPSAE5QJv26cEudKf6gFoqzEo9D9kM",
+      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
       authDomain: "posisi-saya.firebaseapp.com",
       projectId: "posisi-saya",
       storageBucket: "posisi-saya.appspot.com",
@@ -19,35 +33,38 @@
       appId: "1:1090605644806:web:7a257eee40570904135787"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const statusEl = document.querySelector('.status');
 
-    function kirimPosisi(pos) {
-      const data = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
+    const updateLocation = (lat, lng) => {
+      const lokasiRef = doc(db, "lokasi_saya", "realtime");
+      setDoc(lokasiRef, {
+        lat: lat,
+        lng: lng,
         waktu: new Date().toISOString()
-      };
-
-      db.collection("lokasi_saya").doc("realtime").set(data)
-        .then(() => {
-          document.getElementById("status").innerText =
-            `Terkirim: ${data.lat.toFixed(5)}, ${data.lng.toFixed(5)}`;
-        })
-        .catch((err) => {
-          document.getElementById("status").innerText = "Gagal kirim: " + err.message;
-        });
-    }
+      }).then(() => {
+        statusEl.textContent = "Lokasi berhasil dikirim.";
+      }).catch(err => {
+        statusEl.textContent = "Gagal kirim lokasi.";
+        console.error(err);
+      });
+    };
 
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(kirimPosisi, (err) => {
-        document.getElementById("status").innerText = "Gagal ambil lokasi: " + err.message;
+      navigator.geolocation.watchPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        updateLocation(lat, lng);
+      }, (err) => {
+        statusEl.textContent = "Izin lokasi ditolak atau gagal.";
       }, {
         enableHighAccuracy: true,
-        maximumAge: 0
+        maximumAge: 5000,
+        timeout: 10000
       });
     } else {
-      document.getElementById("status").innerText = "Browser tidak dukung GPS";
+      statusEl.textContent = "Geolocation tidak didukung.";
     }
   </script>
 </body>
