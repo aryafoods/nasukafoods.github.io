@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kirim Lokasi - Anip</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+    .status { font-size: 18px; color: green; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Lokasi Anip</h2>
+  <p class="status">Mengambil lokasi...</p>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
+      authDomain: "posisi-saya.firebaseapp.com",
+      projectId: "posisi-saya",
+      storageBucket: "posisi-saya.appspot.com",
+      messagingSenderId: "1090605644806",
+      appId: "1:1090605644806:web:7a257eee40570904135787"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const status = document.querySelector(".status");
+
+    function updateLokasi(lat, lng) {
+      setDoc(doc(db, "lokasi_saya", "anipkah123"), {
+        lat, lng, waktu: new Date().toISOString()
+      }).then(() => {
+        status.textContent = `Terkirim: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      }).catch(() => {
+        status.textContent = "Gagal kirim lokasi";
+      });
+    }
+
+    navigator.geolocation.watchPosition(pos => {
+      updateLokasi(pos.coords.latitude, pos.coords.longitude);
+    }, err => {
+      status.textContent = "Gagal akses lokasi";
+    }, {
+      enableHighAccuracy: true
+    });
+  </script>
+</body>
+</html>
