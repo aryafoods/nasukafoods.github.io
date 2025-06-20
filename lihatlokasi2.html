@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Kirim Lokasi Realtime</title>
+  <title>Posisi Saya - Realtime</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    .status {
-      font-size: 18px;
-      margin-top: 20px;
-      color: green;
-    }
-  </style>
-</head>
-<body>
-  <h2>Kirim Lokasi Realtime</h2>
-  <p class="status">Mengambil lokasi...</p>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+  <!-- Firebase -->
   <script type="module">
-    // Firebase SDK
+    // Import SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Konfigurasi Firebase
+    // Konfigurasi Firebase kamu
     const firebaseConfig = {
       apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
       authDomain: "posisi-saya.firebaseapp.com",
@@ -35,41 +22,43 @@
       appId: "1:1090605644806:web:7a257eee40570904135787"
     };
 
+    // Inisialisasi Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const statusEl = document.querySelector('.status');
 
-    // Fungsi update ke Firestore
-    const updateLocation = (lat, lng) => {
+    // Saat halaman siap
+    window.onload = () => {
+      const map = L.map('map').setView([-6.2, 106.8], 13); // posisi awal
+
+      // Tambah tile peta
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      const marker = L.marker([0, 0]).addTo(map).bindPopup("Lokasi Anda");
+
+      // Dengarkan perubahan realtime
       const lokasiRef = doc(db, "lokasi_saya", "realtime");
-      setDoc(lokasiRef, {
-        lat: lat,
-        lng: lng,
-        waktu: new Date().toISOString()
-      }).then(() => {
-        statusEl.textContent = `Lokasi dikirim: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-      }).catch(err => {
-        statusEl.textContent = 'Gagal kirim lokasi';
-        console.error(err);
+      onSnapshot(lokasiRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const lat = data.lat || 0;
+          const lng = data.lng || 0;
+          marker.setLatLng([lat, lng]);
+          map.setView([lat, lng], 15);
+        }
       });
     };
-
-    // Ambil lokasi realtime dari GPS
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        updateLocation(lat, lng);
-      }, (err) => {
-        statusEl.textContent = "Izin lokasi ditolak atau gagal.";
-      }, {
-        enableHighAccuracy: true,
-        maximumAge: 5000,
-        timeout: 10000
-      });
-    } else {
-      statusEl.textContent = "Geolocation tidak didukung.";
-    }
   </script>
+
+  <style>
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
 </body>
 </html>
