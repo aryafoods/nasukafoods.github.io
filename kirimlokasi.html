@@ -38,7 +38,7 @@
     const statusEl = document.querySelector('.status');
 
     const updateLocation = (lat, lng) => {
-      const lokasiRef = doc(db, "lokasi_saya", "realtime");
+      const lokasiRef = doc(db, "lokasi_saya", "nasukafoods");
       setDoc(lokasiRef, {
         lat: lat,
         lng: lng,
