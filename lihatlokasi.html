@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lihat Lokasi Saya</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0lNsi8hFaN5GRsjmacB-oSAUOcjn5icw"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1pLPSAE5QJv26cEudKf6gFoqzEo9D9kM",
+      authDomain: "posisi-saya.firebaseapp.com",
+      projectId: "posisi-saya",
+      storageBucket: "posisi-saya.appspot.com",
+      messagingSenderId: "1090605644806",
+      appId: "1:1090605644806:web:7a257eee40570904135787"
+    };
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let map, marker;
+
+    function initMap(lat, lng) {
+      const pos = { lat, lng };
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: pos,
+        zoom: 16,
+      });
+      marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title: "Lokasi Anda Sekarang"
+      });
+    }
+
+    db.collection("lokasi_saya").doc("realtime")
+      .onSnapshot((doc) => {
+        const data = doc.data();
+        if (!data) return;
+
+        const lat = data.lat;
+        const lng = data.lng;
+        const pos = { lat, lng };
+
+        if (!map) {
+          initMap(lat, lng);
+        } else {
+          marker.setPosition(pos);
+          map.setCenter(pos);
+        }
+      });
+  </script>
+</body>
+</html>
