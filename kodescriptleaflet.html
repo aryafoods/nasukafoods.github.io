@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nasuka foods</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      --bg-dark: #000;
+      --text-light: #fff;
+      --accent: #25D366;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    .hero-section {
+      position: relative;
+      height: 50vh;
+      min-height: 250px;
+      overflow: hidden;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .promo-text {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 6px black;
+      z-index: 2;
+      color: white;
+    }
+
+    .info, .sidebar {
+      position: absolute;
+      z-index: 2;
+      font-size: 12px;
+    }
+
+    .info {
+      left: 10px;
+      bottom: 20px;
+    }
+
+    .sidebar {
+      right: 10px;
+      bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .gallery {
+      padding: 20px 15px 80px;
+    }
+
+    pre.code-box {
+      background: #111;
+      border: 1px solid #333;
+      padding: 10px 40px 10px 10px;
+      border-radius: 8px;
+      overflow-y: auto;
+      max-height: 250px;
+      font-size: 11px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #eee;
+      position: relative;
+    }
+
+    button.copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 5px 10px;
+      font-size: 11px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      font-size: 12px;
+      z-index: 999;
+    }
+
+    .bottom-bar a {
+      color: var(--text-light);
+      text-decoration: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero-section">
+    <div id="map"></div>
+    <div class="promo-text">Terakhir dilihat<br><strong>Nasuka Foods</strong></div>
+
+    <div class="info">
+      <div>📍 GPS Realtime</div>
+      <div><strong>Nasuka foods</strong></div>
+      <div>Promo cilok hangat & siap saji!</div>
+      <div style="color:#ffbb00;">🎵 suara asli - nasuka foods</div>
+    </div>
+
+    <div class="sidebar">
+      <div>❤️ 1.M</div>
+      <div>💬 900.K</div>
+      <div>🔗 Share</div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <p><strong>Kode script standar nasukafood server : Kirim lokasi</strong></p>
+    <div style="position:relative">
+      <pre id="dos-box" class="code-box">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Kirim Lokasi Realtime&lt;/title&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;style&gt;
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .status {
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Kirim Lokasi Realtime&lt;/h2&gt;
+  &lt;p class=&quot;status&quot;&gt;Mengambil lokasi...&lt;/p&gt;
+
+  &lt;script type=&quot;module&quot;&gt;
+    import { initializeApp } from &quot;https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js&quot;;
+    import { getFirestore, doc, setDoc } from &quot;https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js&quot;;
+
+    const firebaseConfig = {
+      apiKey: &quot;AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM&quot;,
+      authDomain: &quot;posisi-saya.firebaseapp.com&quot;,
+      projectId: &quot;posisi-saya&quot;,
+      storageBucket: &quot;posisi-saya.appspot.com&quot;,
+      messagingSenderId: &quot;1090605644806&quot;,
+      appId: &quot;1:1090605644806:web:7a257eee40570904135787&quot;
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const statusEl = document.querySelector('.status');
+
+    const updateLocation = (lat, lng) =&gt; {
+      const lokasiRef = doc(db, &quot;lokasi_saya&quot;, &quot;nasukafoods&quot;);
+      setDoc(lokasiRef, {
+        lat: lat,
+        lng: lng,
+        waktu: new Date().toISOString()
+      }).then(() =&gt; {
+        statusEl.textContent = &quot;Lokasi berhasil dikirim.&quot;;
+      }).catch(err =&gt; {
+        statusEl.textContent = &quot;Gagal kirim lokasi.&quot;;
+        console.error(err);
+      });
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((pos) =&gt; {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        updateLocation(lat, lng);
+      }, (err) =&gt; {
+        statusEl.textContent = &quot;Izin lokasi ditolak atau gagal.&quot;;
+      }, {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: 10000
+      });
+    } else {
+      statusEl.textContent = &quot;Geolocation tidak didukung.&quot;;
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+      </pre>
+      <button class="copy-btn" onclick="copyDOS()">Salin</button>
+    </div>
+    
+    
+    Ganti ID "nasukafoods" dengan ID unik kamu, lalu simpan filenya menjadi kirimlokasiku.html, kemudian unggah file nya ke server
+    
+    <p>Contoh : https://nasukafoods.site/kirimlokasiku.html
+  </sectio
+  
+  
+  
+  <section class="gallery">
+    <p><strong>Kode script standar nasukafood server : Lihat lokasi</strong></p>
+    <div style="position:relative">
+      <pre id="dos-box" class="code-box">
+          
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Lihat Lokasi Leaflet&lt;/title&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.9.4/dist/leaflet.css&quot; /&gt;
+  &lt;style&gt;
+    html, body { height: 100%; margin: 0; font-family: sans-serif; }
+    #map { height: 100%; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div id=&quot;map&quot;&gt;&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot;&gt;
+  import { initializeApp } from &quot;https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js&quot;;
+  import { getFirestore, doc, onSnapshot } from &quot;https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js&quot;;
+
+  const firebaseConfig = {
+    apiKey: &quot;AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM&quot;,
+    authDomain: &quot;posisi-saya.firebaseapp.com&quot;,
+    projectId: &quot;posisi-saya&quot;,
+    storageBucket: &quot;posisi-saya.appspot.com&quot;,
+    messagingSenderId: &quot;1090605644806&quot;,
+    appId: &quot;1:1090605644806:web:7a257eee40570904135787&quot;
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let map = L.map('map').setView([-6.2, 106.8], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  let marker = L.marker([-6.2, 106.8]).addTo(map);
+
+  const lokasiRef = doc(db, &quot;lokasi_saya&quot;, &quot;nasukafoods&quot;);
+  onSnapshot(lokasiRef, (docSnap) =&gt; {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      const latlng = [data.lat, data.lng];
+      marker.setLatLng(latlng);
+      map.setView(latlng, 15);
+    }
+  });
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+      </pre>
+      <button class="copy-btn" onclick="copyDOS()">Salin</button>
+    </div>
+    
+    
+    Ganti ID "nasukafoods" dengan ID unik kamu yang sama dengan ID kirimlokasiku.html, lalu simpan filenya menjadi lihatlokasiku.html, kemudian unggah file nya ke server
+    
+    <p>Contoh: https://nasukafoods.site/lihatlokasiku.html
+  </section>
+  
+
+  <div class="bottom-bar">
+    <a href="#">🏠<br>Home</a>
+    <a href="#">🔍<br>Layanan</a>
+    <a href="#">➕<br>Pesanan</a>
+    <a href="#">📨<br>Otomotif</a>
+    <a href="#">👤<br>Profil</a>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1pLpsAE5QJv26cEudkY6FoqzEoD9KM",
+      authDomain: "posisi-saya.firebaseapp.com",
+      projectId: "posisi-saya",
+      storageBucket: "posisi-saya.appspot.com",
+      messagingSenderId: "1090605644806",
+      appId: "1:1090605644806:web:7a257eee40570904135787"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let map = L.map('map').setView([-6.2, 106.8], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    let marker = L.marker([-6.2, 106.8]).addTo(map);
+
+    const lokasiRef = doc(db, "lokasi_saya", "nasukafoods");
+    onSnapshot(lokasiRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const latlng = [data.lat, data.lng];
+        marker.setLatLng(latlng);
+        map.setView(latlng, 15);
+      }
+    });
+  </script>
+
+  <script>
+    function copyDOS() {
+      const text = document.getElementById('dos-box').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Kode berhasil disalin!');
+      });
+    }
+  </script>
+</body>
+</html>
