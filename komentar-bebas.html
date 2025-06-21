@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Testimoni</title>
   <style>
     * { box-sizing: border-box; }
@@ -29,6 +29,12 @@
     .form-komentar h3 {
       margin: 0 0 8px;
     }
+    .catatan-kecil {
+      font-size: 12px;
+      color: #666;
+      margin-top: -6px;
+      margin-bottom: 10px;
+    }
     .form-komentar input, .form-komentar textarea {
       width: 100%;
       padding: 8px;
@@ -47,8 +53,9 @@
       color: #fff;
       cursor: pointer;
     }
-    .form-komentar button:hover {
-      background: #1ea758;
+    .form-komentar button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
     }
     .list-komentar {
       padding: 16px;
@@ -79,9 +86,31 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      display: none;
     }
     .balas-btn:hover {
       background: #005dc0;
+    }
+    .login-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #007bff;
+      color: #fff;
+      font-size: 20px;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #loading {
+      display: none;
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+      margin-top: 6px;
     }
   </style>
 </head>
@@ -90,11 +119,13 @@
   <div class="form-komentar-wrapper">
     <div class="form-komentar">
       <h3>Testimoni</h3>
+      <p class="catatan-kecil">Komentar akan ditampilkan setelah dikirim. Admin dapat membalas jika perlu.</p>
       <input type="text" id="nama" placeholder="Nama (wajib)">
       <textarea id="komentar" rows="3" placeholder="Tulis komentarmu..."></textarea>
       <input type="file" id="foto" accept="image/*">
-      <button onclick="kirimKomentar()">Kirim</button>
-      <p>* Foto bersifat privat, hanya admin yang bisa melihat</p>
+      <button id="tombolKirim" onclick="kirimKomentar()">Kirim</button>
+      <div id="loading">⏳ Sedang mengirim komentar...</div>
+      
     </div>
   </div>
 
@@ -102,31 +133,50 @@
     <h4>Memuat komentar...</h4>
   </div>
 
+  <button class="login-btn" onclick="tampilkanLogin()">📝</button>
+
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbxmW9clVTGDxOJS-ISc9YmKqCNThk9BJlpq5QzOdseuZ7EdJvtFDy9u_81o_FjTn2bwBQ/exec";
+    let adminMode = false;
+
+    function tampilkanLogin() {
+      const pass = prompt("Masukkan password admin:");
+      if (pass === "1234") {
+        adminMode = true;
+        document.querySelectorAll(".balas-btn").forEach(btn => btn.style.display = "inline-block");
+        alert("Mode admin aktif.");
+      } else {
+        alert("Password salah.");
+      }
+    }
 
     function kirimKomentar() {
       const nama = document.getElementById("nama").value.trim();
       const komentar = document.getElementById("komentar").value.trim();
       const foto = document.getElementById("foto");
+      const tombol = document.getElementById("tombolKirim");
+      const loading = document.getElementById("loading");
 
       if (!nama || !komentar) {
         alert("Nama dan komentar wajib diisi.");
         return;
       }
 
+      tombol.disabled = true;
+      loading.style.display = "block";
+
       if (foto.files.length > 0) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          kirimData(nama, komentar, e.target.result);
+          kirimData(nama, komentar, e.target.result, tombol, loading);
         };
         reader.readAsDataURL(foto.files[0]);
       } else {
-        kirimData(nama, komentar, "");
+        kirimData(nama, komentar, "", tombol, loading);
       }
     }
 
-    function kirimData(nama, komentar, fotoBase64) {
+    function kirimData(nama, komentar, fotoBase64, tombol, loading) {
       const formData = new FormData();
       formData.append("nama", nama);
       formData.append("komentar", komentar);
@@ -144,7 +194,12 @@
           } else {
             alert("Gagal: " + res);
           }
-        }).catch(err => alert("Error: " + err));
+        })
+        .catch(err => alert("Error: " + err))
+        .finally(() => {
+          tombol.disabled = false;
+          loading.style.display = "none";
+        });
     }
 
     function ambilKomentar() {
@@ -171,7 +226,7 @@
               <div>${row.komentar}</div>
               ${imageHTML}
               ${row.reply ? `<div class="reply"><strong>Arya:</strong> ${row.reply}</div>` : ""}
-              <button class="balas-btn" onclick="tampilFormBalasan('${row.nama}', '${row.waktu}')">Balas</button>
+              <button class="balas-btn" onclick="tampilFormBalasan('${row.nama}', '${row.waktu}')" style="display:none;">Balas</button>
             `;
             daftar.appendChild(div);
           });
