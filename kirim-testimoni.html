@@ -1,86 +1,104 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <base target="_top">
-    <meta charset="UTF-8">
-    <title>Kirim Testimoni</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        max-width: 500px;
-        margin: auto;
-      }
-      input, textarea {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 12px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      button {
-        padding: 10px 20px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      button:disabled {
-        background-color: #aaa;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Kirim Testimoni</h2>
-    <form id="formtes">
-      <label>Nama:</label>
-      <input type="text" name="nama" required>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Testimoni</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 15px;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
 
-      <label>Alamat:</label>
-      <textarea name="alamat" required></textarea>
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-      <label>Handphone:</label>
-      <input type="text" name="handphone" required>
+    label {
+      font-weight: bold;
+    }
 
-      <label>Testimoni:</label>
-      <textarea name="tesform" required></textarea>
+    input, textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-      <label>Foto:</label>
-      <input type="file" name="foto" accept="image/*" required>
+    button {
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-      <button type="submit">Kirim</button>
-    </form>
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
 
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <form id="formtesti">
+    <label>Nama:</label>
+    <input type="text" name="nama" required />
+
+    <label>Alamat:</label>
+    <textarea name="alamat" required></textarea>
+
+    <label>Handphone:</label>
+    <input type="text" name="handphone" required />
+
+    <label>Testimoni:</label>
+    <textarea name="tesform" required></textarea>
+
+    <label>Foto:</label>
+    <input type="file" name="foto" accept="image/*" required />
+
+    <button type="submit">Kirim</button>
     <p id="status"></p>
+  </form>
 
-    <script>
-      const form = document.getElementById('formtes');
-      const status = document.getElementById('status');
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxjJyyIyfRhoZ9EFB579eWmfDes1gMYfNMp3JpAJvOgRu8nC7X2LAmgjNo4StDg4WZrgA/exec';
+  <script>
+    const form = document.getElementById('formtesti');
+    const status = document.getElementById('status');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxjJyyIyfRhoZ9EFB579eWmfDes1gMYfNMp3JpAJvOgRu8nC7X2LAmgjNo4StDg4WZrgA/exec';
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        status.textContent = "Mengirim...";
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = "Mengirim...";
 
-        const formData = new FormData(form);
-        const file = formData.get('foto');
-        const reader = new FileReader();
+      const formData = new FormData(form);
+      const file = formData.get('foto');
+      const reader = new FileReader();
 
-        reader.onload = function() {
-          const base64 = reader.result.split(',')[1];
+      reader.onload = function () {
+        const base64 = reader.result.split(',')[1];
+        const data = new URLSearchParams();
+        data.append('nama', formData.get('nama'));
+        data.append('alamat', formData.get('alamat'));
+        data.append('handphone', formData.get('handphone'));
+        data.append('tesform', formData.get('tesform'));
+        data.append('foto', base64);
 
-          const data = new URLSearchParams();
-          data.append('nama', formData.get('nama'));
-          data.append('alamat', formData.get('alamat'));
-          data.append('handphone', formData.get('handphone'));
-          data.append('tesform', formData.get('tesform'));
-          data.append('foto', base64);
-
-          fetch(scriptURL, {
-            method: 'POST',
-            body: data
-          })
+        fetch(scriptURL, {
+          method: 'POST',
+          body: data
+        })
           .then(response => response.text())
           .then(result => {
             status.textContent = result;
@@ -89,11 +107,10 @@
           .catch(error => {
             status.textContent = 'Gagal: ' + error;
           });
-        };
+      };
 
-        reader.readAsDataURL(file);
-      });
-    </script>
-  </body>
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
 </html>
-      
