@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lihat Data Tesform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    img {
+      max-width: 100px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>Data Form Tes</h2>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>Handphone</th>
+        <th>Tesform</th>
+        <th>Foto</th>
+        <th>Waktu</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const url = 'https://script.google.com/macros/s/AKfycbxjJyyIyfRhoZ9EFB579eWmfDes1gMYfNMp3JpAJvOgRu8nC7X2LAmgjNo4StDg4WZrgA/exec';
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#data-table tbody');
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.nama}</td>
+            <td>${item.alamat}</td>
+            <td>${item.handphone}</td>
+            <td>${item.tesform}</td>
+            <td><img src="${item.foto}" alt="foto"/></td>
+            <td>${item.waktu}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        document.body.innerHTML += '<p style="color:red;">Gagal memuat data: ' + error + '</p>';
+      });
+  </script>
+</body>
+</html>
+      
