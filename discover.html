@@ -1,332 +1,291 @@
-<html lang="id">          
-<head>          
-<meta charset="UTF-8" />          
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>         
-   
-           <title>Disk Cover</title>          
-<style>          
-      
-      .repo-search {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #0d1117;
-  border: 1px solid #30363d;
-  border-radius: 0.5rem;
-  color: #c9d1d9;
-  margin-bottom: 1rem;
-}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Disk Cover</title>
+  <style>
+    .repo-search {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 0.5rem;
+      color: #c9d1d9;
+      margin-bottom: 1rem;
+    }
 
-.repo-list {
-  background-color: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  max-height: 110px;
-  overflow-y: auto;
-}
+    .repo-list {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      max-height: 110px;
+      overflow-y: auto;
+    }
 
-.repo-item {
-  height: 36px;
-  line-height: 36px;
-  padding: 0 0.5rem;
-  border-bottom: 1px solid #30363d;
-}
+    .repo-item {
+      height: 36px;
+      line-height: 36px;
+      padding: 0 0.5rem;
+      border-bottom: 1px solid #30363d;
+    }
 
-.repo-item:last-child {
-  border-bottom: none;
-}
+    .repo-item:last-child {
+      border-bottom: none;
+    }
 
-.video-section {
-  margin-top: 2rem;
-  background-color: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
+    .video-section {
+      margin: 2rem auto;
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      width: 90%;
+      max-width: 500px;
+    }
 
-.video-section iframe {
-  width: 100%;
-  height: 200px;
-  border: none;
-}
+    .video-section iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+    }
 
-.video-caption {
-  padding: 1rem;
-  color: #c9d1d9;
-}
-      
-    body {          
-      margin: 0;          
-      font-family: sans-serif;          
-      background-color: lightgray;          
-      color: white;          
-    }          .hero-section {          
-  position: relative;          
-  height: 20vh;          
-  background: url('https://nasukafoods.site/fotodiscovery.jpg') no-repeat center center/cover;          
-  display: flex;          
-  flex-direction: column;          
-  justify-content: space-between;          
-  margin-bottom: 10px;          
-}          
-      
-.promo-text {          
-  text-align: center;          
-  margin-top: 3vh;          
-  font-size: 24px;          
-  font-weight: bold;          
-  text-shadow: 0 0 6px black;          
-  padding: 0 20px;          
-}          
-      
-.info, .sidebar {          
-  position: absolute;          
-  bottom: 20px;          
-}          
-      
-.info {          
-  left: 10px;          
-}          
-      
-.info .location {          
-  font-size: 12px;          
-  color: #ccc;          
-}          
-      
-.info .username {          
-  font-weight: bold;          
-}          
-      
-.info .desc {          
-  font-size: 14px;          
-  margin-top: 5px;          
-}          
-      
-.info .music {          
-  font-size: 12px;          
-  color: #ffbb00;          
-}          
-      
-.sidebar {          
-  right: 10px;          
-  display: flex;          
-  flex-direction: column;          
-  align-items: center;          
-}          
-      
-.sidebar div {          
-  margin: 8px 0;          
-  font-size: 12px;          
-}          
-      
-.bottom-bar {          
-  position: fixed;          
-  bottom: 0;          
-  width: 100%;          
-  background: rgba(0, 0, 0, 0.7);          
-  display: flex;          
-  justify-content: space-around;          
-  padding: 8px 0;          
-  font-size: 12px;          
-  z-index: 999;          
-}          
-      
-.bottom-bar a {          
-  color: white;          
-  text-decoration: none;          
-  text-align: center;          
-}          
-      
-.scroll-gallery {          
-  overflow-x: auto;          
-  display: flex;          
-  gap: 20px;          
-  padding: 10px 20px;          
-}          
-      
-.scroll-item {          
-  flex: 0 0 auto;          
-  background-color: #222;          
-  border-radius: 10px;          
-  padding: 10px;          
-  width: 220px;          
-}          
-      
-.scroll-item video, .scroll-item img {          
-  width: 100%;          
-  border-radius: 10px;          
-  margin-bottom: 10px;          
-  object-fit: cover;          
-}          
-      
-.scroll-item img {          
-  aspect-ratio: 1/1;          
-}          
-      
-.scroll-item h4 {          
-  font-size: 16px;          
-  margin: 0 0 5px;          
-}          
-      
-.scroll-item p {          
-  font-size: 13px;          
-  margin: 0 0 10px;          
-}          
-      
-.scroll-item a {          
-  color: #00ffcc;          
-  text-decoration: none;          
-}          
-      
-h3 {          
-  text-align: center;          
-  margin: 10px 0 5px;          
-}          
-      
-p.intro {          
-  padding: 5px 15px;          
-  margin: 5px 0;          
-  color: black;          
-}
+    .video-caption {
+      padding: 1rem;
+      color: #c9d1d9;
+    }
 
-</style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: lightgray;
+      color: white;
+    }
+
+    .hero-section {
+      position: relative;
+      height: 20vh;
+      background: url('https://nasukafoods.site/fotodiscovery.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .promo-text {
+      text-align: center;
+      margin-top: 3vh;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 0 6px black;
+      padding: 0 20px;
+    }
+
+    .info, .sidebar {
+      position: absolute;
+      bottom: 20px;
+    }
+
+    .info {
+      left: 10px;
+    }
+
+    .info .location {
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    .info .username {
+      font-weight: bold;
+    }
+
+    .info .desc {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .info .music {
+      font-size: 12px;
+      color: #ffbb00;
+    }
+
+    .sidebar {
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar div {
+      margin: 8px 0;
+      font-size: 12px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      font-size: 12px;
+      z-index: 999;
+    }
+
+    .bottom-bar a {
+      color: white;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .scroll-gallery {
+      overflow-x: auto;
+      display: flex;
+      gap: 20px;
+      padding: 10px 20px;
+    }
+
+    .scroll-item {
+      flex: 0 0 auto;
+      background-color: #222;
+      border-radius: 10px;
+      padding: 10px;
+      width: 220px;
+    }
+
+    .scroll-item video, .scroll-item img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      object-fit: cover;
+    }
+
+    /* Tambahan: buat video scroll center */
+    .scroll-gallery .scroll-item video {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .scroll-item img {
+      aspect-ratio: 1/1;
+    }
+
+    .scroll-item h4 {
+      font-size: 16px;
+      margin: 0 0 5px;
+    }
+
+    .scroll-item p {
+      font-size: 13px;
+      margin: 0 0 10px;
+    }
+
+    .scroll-item a {
+      color: #00ffcc;
+      text-decoration: none;
+    }
+
+    h3 {
+      text-align: center;
+      margin: 10px 0 5px;
+    }
+
+    p.intro {
+      padding: 5px 15px;
+      margin: 5px 0;
+      color: black;
+    }
+  </style>
 </head>
 
 <body>
-             
-           <section class="hero-section">          
-<div class="promo-text"><br /><strong></strong></div>          <div class="info">          
-<div class="location">📍Cibaduyut | Bandung | Jawa Barat</div>          
-
-<div class="username">✅ Licence nasuka corporation</div>          
-<div class="desc">#indramayu #Bandung #Jakarta </div>          
-<div class="music">Marketing</div>          
-</div>      
-      
-<div class="sidebar">          
-<div>❤️ 2.M</div>          
-<div>💬 1.M</div>          
-</div>
-              </section>
-  <p class="intro">Hai, ini halaman produk:</p>          
-  
-         <!-- Galeri Video -->
-      <div class="scroll-gallery">          
-      
-<div class="scroll-item">          
-<video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>
-<h4>Original</h4><p>Cilok klasik isi polos</p>          
-<a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a></div>          
-    
-<div class="scroll-item">          
-<video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline></video>
-<h4>Isi Keju</h4><p>Cilok lumer keju dalam</p> 
-<a href="https://nasukafoods.site/kawasakifast.mp4" download>Download Video</a>    
-      
-    </div>     
+  <section class="hero-section">
+    <div class="promo-text"><br /><strong></strong></div>
+    <div class="info">
+      <div class="location">📍Cibaduyut | Bandung | Jawa Barat</div>
+      <div class="username">✅ Licence nasuka foods</div>
+      <div class="desc">#indramayu #Bandung #Jakarta </div>
+      <div class="music">Marketing</div>
     </div>
-    </div>          
-    </div>          
-    </div>           
-  
-              <!-- Galeri Foto -->            
-          <div class="scroll-gallery">          
 
-<div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 1"><h4>Cilok Original</h4><p>Isi polos</p></div>
-        
-<div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 2"><h4>Isi Ayam</h4><p>Gurih berbumbu</p></div>          
+    <div class="sidebar">
+      <div>❤️ 2.M</div>
+      <div>💬 1.M</div>
+    </div>
+  </section>
 
-<div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 3"><h4>Keju Lumer</h4><p>Pilihan anak-anak</p></div>          
-
-<div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 4"><h4>Sosis Cilok</h4><p>Isi sosis besar</p></div>
-
-<div class="scroll-item"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto 5"><h4>Telur Asin</h4><p>Cocok lauk nasi</p></div>         
-  </div>      
-  
-
-  <h3 style="color:black;">📋 Catatan nasuka</h3>
-          
-          <div class="scroll-gallery">    
-            
-<div class="scroll-item"><h4>Website</h4><p>Membangun web mandiri</p></div>          
-<div class="scroll-item"><h4>Story</h4><p>Perjalanan nasuka corporation</p></div>          
-<div class="scroll-item"><h4>Google Apps Script</h4><p>Integrasi order online</p></div>          
-<div class="scroll-item"><h4>Aluminium Composite Panel</h4><p>Proyekan facade</p></div>          
-<div class="scroll-item"><h4>Cara Membuat Telor Gulung</h4><p>Tanpa sambal</p></div>          
-                                             </div>       
-  
-        <div class="scroll-gallery"></div>
-        
-<div style="text-align: center; padding-bottom: 20px;"><img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto Cilok" style="width: 200px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.5);" /></div>
-           
-
-<div style="padding: 15px; background-color: white; color: black; border-radius: 10px; margin: 0 15px 20px;">      
-
-<h3 style="text-align: center; margin-top: 0;">
-bersama kami dalam menciptakan camilan yang lezat</p>      
+<div style="max-width: 300px; margin: 20px auto; background: #222; border-radius: 10px; padding: 10px;">
+  <video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline style="width: 100%; border-radius: 10px;"></video>
+  <h4 style="margin: 10px 0 5px; color: white; text-align: center;">Lemari Nasuka Foods</h4>
+  <p style="font-size: 13px; color: white; text-align: center;">Penyimpanan berkas untuk publik</p>
 </div>
+  < </p
+    </div>
+  </div>
+  <div class="scroll-gallery">
+      
+    <div class="scroll-item">
+      <h4>Kode Script Leaflet</h4>
+      <p><a href="https://nasukafoods.site/kodescriptleaflet.html" style="color: #00ffcc; text-decoration: none;">Cara serlok selama nya</a></p>
+    </div>
+    <div class="scroll-item">
+      <h4>Kode Script Sheet</h4>
+      <p>Cara bikin formulir Anonym bebas login</p>
+    </div>
+    <div class="scroll-item">
+      <h4>Google Apps Script</h4>
+      <p>Integrasi order online</p>
+    </div>
+    <div class="scroll-item">
+      <h4>Aluminium Composite Panel</h4>
+      <p>Proyekan facade</p>
+    </div>
+    <div class="scroll-item">
+      <h4>Cara Membuat Telor Gulung</h4>
+      <p>Tanpa sambal</p>
+    </div>
+  </div>
 
-<div class="video-section">
-<iframe src="https://www.youtube.com/embed/No" title="Nasuka on YouTube"></iframe>
+  <div style="text-align: center; padding-bottom: 20px;">
+    <img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto Cilok" style="width: 200px; border-radius: 10px; box-shadow: 0 0 8px rgba(0,0,0,0.5);" />
+  </div>
 
-<div class="video-caption">
+  <div style="padding: 15px; background-color: white; color: black; border-radius: 10px; margin: 0 15px 20px;">
+    <h3 style="text-align: center; margin-top: 0;">bersama kami dalam menciptakan camilan yang lezat</h3>
+  </div>
 
-<strong>Nasuka on YouTube</strong><br/>
-<small>Designed to help you</small>
-                    
-                    </div>
-</div>
+  <div class="video-section">
+    <iframe src="https://www.youtube.com/embed/No" title="Nasuka on YouTube"></iframe>
+    <div class="video-caption">
+      <strong>Nasuka on YouTube</strong><br/>
+      <small>Designed to help you</small>
+    </div>
+  </div>
 
-              <!-- Script Pencarian -->
-<script>
-            function filterRepos() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const items = document.querySelectorAll(".repo-item");
+  <script>
+    function filterRepos() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const items = document.querySelectorAll(".repo-item");
 
-    items.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      item.style.display = text.includes(input) ? "block" : "none";
-    });
-  }
-</script>
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(input) ? "block" : "none";
+      });
+    }
+  </script>
 
-          <!-- Elemen Script Pencarian -->
-          
-<input type="text" id="searchInput" class="repo-search" placeholder="Cari berkas..." onkeyup="filterRepos()" />
+  < pembek</div>
+  </div>
 
-          <!-- Elemen: Daftar Berkas -->
-     <div class="repo-list" id="repoList">
-    
-  <div class="repo-item">aryafoods1</div>
-  <div class="repo-item">aryafoods2</div>
-  <div class="repo-item">aryafoods3</div>
-  <div class="repo-item">aryafoods4</div>
-  <div class="repo-item">aryafoods5</div>
-  <div class="repo-item">aryafoods6</div>
-  <div class="repo-item">aryafoods7</div>
-  <div class="repo-item">aryafoods8</div>
-  <div class="repo-item">cara membuat gulung</div>
-  <div class="repo-item">cara membuat bakso</div>
-  <div class="repo-item">cara membuat pembek</div>
-  
-                  </div>
-</div>
-</div>
-  
-             <!-- Navigasi Bawah -->           
-            <div class="bottom-bar">
-                        
-<a href="https://nasukafoods.site/index.html">🏠<br>Home</a>          
-
-<a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>          
-
-<a href="https://nasukafoods.site/pesanan.html">➕<br>Pesanan</a>
-        
-<a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
-
-<a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
-
-                      </div>
-                      
-</body>          
+  <div class="bottom-bar">
+    <a href="https://nasukafoods.site/index.html">🏠<br>Home</a>
+    <a href="https://nasukafoods.site/discover.html">🔍<br>Layanan</a>
+    <a href="https://nasukafoods.site/pesanan.html">➕<br>Pesanan</a>
+    <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
+    <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
+  </div>
+</body>
 </html>
