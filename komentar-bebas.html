@@ -1,147 +1,196 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Komentar Bebas</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-    }
-    header {
-      background: #25d366;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    main {
-      padding: 20px;
-    }
-    input, textarea {
-      width: 100%;
-      margin: 5px 0;
-      padding: 10px;
+    * {
       box-sizing: border-box;
     }
-    button {
-      background: #25d366;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      margin-top: 10px;
-      cursor: pointer;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px 10px;
     }
-    .preview {
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    .form-komentar, .list-komentar {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    h3, h4 {
+      margin-top: 0;
+    }
+    .form-komentar input[type="text"],
+    .form-komentar textarea,
+    .form-komentar input[type="file"] {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    .form-komentar button {
+      width: 100%;
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .form-komentar button:hover {
+      background-color: #1ea758;
+    }
+    .form-komentar p {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
       margin-top: 10px;
-      max-width: 150px;
     }
     .komentar-item {
-      background: #fff;
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 5px;
-      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+      border-top: 1px solid #eee;
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    .komentar-item:first-child {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 0;
+    }
+    .komentar-item strong {
+      font-size: 15px;
+      color: #222;
+    }
+    .komentar-item small {
+      font-size: 12px;
+      color: #888;
+    }
+    .komentar-item div {
+      margin-top: 4px;
+      font-size: 14px;
+      line-height: 1.4;
     }
     .komentar-item img {
-      max-width: 100px;
-      margin-top: 5px;
+      margin-top: 8px;
+      max-width: 100%;
+      border-radius: 8px;
     }
-    footer {
-      text-align: center;
-      background: #eee;
+    .reply {
+      background: #eef1f5;
       padding: 10px;
-      font-size: 12px;
-      color: #555;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h2>Komentar Bebas</h2>
-</header>
+  <div class="container">
+    <div class="form-komentar">
+      <h3>Komentar Bebas</h3>
+      <input type="text" id="nama" placeholder="Nama (wajib)" required>
+      <textarea id="komentar" rows="4" placeholder="Tulis komentarmu..." required></textarea>
+      <input type="file" id="foto" accept="image/*">
+      <button onclick="kirimKomentar()">Kirim</button>
+      <p>Komentar disimpan di Sheet & foto di Drive</p>
+    </div>
 
-<main>
-  <input type="text" id="nama" placeholder="Nama kamu" required>
-  <textarea id="komentar" rows="3" placeholder="Tulis komentar di sini..." required></textarea>
-  <input type="file" id="foto" accept="image/*">
-  <img id="previewFoto" class="preview" style="display:none">
-  <button onclick="kirimKomentar()">Kirim</button>
+    <div class="list-komentar" id="daftarKomentar">
+      <h4>Memuat komentar...</h4>
+    </div>
+  </div>
 
-  <div id="listKomentar"></div>
-</main>
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxmW9clVTGDxOJS-ISc9YmKqCNThk9BJlpq5QzOdseuZ7EdJvtFDy9u_81o_FjTn2bwBQ/exec";
 
-<footer>
-  &copy; 2025 Arya | Komentar disimpan di Google Sheet
-</footer>
+    function kirimKomentar() {
+      const nama = document.getElementById("nama").value.trim();
+      const komentar = document.getElementById("komentar").value.trim();
+      const fileInput = document.getElementById("foto");
 
-<script>
-const URL = "https://script.google.com/macros/s/AKfycbxmW9clVTGDxOJS-ISc9YmKqCNThk9BJlpq5QzOdseuZ7EdJvtFDy9u_81o_FjTn2bwBQ/exec";
+      if (!nama || !komentar) {
+        alert("Nama dan komentar wajib diisi.");
+        return;
+      }
 
-document.getElementById('foto').addEventListener('change', function() {
-  const file = this.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const preview = document.getElementById('previewFoto');
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-function kirimKomentar() {
-  const nama = document.getElementById('nama').value.trim();
-  const komentar = document.getElementById('komentar').value.trim();
-  const fotoInput = document.getElementById('foto');
-
-  if (!nama || !komentar) {
-    alert("Nama dan komentar wajib diisi.");
-    return;
-  }
-
-  if (fotoInput.files.length > 0) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const fotoBase64 = e.target.result;
-      kirimKeServer(nama, komentar, fotoBase64);
-    };
-    reader.readAsDataURL(fotoInput.files[0]);
-  } else {
-    kirimKeServer(nama, komentar, "");
-  }
-}
-
-function kirimKeServer(nama, komentar, foto) {
-  fetch(URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      nama: nama,
-      komentar: komentar,
-      foto: foto
-    })
-  })
-  .then(res => res.text())
-  .then(res => {
-    if (res.includes("OK")) {
-      alert("Komentar berhasil dikirim.");
-      location.reload();
-    } else {
-      alert("Gagal mengirim komentar.\n" + res);
+      if (fileInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const fotoBase64 = e.target.result;
+          kirimData(nama, komentar, fotoBase64);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        kirimData(nama, komentar, "");
+      }
     }
-  })
-  .catch(err => {
-    alert("Gagal mengirim komentar.");
-    console.error(err);
-  });
-}
-</script>
+
+    function kirimData(nama, komentar, fotoBase64) {
+      const formData = new FormData();
+      formData.append("nama", nama);
+      formData.append("komentar", komentar);
+      formData.append("foto", fotoBase64);
+
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then(res => res.text())
+        .then(res => {
+          if (res === "OK") {
+            alert("Komentar berhasil dikirim.");
+            document.getElementById("nama").value = "";
+            document.getElementById("komentar").value = "";
+            document.getElementById("foto").value = "";
+            ambilKomentar();
+          } else {
+            alert("Gagal: " + res);
+          }
+        })
+        .catch(err => alert("Error: " + err));
+    }
+
+    function ambilKomentar() {
+      const sheetID = "1MV2bYpeizp64nLu20n8HueqBOntwxzVAgNmYz6O3gE8";
+      const sheetName = "KomentarNasuka";
+      const url = `https://opensheet.elk.sh/${sheetID}/${sheetName}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const daftar = document.getElementById("daftarKomentar");
+          daftar.innerHTML = "";
+          data.reverse().forEach(row => {
+            const fileId = row.foto?.match(/[-\w]{25,}/)?.[0];
+            const imageHTML = fileId
+              ? `<img src="https://drive.google.com/uc?export=view&id=${fileId}" alt="foto">`
+              : (row.foto ? `<span>ini private</span>` : "");
+
+            const div = document.createElement("div");
+            div.className = "komentar-item";
+            div.innerHTML = `
+              <strong>${row.nama}</strong>
+              <small>${row.waktu || "-"}</small>
+              <div>${row.komentar}</div>
+              ${imageHTML}
+              ${row.reply ? `<div class="reply"><strong>Arya:</strong> ${row.reply}</div>` : ""}
+            `;
+            daftar.appendChild(div);
+          });
+        });
+    }
+
+    ambilKomentar();
+  </script>
 
 </body>
 </html>
