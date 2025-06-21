@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Komentar Bebas</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      overflow: hidden;
+    }
+
+    header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay-form {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .overlay-form h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .overlay-form input,
+    .overlay-form textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .overlay-form button.kirim {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .list-komentar {
+      margin-top: 10px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .komentar-item {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+      position: relative;
+    }
+
+    .reply {
+      margin-left: 20px;
+      font-style: italic;
+      color: #333;
+      background: #eef;
+      padding: 5px;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+
+    .hapus-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #e74c3c;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      display: none;
+    }
+
+    .balas {
+      background: #3498db;
+      color: white;
+      font-size: 12px;
+      padding: 4px 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+
+    footer {
+      background: #eee;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Tombol mode reply */
+    #tombolMode {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #25d366;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    /* Popup modal */
+    #popupOwner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 300px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .popup-box input,
+    .popup-box button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .popup-box button {
+      background: #25d366;
+      color: #fff;
+      border: none;
+    }
+
+    .popup-box .tutup {
+      background: #ccc;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://nasukafoods.site/paketcilok.jpg" alt="Header Arya">
+    <div class="overlay-form">
+      <h2>Komentar terbuka untuk Arya</h2>
+      <input type="text" id="namaPengirim" placeholder="Nama kamu (wajib)" autofocus />
+      <textarea id="inputKomentar" placeholder="Tulis komentar di sini..." rows="2"></textarea>
+      <button class="kirim" onclick="tambahKomentar()">Kirim</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="list-komentar" id="daftarKomentar"></div>
+  </main>
+
+  <footer>
+    &copy; 2025 Arya | Halaman ini khusus komentar bebas
+  </footer>
+
+  <button id="tombolMode" onclick="bukaPopup()">📝</button>
+
+  <div id="popupOwner">
+    <div class="popup-box">
+      <strong>Mode Reply Arya</strong>
+      <input type="password" id="passwordOwner" placeholder="Masukkan password" />
+      <button onclick="aktifkanModeArya()">Aktifkan</button>
+      <button class="tutup" onclick="tutupPopup()">Batal</button>
+    </div>
+  </div>
+
+  <script>
+    const PASSWORD_RAHASIA = "aryawilalodra";
+
+    function ambilKomentar() {
+      const data = localStorage.getItem("komentarData");
+      return data ? JSON.parse(data) : [];
+    }
+
+    function simpanKomentar(data) {
+      localStorage.setItem("komentarData", JSON.stringify(data));
+    }
+
+    function renderKomentar() {
+      const daftar = document.getElementById("daftarKomentar");
+      daftar.innerHTML = "";
+      const data = ambilKomentar();
+      for (let i = data.length - 1; i >= 0; i--) {
+        const obj = data[i];
+        const div = document.createElement("div");
+        div.className = "komentar-item";
+        div.innerHTML = `
+          <strong>${obj.nama}</strong> <small style="color:#888;">(${obj.waktu || "waktu tidak tersedia"})</small><br/>
+          ${obj.teks}
+          <button class="hapus-btn" onclick="hapusKomentar(${i})">Hapus</button>
+          ${obj.reply ? `<div class="reply"><strong>Arya:</strong> ${obj.reply}</div>` : ""}
+          <button class="balas" onclick="balasKomentar(${i})">Balas</button>
+        `;
+        daftar.appendChild(div);
+      }
+    }
+
+    function tambahKomentar() {
+      const nama = document.getElementById("namaPengirim").value.trim();
+      const komentar = document.getElementById("inputKomentar").value.trim();
+      if (nama === "" || komentar === "") {
+        alert("Nama dan komentar wajib diisi.");
+        return;
+      }
+
+      const waktu = new Date().toLocaleString("id-ID", {
+        weekday: "short", year: "numeric", month: "short",
+        day: "numeric", hour: "2-digit", minute: "2-digit"
+      });
+
+      const data = ambilKomentar();
+      data.push({ nama: nama, teks: komentar, waktu: waktu });
+      simpanKomentar(data);
+      renderKomentar();
+      document.getElementById("namaPengirim").value = "";
+      document.getElementById("inputKomentar").value = "";
+    }
+
+    function hapusKomentar(i) {
+      const data = ambilKomentar();
+      data.splice(i, 1);
+      simpanKomentar(data);
+      renderKomentar();
+    }
+
+    function aktifkanModeArya() {
+      const input = document.getElementById("passwordOwner").value;
+      if (input === PASSWORD_RAHASIA) {
+        document.querySelectorAll(".hapus-btn").forEach(btn => btn.style.display = "inline-block");
+        document.querySelectorAll(".balas").forEach(btn => btn.style.display = "inline-block");
+        alert("Mode reply oleh Arya aktif.");
+        tutupPopup();
+      } else {
+        alert("Access denied.");
+      }
+    }
+
+    function balasKomentar(i) {
+      const balasan = prompt("Balasan kamu sebagai Arya:");
+      if (!balasan) return;
+      const data = ambilKomentar();
+      data[i].reply = balasan;
+      simpanKomentar(data);
+      renderKomentar();
+    }
+
+    function bukaPopup() {
+      document.getElementById("popupOwner").style.display = "flex";
+    }
+
+    function tutupPopup() {
+      document.getElementById("popupOwner").style.display = "none";
+      document.getElementById("passwordOwner").value = "";
+    }
+
+    renderKomentar();
+  </script>
+
+</body>
+</html>
