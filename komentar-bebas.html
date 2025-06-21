@@ -3,113 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Komentar Bebas</title>
+  <title>Testimoni</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f2f5;
+    * { box-sizing: border-box; }
+    body, html {
       margin: 0;
-      padding: 20px 10px;
+      padding: 0;
+      background: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
+    .form-komentar-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #f0f2f5;
+      padding: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .form-komentar, .list-komentar {
+    .form-komentar {
       background: #fff;
       border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      padding: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
-    h3, h4 {
-      margin-top: 0;
+    .form-komentar h3 {
+      margin: 0 0 8px;
     }
-    .form-komentar input[type="text"],
-    .form-komentar textarea,
-    .form-komentar input[type="file"] {
+    .form-komentar input, .form-komentar textarea {
       width: 100%;
-      margin-bottom: 12px;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
     }
     .form-komentar button {
       width: 100%;
-      background-color: #25d366;
-      color: white;
+      padding: 10px;
+      font-size: 14px;
+      background: #25d366;
       border: none;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 6px;
+      border-radius: 4px;
+      color: #fff;
       cursor: pointer;
-      transition: background 0.3s;
     }
     .form-komentar button:hover {
-      background-color: #1ea758;
+      background: #1ea758;
     }
-    .form-komentar p {
-      font-size: 12px;
-      color: #666;
-      text-align: center;
-      margin-top: 10px;
+    .list-komentar {
+      padding: 16px;
     }
     .komentar-item {
-      border-top: 1px solid #eee;
-      padding-top: 12px;
-      margin-top: 12px;
-    }
-    .komentar-item:first-child {
-      border-top: none;
-      margin-top: 0;
-      padding-top: 0;
-    }
-    .komentar-item strong {
-      font-size: 15px;
-      color: #222;
-    }
-    .komentar-item small {
-      font-size: 12px;
-      color: #888;
-    }
-    .komentar-item div {
-      margin-top: 4px;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-    .komentar-item img {
-      margin-top: 8px;
-      max-width: 100%;
+      background: #fff;
       border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+    .komentar-item strong { font-size: 15px; }
+    .komentar-item small { font-size: 12px; color: #888; display: block; }
+    .komentar-item div { margin-top: 4px; font-size: 14px; }
+    .komentar-item img { margin-top: 8px; max-width: 100%; border-radius: 6px; }
     .reply {
       background: #eef1f5;
-      padding: 10px;
+      padding: 8px;
       border-radius: 6px;
-      font-size: 14px;
       margin-top: 10px;
+    }
+    .balas-btn {
+      margin-top: 8px;
+      font-size: 12px;
+      background: #007bff;
+      color: #fff;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .balas-btn:hover {
+      background: #005dc0;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="form-komentar-wrapper">
     <div class="form-komentar">
-      <h3>Komentar Bebas</h3>
-      <input type="text" id="nama" placeholder="Nama (wajib)" required>
-      <textarea id="komentar" rows="4" placeholder="Tulis komentarmu..." required></textarea>
+      <h3>Testimoni</h3>
+      <input type="text" id="nama" placeholder="Nama (wajib)">
+      <textarea id="komentar" rows="3" placeholder="Tulis komentarmu..."></textarea>
       <input type="file" id="foto" accept="image/*">
       <button onclick="kirimKomentar()">Kirim</button>
-      <p>Komentar disimpan di Sheet & foto di Drive</p>
+      <p>* Foto bersifat privat, hanya admin yang bisa melihat</p>
     </div>
+  </div>
 
-    <div class="list-komentar" id="daftarKomentar">
-      <h4>Memuat komentar...</h4>
-    </div>
+  <div class="list-komentar" id="daftarKomentar">
+    <h4>Memuat komentar...</h4>
   </div>
 
   <script>
@@ -118,20 +108,19 @@
     function kirimKomentar() {
       const nama = document.getElementById("nama").value.trim();
       const komentar = document.getElementById("komentar").value.trim();
-      const fileInput = document.getElementById("foto");
+      const foto = document.getElementById("foto");
 
       if (!nama || !komentar) {
         alert("Nama dan komentar wajib diisi.");
         return;
       }
 
-      if (fileInput.files.length > 0) {
+      if (foto.files.length > 0) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          const fotoBase64 = e.target.result;
-          kirimData(nama, komentar, fotoBase64);
+          kirimData(nama, komentar, e.target.result);
         };
-        reader.readAsDataURL(fileInput.files[0]);
+        reader.readAsDataURL(foto.files[0]);
       } else {
         kirimData(nama, komentar, "");
       }
@@ -155,8 +144,7 @@
           } else {
             alert("Gagal: " + res);
           }
-        })
-        .catch(err => alert("Error: " + err));
+        }).catch(err => alert("Error: " + err));
     }
 
     function ambilKomentar() {
@@ -172,8 +160,8 @@
           data.reverse().forEach(row => {
             const fileId = row.foto?.match(/[-\w]{25,}/)?.[0];
             const imageHTML = fileId
-              ? `<img src="https://drive.google.com/uc?export=view&id=${fileId}" alt="foto">`
-              : (row.foto ? `<span>ini private</span>` : "");
+              ? `<img src="https://drive.google.com/uc?export=view&id=${fileId}">`
+              : (row.foto ? `<span style="color:red;">[Privat]</span>` : "");
 
             const div = document.createElement("div");
             div.className = "komentar-item";
@@ -183,14 +171,34 @@
               <div>${row.komentar}</div>
               ${imageHTML}
               ${row.reply ? `<div class="reply"><strong>Arya:</strong> ${row.reply}</div>` : ""}
+              <button class="balas-btn" onclick="tampilFormBalasan('${row.nama}', '${row.waktu}')">Balas</button>
             `;
             daftar.appendChild(div);
           });
         });
     }
 
+    function tampilFormBalasan(nama, waktu) {
+      const replyText = prompt(`Balas untuk ${nama}:\n`);
+      if (!replyText) return;
+
+      const formData = new FormData();
+      formData.append("reply", replyText);
+      formData.append("targetNama", nama);
+      formData.append("targetWaktu", waktu);
+
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then(res => res.text())
+        .then(res => {
+          if (res === "OK") {
+            ambilKomentar();
+          } else {
+            alert("Gagal membalas.");
+          }
+        });
+    }
+
     ambilKomentar();
   </script>
-
 </body>
 </html>
