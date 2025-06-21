@@ -5,120 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Komentar Bebas</title>
   <style>
-    body { font-family: sans-serif; background: #f9f9f9; margin: 0; padding: 20px; }
-    input, textarea, button {
-      width: 100%; padding: 10px; margin-top: 10px;
-      box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc;
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+    }
+    header {
+      background: #25d366;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      padding: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #25d366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .preview {
+      margin-top: 10px;
+      max-width: 150px;
     }
     .komentar-item {
-      background: #fff; padding: 10px; margin-top: 10px;
-      border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: #fff;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 5px;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
     }
     .komentar-item img {
-      max-width: 60px; max-height: 60px; object-fit: cover; margin-top: 5px;
+      max-width: 100px;
+      margin-top: 5px;
     }
-    .reply {
-      background: #eef; padding: 5px; border-radius: 4px;
-      font-style: italic; margin-top: 5px;
-    }
-    #previewFoto {
-      display: none; max-width: 60px; max-height: 60px;
-      object-fit: cover; margin-top: 10px;
+    footer {
+      text-align: center;
+      background: #eee;
+      padding: 10px;
+      font-size: 12px;
+      color: #555;
     }
   </style>
 </head>
 <body>
+
+<header>
   <h2>Komentar Bebas</h2>
-  <input type="text" id="nama" placeholder="Nama kamu" />
-  <textarea id="komentar" rows="3" placeholder="Tulis komentar..."></textarea>
-  <input type="file" id="foto" accept="image/*" />
-  <img id="previewFoto" />
-  <button id="tombolKirim">Kirim</button>
+</header>
+
+<main>
+  <input type="text" id="nama" placeholder="Nama kamu" required>
+  <textarea id="komentar" rows="3" placeholder="Tulis komentar di sini..." required></textarea>
+  <input type="file" id="foto" accept="image/*">
+  <img id="previewFoto" class="preview" style="display:none">
+  <button onclick="kirimKomentar()">Kirim</button>
 
   <div id="listKomentar"></div>
+</main>
 
-  <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbxmW9clVTGDxOJS-ISc9YmKqCNThk9BJlpq5QzOdseuZ7EdJvtFDy9u_81o_FjTn2bwBQ/exec";
+<footer>
+  &copy; 2025 Arya | Komentar disimpan di Google Sheet
+</footer>
 
-    document.getElementById("foto").addEventListener("change", function () {
-      const file = this.files[0];
-      const preview = document.getElementById("previewFoto");
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          preview.src = e.target.result;
-          preview.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      } else {
-        preview.style.display = "none";
-        preview.src = "";
-      }
-    });
+<script>
+const URL = "https://script.google.com/macros/s/AKfycbxmW9clVTGDxOJS-ISc9YmKqCNThk9BJlpq5QzOdseuZ7EdJvtFDy9u_81o_FjTn2bwBQ/exec";
 
-    document.getElementById("tombolKirim").addEventListener("click", function () {
-      const nama = document.getElementById("nama").value.trim();
-      const komentar = document.getElementById("komentar").value.trim();
-      const fileInput = document.getElementById("foto");
-      if (!nama || !komentar) {
-        alert("Nama dan komentar wajib diisi.");
-        return;
-      }
+document.getElementById('foto').addEventListener('change', function() {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById('previewFoto');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
-      if (fileInput.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          kirimData(nama, komentar, e.target.result);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        kirimData(nama, komentar, "");
-      }
-    });
+function kirimKomentar() {
+  const nama = document.getElementById('nama').value.trim();
+  const komentar = document.getElementById('komentar').value.trim();
+  const fotoInput = document.getElementById('foto');
 
-    function kirimData(nama, komentar, foto) {
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nama, komentar, foto }),
-      })
-        .then(response => response.text())
-        .then(() => {
-          document.getElementById("nama").value = "";
-          document.getElementById("komentar").value = "";
-          document.getElementById("foto").value = "";
-          document.getElementById("previewFoto").style.display = "none";
-          ambilKomentar();
-        })
-        .catch(error => {
-          alert("Gagal mengirim komentar.");
-          console.error(error);
-        });
+  if (!nama || !komentar) {
+    alert("Nama dan komentar wajib diisi.");
+    return;
+  }
+
+  if (fotoInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const fotoBase64 = e.target.result;
+      kirimKeServer(nama, komentar, fotoBase64);
+    };
+    reader.readAsDataURL(fotoInput.files[0]);
+  } else {
+    kirimKeServer(nama, komentar, "");
+  }
+}
+
+function kirimKeServer(nama, komentar, foto) {
+  fetch(URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      nama: nama,
+      komentar: komentar,
+      foto: foto
+    })
+  })
+  .then(res => res.text())
+  .then(res => {
+    if (res.includes("OK")) {
+      alert("Komentar berhasil dikirim.");
+      location.reload();
+    } else {
+      alert("Gagal mengirim komentar.\n" + res);
     }
+  })
+  .catch(err => {
+    alert("Gagal mengirim komentar.");
+    console.error(err);
+  });
+}
+</script>
 
-    function ambilKomentar() {
-      fetch(endpoint)
-        .then(res => res.json())
-        .then(data => {
-          const wadah = document.getElementById("listKomentar");
-          wadah.innerHTML = "";
-          data.reverse().forEach(item => {
-            const el = document.createElement("div");
-            el.className = "komentar-item";
-            el.innerHTML = `
-              <strong>${item.nama}</strong> <small style="color:#666">(${item.waktu})</small><br/>
-              ${item.komentar}
-              ${item.foto ? `<br/><img src="${item.foto}" />` : ""}
-              ${item.reply ? `<div class="reply"><strong>Arya:</strong> ${item.reply}</div>` : ""}
-            `;
-            wadah.appendChild(el);
-          });
-        });
-    }
-
-    ambilKomentar();
-  </script>
 </body>
 </html>
