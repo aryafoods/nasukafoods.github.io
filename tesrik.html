@@ -1,49 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Form Informan</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: sans-serif; padding: 20px; }
-    input, textarea, button { width: 100%; margin-top: 10px; padding: 10px; }
-    img { max-width: 100px; margin-top: 10px; }
-    #status { margin-top: 10px; color: red; }
+    input, textarea { display: block; margin-bottom: 10px; width: 100%; }
+    img { max-width: 100px; display: block; margin-top: 5px; }
+    .card { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
-  <h2>Form Informan</h2>
-  <form id="formInforman" method="POST" enctype="multipart/form-data" target="hidden_iframe">
-    <input type="text" name="nama" placeholder="Nama" required>
-    <textarea name="informasi" placeholder="Informasi" required></textarea>
-    <input type="file" name="foto" accept="image/*" required onchange="previewImage(event)">
-    <img id="preview" src="" alt="">
-    <button type="submit">Kirim</button>
-  </form>
-  <iframe name="hidden_iframe" style="display:none;" onload="formSukses()"></iframe>
-  <div id="status"></div>
 
-  <script>
-    function previewImage(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          document.getElementById('preview').src = evt.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
+<h2>Form Informan</h2>
+<form id="form">
+  <input type="text" name="nama" placeholder="Nama" required>
+  <textarea name="informasi" placeholder="Informasi" required></textarea>
+  <input type="file" name="file" accept="image/*">
+  <button type="submit">Kirim</button>
+</form>
 
-    function formSukses() {
-      document.getElementById('status').innerHTML = "✅ Berhasil dikirim";
-      document.getElementById('formInforman').reset();
-      document.getElementById('preview').src = "";
-    }
-  </script>
+<hr>
+<div id="list"></div>
 
-  <!-- Ganti URL berikut dengan endpoint Google Apps Script milikmu -->
-  <script>
-    document.getElementById('formInforman').action = 'https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec';
-  </script>
+<script>
+const url = "https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec";
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const nama = form.nama.value.trim();
+  const informasi = form.informasi.value.trim();
+  const file = form.file.files[0];
+
+  let fileBase64 = "", mimeType = "";
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      fileBase64 = reader.result.split(",")[1];
+      mimeType = file.type;
+      await submitData(nama, informasi, fileBase64, mimeType);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    await submitData(nama, informasi, "", "");
+  }
+});
+
+async function submitData(nama, informasi, file, mimeType) {
+  const body = new URLSearchParams();
+  body.append("nama", nama);
+  body.append("informasi", informasi);
+  if (file) body.append("file", file);
+  if (mimeType) body.append("mimeType", mimeType);
+
+  const res = await fetch(url, { method: "POST", body });
+  const json = await res.json();
+  alert(json.status === "sukses" ? "Berhasil!" : "Gagal!");
+  loadData();
+}
+
+async function loadData() {
+  const res = await fetch(url);
+  const data = await res.json();
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.reverse().forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <b>${item.nama}</b> (${item.waktu})<br>
+      <i>${item.informasi}</i><br>
+      ${item.foto ? `<a href="${item.foto}" target="_blank">Lihat Foto</a>` : ""}
+      ${item.reply ? `<div><b>Balasan:</b> ${item.reply}</div>` : ""}
+    `;
+    list.appendChild(div);
+  });
+}
+
+loadData();
+</script>
+
 </body>
 </html>
