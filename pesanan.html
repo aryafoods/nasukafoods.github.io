@@ -1,133 +1,236 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Form Pesanan</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Form Informan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+      
+      
+      .form-kunci {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #f4f4f4;
+  padding: 10px;
+  z-index: 50;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+body {
+  padding-top: 300px; /* beri jarak agar komentar tidak ketimpa form */
+}
+      
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      padding: 20px;
-    }
-
-    form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    input, textarea {
-      width: 100%;
+      font-family: sans-serif;
+      margin: 0;
       padding: 10px;
+      background: #f4f4f4;
+    }
+    input, textarea, button {
+      width: 100%;
       margin: 8px 0;
+      padding: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px;
+    .komentar {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .balas-box {
+      margin-top: 10px;
+    }
+    #preview {
+      max-width: 100%;
+      margin-top: 10px;
+      display: none;
+      border-radius: 10px;
+    }
+    .btn {
+      background: #007bff;
+      color: #fff;
       border: none;
-      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
     }
-
-    button:hover {
-      background-color: #45a049;
+    .btn:hover {
+      background: #0056b3;
     }
-
-    .status {
-      margin-top: 10px;
-      text-align: center;
+    .popup-login {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+    .popup-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 300px;
+    }
+    .gambar-float {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 10vw;
+      height: auto;
+      z-index: 20;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <form id="pesananForm">
-    <h2>Form Pemesanan</h2>
-    <input type="text" name="nama" placeholder="Nama *" required />
-    <input type="text" name="alamat" placeholder="Alamat" />
-    <input type="text" name="handphone" placeholder="No HP" />
-    <input type="text" name="jumlah" placeholder="Jumlah" />
-    <textarea name="catatan" placeholder="Catatan"></textarea>
-    <textarea name="keterangan" placeholder="Keterangan"></textarea>
-    <textarea name="masukan" placeholder="Masukan"></textarea>
-    <textarea name="komplain" placeholder="Komplain"></textarea>
-    <textarea name="kerjasama" placeholder="Kerjasama"></textarea>
-    <input type="file" name="foto" accept="image/*" />
-    <button type="submit">Kirim</button>
-    <div class="status" id="statusPesan"></div>
-  </form>
+
+  <img src="https://nasukafoods.site/paketcilok.jpg" class="gambar-float" onclick="showLogin()">
+
+  <h3>Kirim Informasi</h3>
+  <input type="text" id="nama" placeholder="Nama">
+  <textarea id="informasi" placeholder="Informasi"></textarea>
+  <input type="file" id="file">
+  <img id="preview">
+  <button class="btn" onclick="kirim()">Kirim</button>
+
+ 
+  <div id="komentar"></div>
+
+  <!-- Login Popup -->
+  <div class="popup-login" id="popupLogin">
+    <div class="popup-box">
+      <h4>Login Admin</h4>
+      <input type="password" id="passLogin" placeholder="Password">
+      <input type="text" id="namaLogin" placeholder="Nama Admin">
+      <button class="btn" onclick="submitLogin()">Login</button>
+      <button class="btn" onclick="closeLogin()" style="margin-top:10px;background:#aaa;">Batal</button>
+    </div>
+  </div>
 
   <script>
-    const form = document.getElementById("pesananForm");
-    const status = document.getElementById("statusPesan");
+    const URL = 'https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec';
+    let isLogin = false;
+    let loginNama = "";
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      status.textContent = "Mengirim...";
+    function showLogin() {
+      document.getElementById('popupLogin').style.display = 'flex';
+    }
 
-      const formData = new FormData(form);
-      const file = formData.get("foto");
+    function closeLogin() {
+      document.getElementById('popupLogin').style.display = 'none';
+    }
 
-      if (file && file.size > 0) {
+    function submitLogin() {
+      const pass = document.getElementById('passLogin').value.trim();
+      const nama = document.getElementById('namaLogin').value.trim();
+      if (pass === '0000' && nama) {
+        isLogin = true;
+        loginNama = nama;
+        closeLogin();
+        alert("Login sukses");
+        loadKomentar();
+      } else {
+        alert("Password salah atau nama kosong");
+      }
+    }
+
+    function kirim() {
+      const nama = document.getElementById('nama').value.trim();
+      const informasi = document.getElementById('informasi').value.trim();
+      const file = document.getElementById('file').files[0];
+      if (!nama || !informasi || !file) return alert("Lengkapi semua isian dan pilih gambar!");
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64 = e.target.result.split(',')[1];
+        const form = new FormData();
+        form.append("nama", nama);
+        form.append("informasi", informasi);
+        form.append("file", base64);
+        form.append("mimeType", file.type);
+
+        fetch(URL, { method: 'POST', body: form })
+          .then(res => res.json())
+          .then(res => {
+            alert("Berhasil dikirim.");
+            document.getElementById('nama').value = "";
+            document.getElementById('informasi').value = "";
+            document.getElementById('file').value = "";
+            document.getElementById('preview').style.display = "none";
+            loadKomentar();
+          });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('file').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
         const reader = new FileReader();
-        reader.onload = async () => {
-          const base64 = reader.result.split(",")[1];
-          const data = {
-            nama: formData.get("nama"),
-            alamat: formData.get("alamat"),
-            handphone: formData.get("handphone"),
-            jumlah: formData.get("jumlah"),
-            catatan: formData.get("catatan"),
-            keterangan: formData.get("keterangan"),
-            masukan: formData.get("masukan"),
-            komplain: formData.get("komplain"),
-            kerjasama: formData.get("kerjasama"),
-            foto: base64,
-            fileName: file.name,
-            mimeType: file.type
-          };
-
-          kirimData(data);
+        reader.onload = function (e) {
+          const img = document.getElementById('preview');
+          img.src = e.target.result;
+          img.style.display = "block";
         };
         reader.readAsDataURL(file);
-      } else {
-        const data = {
-          nama: formData.get("nama"),
-          alamat: formData.get("alamat"),
-          handphone: formData.get("handphone"),
-          jumlah: formData.get("jumlah"),
-          catatan: formData.get("catatan"),
-          keterangan: formData.get("keterangan"),
-          masukan: formData.get("masukan"),
-          komplain: formData.get("komplain"),
-          kerjasama: formData.get("kerjasama")
-        };
-
-        kirimData(data);
       }
     });
 
-    function kirimData(data) {
-      fetch("https://script.google.com/macros/s/AKfycbwNyZGm4x4QaQ_TTRNCsMmBvDDbuUg7duFd6kAwn7omdan85PKerNNBrKeif-aHJ5Hf/exec", {
-        method: "POST",
-        body: new URLSearchParams(data)
-      })
-      .then(res => res.text())
-      .then(res => {
-        status.textContent = res === "Sukses" ? "Pesanan berhasil dikirim." : "Gagal mengirim.";
-        form.reset();
-      })
-      .catch(() => {
-        status.textContent = "Terjadi kesalahan saat mengirim.";
-      });
+    function balasKomentar(waktu, textarea) {
+      const reply = textarea.value.trim();
+      if (!reply) return alert("Isi balasan tidak boleh kosong.");
+
+      const form = new FormData();
+      form.append('action', 'reply');
+      form.append('waktu', waktu);
+      form.append('reply', reply);
+      form.append('nama', loginNama);
+
+      fetch(URL, { method: 'POST', body: form })
+        .then(r => r.text())
+        .then(res => {
+          alert(res);
+          loadKomentar();
+        });
     }
+
+    function loadKomentar() {
+      fetch(URL)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById('komentar');
+          container.innerHTML = '';
+          data.forEach(d => {
+            const div = document.createElement('div');
+            div.className = 'komentar';
+            div.innerHTML = `
+              <b>${d.nama}</b> - ${d.waktu}<br>
+              ${d.informasi}<br>
+              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px;border-radius:8px;" onerror="this.style.display='none';">` : ''}
+      <div style="margin-top:10px;color:#555;"><i>${d.reply ? '<b>' + d.reply + '</b>' : ''}</i></div>
+              ${isLogin ? `
+                <div class="balas-box">
+                  <textarea placeholder="Balasan..." id="r${d.waktu}"></textarea>
+                  <button class="btn" onclick="balasKomentar('${d.waktu}', document.getElementById('r${d.waktu}'))">Kirim</button>
+                </div>
+              ` : ''}
+            `;
+            container.appendChild(div);
+          });
+        });
+    }
+
+    loadKomentar();
   </script>
+
 </body>
 </html>
