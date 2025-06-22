@@ -46,20 +46,38 @@
     .btn:hover {
       background: #0056b3;
     }
-    .top-right {
+    .popup-login {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+    .popup-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 300px;
+    }
+    .gambar-float {
       position: fixed;
       top: 10px;
       right: 10px;
-      z-index: 10;
-    }
-    h3 {
-      margin-top: 60px;
+      width: 10vw;
+      height: auto;
+      z-index: 20;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <button class="btn top-right" onclick="loginPrompt()">📝</button>
+  <img src="https://nasukafoods.site/paketcilok.jpg" class="gambar-float" onclick="showLogin()">
 
   <h3>Kirim Informasi</h3>
   <input type="text" id="nama" placeholder="Nama">
@@ -71,9 +89,43 @@
   <h3>Komentar Publik</h3>
   <div id="komentar"></div>
 
+  <!-- Login Popup -->
+  <div class="popup-login" id="popupLogin">
+    <div class="popup-box">
+      <h4>Login Admin</h4>
+      <input type="password" id="passLogin" placeholder="Password">
+      <input type="text" id="namaLogin" placeholder="Nama Admin">
+      <button class="btn" onclick="submitLogin()">Login</button>
+      <button class="btn" onclick="closeLogin()" style="margin-top:10px;background:#aaa;">Batal</button>
+    </div>
+  </div>
+
   <script>
     const URL = 'https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec';
     let isLogin = false;
+    let loginNama = "";
+
+    function showLogin() {
+      document.getElementById('popupLogin').style.display = 'flex';
+    }
+
+    function closeLogin() {
+      document.getElementById('popupLogin').style.display = 'none';
+    }
+
+    function submitLogin() {
+      const pass = document.getElementById('passLogin').value.trim();
+      const nama = document.getElementById('namaLogin').value.trim();
+      if (pass === '0000' && nama) {
+        isLogin = true;
+        loginNama = nama;
+        closeLogin();
+        alert("Login sukses");
+        loadKomentar();
+      } else {
+        alert("Password salah atau nama kosong");
+      }
+    }
 
     function kirim() {
       const nama = document.getElementById('nama').value.trim();
@@ -117,17 +169,6 @@
       }
     });
 
-    function loginPrompt() {
-      const pass = prompt("Masukkan password:");
-      if (pass === "0000") {
-        isLogin = true;
-        alert("Login sukses");
-        loadKomentar();
-      } else {
-        alert("Password salah");
-      }
-    }
-
     function balasKomentar(waktu, textarea) {
       const reply = textarea.value.trim();
       if (!reply) return alert("Isi balasan tidak boleh kosong.");
@@ -136,6 +177,7 @@
       form.append('action', 'reply');
       form.append('waktu', waktu);
       form.append('reply', reply);
+      form.append('nama', loginNama);
 
       fetch(URL, { method: 'POST', body: form })
         .then(r => r.text())
@@ -157,8 +199,8 @@
             div.innerHTML = `
               <b>${d.nama}</b> - ${d.waktu}<br>
               ${d.informasi}<br>
-              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px;border-radius:8px;">` : ''}
-              <div style="margin-top:10px;color:#555;"><i>${d.reply || ''}</i></div>
+              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px;border-radius:8px;" onerror="this.style.display='none';">` : ''}
+      <div style="margin-top:10px;color:#555;"><i>${d.reply ? '<b>' + d.reply + '</b>' : ''}</i></div>
               ${isLogin ? `
                 <div class="balas-box">
                   <textarea placeholder="Balasan..." id="r${d.waktu}"></textarea>
