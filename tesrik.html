@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Informan</title>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+    input, textarea, button { width: 100%; margin-top: 10px; padding: 10px; }
+    img#preview { margin-top: 10px; display: none; width: 120px; height: auto; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h2>Form Informan</h2>
+  <input type="text" id="nama" placeholder="Nama" />
+  <textarea id="informasi" placeholder="Informasi"></textarea>
+  <input type="file" id="foto" accept="image/*" />
+  <canvas id="canvas" style="display:none;"></canvas>
+  <img id="preview" />
+  <button onclick="kirim()">Kirim</button>
+  <div id="status"></div>
+
+  <script>
+    let base64foto = '';
+
+    document.getElementById('foto').addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+
+          const maxWidth = 600;
+          const scale = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scale;
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          base64foto = resizedBase64.split(',')[1];
+
+          const preview = document.getElementById('preview');
+          preview.src = resizedBase64;
+          preview.style.display = 'block';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function kirim() {
+      const nama = document.getElementById('nama').value;
+      const informasi = document.getElementById('informasi').value;
+
+      const payload = { nama, informasi };
+      if (base64foto) payload.foto = base64foto;
+
+      fetch("https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(res => {
+        document.getElementById('status').innerText = "✅ Terkirim";
+      })
+      .catch(err => {
+        document.getElementById('status').innerText = "❌ Gagal mengirim: " + err;
+      });
+    }
+  </script>
+</body>
+</html>
