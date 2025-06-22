@@ -8,13 +8,14 @@
       font-family: sans-serif;
       padding: 20px;
       margin: 0;
-      background: #f9f9f9;
+      background: #f4f4f4;
     }
     input, textarea, button {
       width: 100%;
       margin: 8px 0;
       padding: 10px;
       font-size: 16px;
+      box-sizing: border-box;
     }
     .komentar {
       background: #fff;
@@ -29,13 +30,7 @@
     #preview {
       max-width: 100%;
       margin-top: 10px;
-    }
-    .hidden {
       display: none;
-    }
-    .center {
-      text-align: center;
-      margin: 20px 0;
     }
     .btn {
       background: #007bff;
@@ -44,26 +39,26 @@
       border-radius: 6px;
       font-weight: bold;
     }
-    .btn:active {
-      background: #0056b3;
+    .center {
+      text-align: center;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
 
   <h3>Kirim Informasi</h3>
-
   <input type="text" id="nama" placeholder="Nama">
   <textarea id="informasi" placeholder="Informasi"></textarea>
   <input type="file" id="file">
-  <img id="preview" class="hidden">
+  <img id="preview">
   <button class="btn" onclick="kirim()">Kirim</button>
 
   <div class="center">
     <button onclick="loginPrompt()">📝</button>
   </div>
 
-  <h3>Semua Komentar</h3>
+  <h3>Komentar Publik</h3>
   <div id="komentar"></div>
 
   <script>
@@ -71,10 +66,10 @@
     let isLogin = false;
 
     function kirim() {
-      const nama = document.getElementById('nama').value;
-      const informasi = document.getElementById('informasi').value;
+      const nama = document.getElementById('nama').value.trim();
+      const informasi = document.getElementById('informasi').value.trim();
       const file = document.getElementById('file').files[0];
-      if (!nama || !informasi || !file) return alert("Lengkapi semua data!");
+      if (!nama || !informasi || !file) return alert("Lengkapi semua isian dan pilih gambar!");
 
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -92,7 +87,7 @@
             document.getElementById('nama').value = "";
             document.getElementById('informasi').value = "";
             document.getElementById('file').value = "";
-            document.getElementById('preview').classList.add("hidden");
+            document.getElementById('preview').style.display = "none";
             loadKomentar();
           });
       };
@@ -106,37 +101,11 @@
         reader.onload = function (e) {
           const img = document.getElementById('preview');
           img.src = e.target.result;
-          img.classList.remove("hidden");
+          img.style.display = "block";
         };
         reader.readAsDataURL(file);
       }
     });
-
-    function loadKomentar() {
-      fetch(URL)
-        .then(res => res.json())
-        .then(data => {
-          const container = document.getElementById('komentar');
-          container.innerHTML = '';
-          data.reverse().forEach(d => {
-            const div = document.createElement('div');
-            div.className = 'komentar';
-            div.innerHTML = `
-              <b>${d.nama}</b> - ${d.waktu}<br>
-              ${d.informasi}<br>
-              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px">` : ''}
-              <div><i>${d.reply || ''}</i></div>
-              ${isLogin ? `
-                <div class="balas-box">
-                  <textarea placeholder="Balasan..." id="r${d.waktu}"></textarea>
-                  <button class="btn" onclick="balasKomentar('${d.waktu}', document.getElementById('r${d.waktu}'))">Kirim</button>
-                </div>
-              ` : ''}
-            `;
-            container.appendChild(div);
-          });
-        });
-    }
 
     function loginPrompt() {
       const pass = prompt("Masukkan password:");
@@ -154,14 +123,41 @@
       if (!reply) return alert("Isi balasan tidak boleh kosong.");
 
       const form = new FormData();
+      form.append('action', 'reply');
       form.append('waktu', waktu);
       form.append('reply', reply);
 
-      fetch(URL, { method: 'PUT', body: form })
+      fetch(URL, { method: 'POST', body: form })
         .then(r => r.text())
         .then(res => {
           alert(res);
           loadKomentar();
+        });
+    }
+
+    function loadKomentar() {
+      fetch(URL)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById('komentar');
+          container.innerHTML = '';
+          data.forEach(d => {
+            const div = document.createElement('div');
+            div.className = 'komentar';
+            div.innerHTML = `
+              <b>${d.nama}</b> - ${d.waktu}<br>
+              ${d.informasi}<br>
+              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px">` : ''}
+              <div style="margin-top:10px;color:#555;"><i>${d.reply || ''}</i></div>
+              ${isLogin ? `
+                <div class="balas-box">
+                  <textarea placeholder="Balasan..." id="r${d.waktu}"></textarea>
+                  <button class="btn" onclick="balasKomentar('${d.waktu}', document.getElementById('r${d.waktu}'))">Kirim</button>
+                </div>
+              ` : ''}
+            `;
+            container.appendChild(div);
+          });
         });
     }
 
