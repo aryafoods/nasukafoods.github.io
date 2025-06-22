@@ -89,6 +89,18 @@ body {
       border-radius: 8px;
       cursor: pointer;
     }
+    
+    #ikonFloating2 {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: auto;
+  z-index: 9998;
+  cursor: pointer;
+}
+    
   </style>
 </head>
 <body>
@@ -116,6 +128,13 @@ body {
     </div>
   </div>
 
+<img id="ikonFloating2" src="https://nasukafoods.site/ktp.jpg" onclick="fungsiKlik2()">
+
+<script>
+function fungsiKlik2() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
   <script>
     const URL = 'https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec';
     let isLogin = false;
