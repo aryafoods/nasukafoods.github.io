@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Form Informan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: sans-serif;
-      padding: 20px;
       margin: 0;
+      padding: 10px;
       background: #f4f4f4;
     }
     input, textarea, button {
@@ -16,6 +17,8 @@
       padding: 10px;
       font-size: 16px;
       box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
     .komentar {
       background: #fff;
@@ -31,21 +34,32 @@
       max-width: 100%;
       margin-top: 10px;
       display: none;
+      border-radius: 10px;
     }
     .btn {
       background: #007bff;
       color: #fff;
       border: none;
-      border-radius: 6px;
       font-weight: bold;
+      cursor: pointer;
     }
-    .center {
-      text-align: center;
-      margin: 20px 0;
+    .btn:hover {
+      background: #0056b3;
+    }
+    .top-right {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+    }
+    h3 {
+      margin-top: 60px;
     }
   </style>
 </head>
 <body>
+
+  <button class="btn top-right" onclick="loginPrompt()">📝</button>
 
   <h3>Kirim Informasi</h3>
   <input type="text" id="nama" placeholder="Nama">
@@ -53,10 +67,6 @@
   <input type="file" id="file">
   <img id="preview">
   <button class="btn" onclick="kirim()">Kirim</button>
-
-  <div class="center">
-    <button onclick="loginPrompt()">📝</button>
-  </div>
 
   <h3>Komentar Publik</h3>
   <div id="komentar"></div>
@@ -147,7 +157,7 @@
             div.innerHTML = `
               <b>${d.nama}</b> - ${d.waktu}<br>
               ${d.informasi}<br>
-              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px">` : ''}
+              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px;border-radius:8px;">` : ''}
               <div style="margin-top:10px;color:#555;"><i>${d.reply || ''}</i></div>
               ${isLogin ? `
                 <div class="balas-box">
