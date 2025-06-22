@@ -46,12 +46,19 @@ body {
     .balas-box {
       margin-top: 10px;
     }
+    
+    
+    
     #preview {
-      max-width: 100%;
-      margin-top: 10px;
-      display: none;
-      border-radius: 10px;
-    }
+  width: 100px;
+  height: auto;
+  margin-top: 5px;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+    
+    
     .btn {
       background: #007bff;
       color: #fff;
@@ -107,12 +114,20 @@ body {
 
   <img src="" class="gambar-float" onclick="showLogin()">
 
-  <h3>Kirim Informasi</h3>
+  <h3>INFO MASYARAKAT</h3>
   <input type="text" id="nama" placeholder="Nama">
   <textarea id="informasi" placeholder="Informasi"></textarea>
   <input type="file" id="file">
   <img id="preview">
-  <button class="btn" onclick="kirim()">Kirim</button>
+  
+  
+  <button class="btn" id="btnKirim" onclick="kirim()">Kirim</button>
+  
+  
+<div id="loading" style="display:none;text-align:center;margin:10px 0;">
+  <b>Informasi sedang dikirim...</b>
+</div>
+  
 
  
   <div id="komentar"></div>
@@ -135,7 +150,10 @@ function fungsiKlik2() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
+
   <script>
+      
+      
     const URL = 'https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec';
     let isLogin = false;
     let loginNama = "";
@@ -163,33 +181,45 @@ function fungsiKlik2() {
     }
 
     function kirim() {
-      const nama = document.getElementById('nama').value.trim();
-      const informasi = document.getElementById('informasi').value.trim();
-      const file = document.getElementById('file').files[0];
-      if (!nama || !informasi || !file) return alert("Lengkapi semua isian dan pilih gambar!");
+  const nama = document.getElementById('nama').value.trim();
+  const informasi = document.getElementById('informasi').value.trim();
+  const file = document.getElementById('file').files[0];
+  if (!nama || !informasi || !file) return alert("Lengkapi semua isian dan pilih gambar!");
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const base64 = e.target.result.split(',')[1];
-        const form = new FormData();
-        form.append("nama", nama);
-        form.append("informasi", informasi);
-        form.append("file", base64);
-        form.append("mimeType", file.type);
+  const btn = document.getElementById('btnKirim');
+  const loading = document.getElementById('loading');
+  btn.style.display = "none";
+  loading.style.display = "block"; // tampilkan loading teks
 
-        fetch(URL, { method: 'POST', body: form })
-          .then(res => res.json())
-          .then(res => {
-            alert("Berhasil dikirim.");
-            document.getElementById('nama').value = "";
-            document.getElementById('informasi').value = "";
-            document.getElementById('file').value = "";
-            document.getElementById('preview').style.display = "none";
-            loadKomentar();
-          });
-      };
-      reader.readAsDataURL(file);
-    }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result.split(',')[1];
+    const form = new FormData();
+    form.append("nama", nama);
+    form.append("informasi", informasi);
+    form.append("file", base64);
+    form.append("mimeType", file.type);
+
+    fetch(URL, { method: 'POST', body: form })
+      .then(res => res.json())
+      .then(res => {
+        alert("Berhasil dikirim.");
+        document.getElementById('nama').value = "";
+        document.getElementById('informasi').value = "";
+        document.getElementById('file').value = "";
+        document.getElementById('preview').style.display = "none";
+        btn.style.display = "block";
+        loading.style.display = "none"; // sembunyikan loading
+        loadKomentar();
+      })
+      .catch(() => {
+        alert("Gagal mengirim.");
+        btn.style.display = "block";
+        loading.style.display = "none"; // sembunyikan loading walau gagal
+      });
+  };
+  reader.readAsDataURL(file);
+}
 
     document.getElementById('file').addEventListener('change', function () {
       const file = this.files[0];
