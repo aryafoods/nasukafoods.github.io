@@ -4,84 +4,152 @@
   <meta charset="UTF-8">
   <title>Form Informan</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    input, textarea { display: block; margin-bottom: 10px; width: 100%; }
-    img { max-width: 100px; display: block; margin-top: 5px; }
-    .card { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    body { font-family: sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+    input, textarea, button { display: block; margin-top: 10px; width: 100%; padding: 8px; }
+    .emoji-button { font-size: 24px; cursor: pointer; background: none; border: none; }
+    .komentar { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    img.thumb { max-width: 100%; max-height: 200px; margin-top: 10px; }
+    .reply-box { color: green; margin-top: 5px; }
+    .balas-form { margin-top: 10px; }
   </style>
 </head>
 <body>
 
-<h2>Form Informan</h2>
-<form id="form">
-  <input type="text" name="nama" placeholder="Nama" required>
-  <textarea name="informasi" placeholder="Informasi" required></textarea>
-  <input type="file" name="file" accept="image/*">
-  <button type="submit">Kirim</button>
-</form>
+  <h2>Kirim Informasi</h2>
+  <input type="text" id="nama" placeholder="Nama">
+  <textarea id="informasi" placeholder="Informasi"></textarea>
+  <input type="file" id="file">
+  <img id="preview" src="" style="display:none">
+  <button onclick="kirim()">Kirim</button>
+  <p id="status"></p>
 
-<hr>
-<div id="list"></div>
+  <hr>
+  <button class="emoji-button" onclick="popupLogin()">📝</button>
 
-<script>
-const url = "https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec";
+  <hr>
+  <h2>Semua Komentar</h2>
+  <div id="komentar"></div>
 
-document.getElementById("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const nama = form.nama.value.trim();
-  const informasi = form.informasi.value.trim();
-  const file = form.file.files[0];
+  <script>
+    const URL = 'https://script.google.com/macros/s/AKfycbyftHVscifLH1RtqgXtGpRDsrNsuXbmE6WtjNI37WbfE9ATsjFcvS7YOX9vctTn6Hnk/exec';
+    let isAdmin = false;
 
-  let fileBase64 = "", mimeType = "";
+    function kirim() {
+      const nama = document.getElementById('nama').value;
+      const informasi = document.getElementById('informasi').value;
+      const fileInput = document.getElementById('file');
+      const file = fileInput.files[0];
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      fileBase64 = reader.result.split(",")[1];
-      mimeType = file.type;
-      await submitData(nama, informasi, fileBase64, mimeType);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    await submitData(nama, informasi, "", "");
-  }
-});
+      if (!file) {
+        document.getElementById('status').innerText = "Pilih file gambar dulu.";
+        return;
+      }
 
-async function submitData(nama, informasi, file, mimeType) {
-  const body = new URLSearchParams();
-  body.append("nama", nama);
-  body.append("informasi", informasi);
-  if (file) body.append("file", file);
-  if (mimeType) body.append("mimeType", mimeType);
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Data = e.target.result.split(',')[1];
+        const mimeType = file.type;
 
-  const res = await fetch(url, { method: "POST", body });
-  const json = await res.json();
-  alert(json.status === "sukses" ? "Berhasil!" : "Gagal!");
-  loadData();
-}
+        const form = new FormData();
+        form.append('nama', nama);
+        form.append('informasi', informasi);
+        form.append('file', base64Data);
+        form.append('mimeType', mimeType);
 
-async function loadData() {
-  const res = await fetch(url);
-  const data = await res.json();
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+        fetch(URL, { method: 'POST', body: form })
+          .then(res => res.json())
+          .then(res => {
+            if (res.status === 'sukses') {
+              document.getElementById('status').innerText = "Berhasil dikirim.";
+              document.getElementById('nama').value = "";
+              document.getElementById('informasi').value = "";
+              document.getElementById('file').value = "";
+              document.getElementById('preview').style.display = "none";
+              loadKomentar();
+            } else {
+              document.getElementById('status').innerText = "Gagal: " + res.error;
+            }
+          });
+      };
+      reader.readAsDataURL(file);
+    }
 
-  data.reverse().forEach(item => {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-      <b>${item.nama}</b> (${item.waktu})<br>
-      <i>${item.informasi}</i><br>
-      ${item.foto ? `<a href="${item.foto}" target="_blank">Lihat Foto</a>` : ""}
-      ${item.reply ? `<div><b>Balasan:</b> ${item.reply}</div>` : ""}
-    `;
-    list.appendChild(div);
-  });
-}
+    function popupLogin() {
+      const pass = prompt("Masukkan password admin:");
+      if (pass === "0000") {
+        isAdmin = true;
+        loadKomentar();
+      } else if (pass !== null) {
+        alert("Password salah.");
+      }
+    }
 
-loadData();
-</script>
+    function balasKomentar(waktu, replyInput, statusEl) {
+      const reply = replyInput.value;
+
+      fetch(URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `waktu=${encodeURIComponent(waktu)}&reply=${encodeURIComponent(reply)}&pass=0000`
+      })
+      .then(res => res.text())
+      .then(res => {
+        statusEl.innerText = res;
+        loadKomentar();
+      });
+    }
+
+    function loadKomentar() {
+      fetch(URL)
+        .then(res => res.json())
+        .then(data => {
+          const wadah = document.getElementById('komentar');
+          wadah.innerHTML = '';
+
+          data.reverse().forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'komentar';
+
+            let html = `
+              <strong>${item.nama}</strong> - <small>${item.waktu}</small><br>
+              <div>${item.informasi}</div>
+              ${item.foto ? `<img class="thumb" src="${item.foto}">` : ''}
+              ${item.reply ? `<div class="reply-box">🗨️ ${item.reply}</div>` : ''}
+            `;
+
+            if (isAdmin) {
+              const idInput = 'reply_' + item.waktu.replace(/\s/g, '_');
+              html += `
+                <div class="balas-form">
+                  <textarea id="${idInput}" placeholder="Balasan...">${item.reply || ''}</textarea>
+                  <button onclick="balasKomentar('${item.waktu}', document.getElementById('${idInput}'), this.nextElementSibling)">Kirim</button>
+                  <p class="statusReply"></p>
+                </div>
+              `;
+            }
+
+            div.innerHTML = html;
+            wadah.appendChild(div);
+          });
+        });
+    }
+
+    document.getElementById('file').addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('preview');
+          img.src = e.target.result;
+          img.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Tampilkan komentar saat pertama kali
+    loadKomentar();
+  </script>
 
 </body>
 </html>
