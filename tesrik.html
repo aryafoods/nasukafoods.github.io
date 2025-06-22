@@ -3,14 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <title>Form Informan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 700px; margin: auto; }
-    input, textarea, button { display: block; margin-top: 10px; width: 100%; padding: 8px; }
-    .emoji-button { font-size: 24px; cursor: pointer; background: none; border: none; }
-    .komentar { border-bottom: 1px solid #ccc; padding: 10px 0; }
-    img.thumb { max-width: 100%; max-height: 200px; margin-top: 10px; }
-    .reply-box { color: green; margin-top: 5px; }
-    .balas-form { margin-top: 10px; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #f9f9f9;
+    }
+    h2 { margin-top: 24px; }
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    img#preview, img.thumb {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .emoji-button {
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .komentar {
+      background: white;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 8px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+    .reply-box {
+      color: green;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .balas-form textarea {
+      margin-top: 10px;
+    }
+    .balas-form button {
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -23,10 +70,10 @@
   <button onclick="kirim()">Kirim</button>
   <p id="status"></p>
 
-  <hr>
+  <hr style="margin: 30px 0;">
+
   <button class="emoji-button" onclick="popupLogin()">📝</button>
 
-  <hr>
   <h2>Semua Komentar</h2>
   <div id="komentar"></div>
 
@@ -35,26 +82,20 @@
     let isAdmin = false;
 
     function kirim() {
-      const nama = document.getElementById('nama').value;
-      const informasi = document.getElementById('informasi').value;
-      const fileInput = document.getElementById('file');
-      const file = fileInput.files[0];
+      const nama = document.getElementById('nama').value.trim();
+      const informasi = document.getElementById('informasi').value.trim();
+      const file = document.getElementById('file').files[0];
 
-      if (!file) {
-        document.getElementById('status').innerText = "Pilih file gambar dulu.";
-        return;
-      }
+      if (!file) return alert("Pilih file gambar.");
 
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = e => {
         const base64Data = e.target.result.split(',')[1];
-        const mimeType = file.type;
-
         const form = new FormData();
         form.append('nama', nama);
         form.append('informasi', informasi);
         form.append('file', base64Data);
-        form.append('mimeType', mimeType);
+        form.append('mimeType', file.type);
 
         fetch(URL, { method: 'POST', body: form })
           .then(res => res.json())
@@ -85,12 +126,13 @@
     }
 
     function balasKomentar(waktu, replyInput, statusEl) {
-      const reply = replyInput.value;
+      const reply = replyInput.value.trim();
+      if (!reply) return alert("Isi balasan tidak boleh kosong.");
 
       fetch(URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `waktu=${encodeURIComponent(waktu)}&reply=${encodeURIComponent(reply)}&pass=0000`
+        body: `waktu=${encodeURIComponent(waktu)}&reply=${encodeURIComponent(reply)}`
       })
       .then(res => res.text())
       .then(res => {
@@ -103,33 +145,29 @@
       fetch(URL)
         .then(res => res.json())
         .then(data => {
-          const wadah = document.getElementById('komentar');
-          wadah.innerHTML = '';
-
+          const divKomentar = document.getElementById('komentar');
+          divKomentar.innerHTML = '';
           data.reverse().forEach(item => {
             const div = document.createElement('div');
             div.className = 'komentar';
-
             let html = `
               <strong>${item.nama}</strong> - <small>${item.waktu}</small><br>
               <div>${item.informasi}</div>
               ${item.foto ? `<img class="thumb" src="${item.foto}">` : ''}
               ${item.reply ? `<div class="reply-box">🗨️ ${item.reply}</div>` : ''}
             `;
-
             if (isAdmin) {
-              const idInput = 'reply_' + item.waktu.replace(/\s/g, '_');
+              const id = 'reply_' + item.waktu.replace(/\s/g, '_');
               html += `
                 <div class="balas-form">
-                  <textarea id="${idInput}" placeholder="Balasan...">${item.reply || ''}</textarea>
-                  <button onclick="balasKomentar('${item.waktu}', document.getElementById('${idInput}'), this.nextElementSibling)">Kirim</button>
+                  <textarea id="${id}" placeholder="Balasan...">${item.reply || ''}</textarea>
+                  <button onclick="balasKomentar('${item.waktu}', document.getElementById('${id}'), this.nextElementSibling)">Kirim</button>
                   <p class="statusReply"></p>
                 </div>
               `;
             }
-
             div.innerHTML = html;
-            wadah.appendChild(div);
+            divKomentar.appendChild(div);
           });
         });
     }
@@ -138,7 +176,7 @@
       const file = this.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = e => {
           const img = document.getElementById('preview');
           img.src = e.target.result;
           img.style.display = "block";
@@ -147,7 +185,6 @@
       }
     });
 
-    // Tampilkan komentar saat pertama kali
     loadKomentar();
   </script>
 
