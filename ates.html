@@ -2,63 +2,45 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Form Informan</title>
+  <title>Komentar Publik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      margin: 0;
-      background: #f4f4f4;
-    }
+    body { font-family: sans-serif; padding: 10px; margin: 0; background: #f5f5f5; }
+    h2 { margin-top: 20px; }
     input, textarea, button {
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
+      width: 100%; padding: 10px; margin-top: 10px;
+      box-sizing: border-box; border-radius: 5px; border: 1px solid #ccc;
     }
+    button {
+      background: #007bff; color: white; border: none; font-weight: bold;
+    }
+    button:hover { background: #0056b3; }
     .komentar {
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: white; padding: 10px; border-radius: 10px;
+      margin-top: 15px; box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
-    .balas-box {
-      margin-top: 10px;
-    }
-    #preview {
-      max-width: 100%;
-      margin-top: 10px;
-      display: none;
-    }
-    .btn {
-      background: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-    .center {
-      text-align: center;
-      margin: 20px 0;
+    .foto { max-width: 100%; margin-top: 10px; border-radius: 8px; }
+    .balasan { color: #555; font-style: italic; margin-top: 5px; }
+    .ikon-login {
+      text-align: center; margin: 20px 0;
+      font-size: 24px; cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <h3>Kirim Informasi</h3>
-  <input type="text" id="nama" placeholder="Nama">
+  <h2>Kirim Informasi</h2>
+  <input id="nama" placeholder="Nama">
   <textarea id="informasi" placeholder="Informasi"></textarea>
   <input type="file" id="file">
-  <img id="preview">
-  <button class="btn" onclick="kirim()">Kirim</button>
+  <button onclick="kirim()">Kirim</button>
+  <p id="status"></p>
 
-  <div class="center">
-    <button onclick="loginPrompt()">📝</button>
+  <div class="ikon-login" onclick="login()">
+    📝
   </div>
 
-  <h3>Komentar Publik</h3>
+  <h2>Komentar Publik</h2>
   <div id="komentar"></div>
 
   <script>
@@ -69,52 +51,38 @@
       const nama = document.getElementById('nama').value.trim();
       const informasi = document.getElementById('informasi').value.trim();
       const file = document.getElementById('file').files[0];
-      if (!nama || !informasi || !file) return alert("Lengkapi semua isian dan pilih gambar!");
+
+      if (!nama || !informasi || !file) {
+        document.getElementById('status').innerText = "Isi semua kolom dan pilih file!";
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        const base64 = e.target.result.split(',')[1];
+        const base64Data = e.target.result.split(',')[1];
+        const mimeType = file.type;
+
         const form = new FormData();
-        form.append("nama", nama);
-        form.append("informasi", informasi);
-        form.append("file", base64);
-        form.append("mimeType", file.type);
+        form.append('nama', nama);
+        form.append('informasi', informasi);
+        form.append('file', base64Data);
+        form.append('mimeType', mimeType);
 
         fetch(URL, { method: 'POST', body: form })
-          .then(res => res.json())
+          .then(r => r.json())
           .then(res => {
-            alert("Berhasil dikirim.");
-            document.getElementById('nama').value = "";
-            document.getElementById('informasi').value = "";
-            document.getElementById('file').value = "";
-            document.getElementById('preview').style.display = "none";
+            document.getElementById('status').innerText = res.status === "sukses" ? "Berhasil dikirim." : "Gagal: " + res.error;
             loadKomentar();
           });
       };
       reader.readAsDataURL(file);
     }
 
-    document.getElementById('file').addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = document.getElementById('preview');
-          img.src = e.target.result;
-          img.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    function loginPrompt() {
-      const pass = prompt("Masukkan password:");
-      if (pass === "0000") {
+    function login() {
+      const pwd = prompt("Masukkan password:");
+      if (pwd === "0000") {
         isLogin = true;
-        alert("Login sukses");
         loadKomentar();
-      } else {
-        alert("Password salah");
       }
     }
 
@@ -123,11 +91,10 @@
       if (!reply) return alert("Isi balasan tidak boleh kosong.");
 
       const form = new FormData();
-      form.append('action', 'reply');
       form.append('waktu', waktu);
       form.append('reply', reply);
 
-      fetch(URL, { method: 'POST', body: form })
+      fetch(URL, { method: 'PUT', body: form })
         .then(r => r.text())
         .then(res => {
           alert(res);
@@ -137,32 +104,28 @@
 
     function loadKomentar() {
       fetch(URL)
-        .then(res => res.json())
+        .then(r => r.json())
         .then(data => {
-          const container = document.getElementById('komentar');
-          container.innerHTML = '';
-          data.forEach(d => {
-            const div = document.createElement('div');
-            div.className = 'komentar';
-            div.innerHTML = `
-              <b>${d.nama}</b> - ${d.waktu}<br>
-              ${d.informasi}<br>
-              ${d.foto ? `<img src="${d.foto}" style="max-width:100%;margin-top:10px">` : ''}
-              <div style="margin-top:10px;color:#555;"><i>${d.reply || ''}</i></div>
-              ${isLogin ? `
-                <div class="balas-box">
-                  <textarea placeholder="Balasan..." id="r${d.waktu}"></textarea>
-                  <button class="btn" onclick="balasKomentar('${d.waktu}', document.getElementById('r${d.waktu}'))">Kirim</button>
-                </div>
-              ` : ''}
+          const div = document.getElementById('komentar');
+          div.innerHTML = "";
+          data.reverse().forEach(row => {
+            const el = document.createElement('div');
+            el.className = 'komentar';
+            el.innerHTML = `
+              <b>${row.nama}</b> - ${row.waktu}<br>${row.informasi}
+              ${row.foto ? `<br><img src="${row.foto}" class="foto">` : ""}
+              ${row.reply ? `<div class="balasan">${row.reply}</div>` : ""}
+              ${isLogin && !row.reply ? `
+                <textarea placeholder="Balasan..."></textarea>
+                <button onclick="balasKomentar('${row.waktu}', this.previousElementSibling)">Kirim</button>
+              ` : ""}
             `;
-            container.appendChild(div);
+            div.appendChild(el);
           });
         });
     }
 
     loadKomentar();
   </script>
-
 </body>
 </html>
