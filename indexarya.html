@@ -3,49 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Arya Wilalodra</title>
+  <title>Nasuka foods</title>
   <style>
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 5%;
-      z-index: 2000;
-    }
-
-    .popup-content {
-      background: #000;
-      padding: 0;
-      border-radius: 10px;
-      max-width: 90%;
-      max-height: 90%;
-      position: relative;
-    }
-
-    .popup-content video {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
-
-    .close-popup {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      font-size: 20px;
-      cursor: pointer;
-      color: white;
-      z-index: 10;
-    }
-
-    .close-popup:hover {
-      color: red;
-    }
-
     body {
       margin: 0;
       font-family: sans-serif;
@@ -56,7 +15,7 @@
     .hero-section {
       position: relative;
       height: 50vh;
-      background: url('https://nasukafoods.site/fotoarya1.jpg') no-repeat center center/cover;
+      background: url('https://aryafoods.shop/ciloksaji.jpeg') no-repeat center center/cover;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -131,7 +90,7 @@
 
     .gallery {
       background: #111;
-      padding: 20px 10px 80px;
+      padding: 20px 10px 80px; /* extra bottom padding for bar */
     }
 
     .gallery img {
@@ -148,27 +107,32 @@
 </head>
 <body>
 
-  <!-- POPUP Video otomatis -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <span class="close-popup" id="closePopup">✖</span>
-      <video id="popupVideo" autoplay muted controls>
-        <source src="https://nasukafoods.site/indexarya.html" type="video/mp4" />
-      </video>
-    </div>
-  </div>
+  <video id="bgVideo" playsinline style="width: 0; height: 0; position: absolute;">
+    <source src="https://nasukafoods.site/avang.mp4" type="video/mp4">
+  </video>
+
+  <script>
+    const video = document.getElementById('bgVideo');
+    const playVideo = () => {
+      video.play().catch(() => {});
+      document.body.removeEventListener('click', playVideo);
+      document.body.removeEventListener('touchstart', playVideo);
+    };
+    document.body.addEventListener('click', playVideo);
+    document.body.addEventListener('touchstart', playVideo);
+  </script>
 
   <section class="hero-section">
     <div class="promo-text">
       Selamat datang di halaman <br />
-      <strong>Arya Wilalodra</strong>
+      <strong>Nasuka Foods</strong>
     </div>
 
     <div class="info">
-      <div class="location">📍Indramayu | Jawa Barat</div>
+      <div class="location">📍Bandung | Jawa Barat</div>
       <div class="username">Nasuka foods</div>
-      <div class="desc">Pedagang, Aplikator ACP</div>
-      <div class="music">🎵 Avangard</div>
+      <div class="desc">Promo cilok hangat & siap saji!</div>
+      <div class="music">🎵 suara asli - nasuka foods</div>
     </div>
 
     <div class="sidebar">
@@ -178,14 +142,16 @@
     </div>
   </section>
 
-  <p> dengan citarasa yang sama sejak kami masa kecil nikmati (era 1980an)</p>
+  <p>Kami nasuka foods yang berdiri sejak 17 agustus 2020 memperkenalkan produk andalan kami - Cilok Isian Gajih, Dengan slogan : Rasa yang dulu pernah ada</p>
+  <p>Cilok yang menurut kami dan beberapa pelanggan bilang : Enak, Lezat, Dan Mantul ( Mantap Betul)</p>
+  <p>Kami memahami bahwa setiap orang berbeda selera tapi cobalah cilok legendaris dengan citarasa yang sama sejak kami masa kecil nikmati (era 1980an)</p>
 
   <section class="gallery">
     <img src="https://nasukafoods.site/bumbukacang.jpeg" alt="Cilok Sajian 1" />
     <p>Kami meracik bumbu kacang dengan ciri khas Manis dan gurih</p>
     <img src="https://nasukafoods.site/aida.jpeg" alt="Cilok Sajian 2" />
     <p>Aura pedas dengan cabe bubuk extra pedas, makin banyak makin pedazz</p>
-
+    
     <p><strong>Promo spesial</strong></p>
     <img src="https://nasukafoods.site/paketcilok.jpg" alt="Cilok Sajian 3" />
     <p>Orang bijak pernah berkata: Terkadang suatu hal ditakar bukan atas apa yang dibayar, Tapi atas apa yang diperoleh, Apakah nilai nya sebanding?</p>
@@ -196,7 +162,7 @@
     <p>✅ Kemasan ekslusif</p>
 
     <p><strong>Nikmati cilok mu dengan gembira dan dapatkan rasa yang dulu pernah ada 😊</strong></p>
-
+  
     <a href="https://wa.me/62859109819017?text=Halo%20Arya%20saya%20mau%20pesan%20cilok%20ya" 
        target="_blank" 
        style="display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">
@@ -211,13 +177,6 @@
     <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
     <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
   </div>
-
-  <script>
-    document.getElementById('closePopup').onclick = function () {
-      document.getElementById('popup').style.display = 'none';
-      document.getElementById('popupVideo').pause();
-    };
-  </script>
 
 </body>
 </html>
