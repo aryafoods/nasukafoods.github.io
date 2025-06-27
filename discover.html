@@ -354,7 +354,7 @@
     <a href="https://nasukafoods.site/discover.html">🔍<br>Lemari</a>
     <a href="https://nasukafoods.site/catatan.html">➕<br>Catatan</a>
     <a href="https://nasukafoods.site/otomotif.html">📨<br>Otomotif</a>
-    <a href="https://nasukafoods.site/profil.html">👤<br>Profile</a>
+    <a href="javascript:history.back()">⬅️<br>kembali</a>
   </div>
   
  
@@ -362,120 +362,7 @@
     <p><strong>Catatan dihapus ....<strong></p>
 <div style="position:relative"><pre id="htm2" class="code-box">&lt;!DOCTYPE html&gt;
 &lt;html lang="id"&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8" /&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
-  &lt;title&gt;Disk Cover&lt;/title&gt;
-  &lt;style&gt;
-    .repo-search { width: 100%; padding: 0.5rem; background-color: #0d1117; border: 1px solid #30363d; border-radius: 0.5rem; color: #c9d1d9; margin-bottom: 0.5rem; }
-    .gallery { padding: 20px 15px 80px; }
-    pre.code-box { background: #111; border: 1px solid #333; padding: 10px 40px 10px 10px; border-radius: 8px; overflow-y: auto; max-height: 250px; font-size: 11px; font-family: monospace; white-space: pre-wrap; word-break: break-word; color: #eee; position: relative; }
-    button.copy-btn { position: absolute; top: 8px; right: 8px; padding: 5px 10px; font-size: 11px; background: var(--accent); color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    .bottom-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: space-around; padding: 10px 0; font-size: 12px; z-index: 999; }
-    .bottom-bar a { color: var(--text-light); text-decoration: none; text-align: center; }
-    .repo-list { background-color: #161b22; border: 1px solid #30363d; border-radius: 0.5rem; padding: 0.4rem 0.7rem; max-height: 100px; overflow-y: auto; }
-    .repo-item { height: 32px; line-height: 32px; padding: 0 0.4rem; border-bottom: 1px solid #30363d; }
-    .repo-item:last-child { border-bottom: none; }
-    .video-section { margin: 1rem auto; background-color: #161b22; border: 1px solid #30363d; border-radius: 0.5rem; overflow: hidden; width: 95%; max-width: 500px; }
-    .video-section iframe { width: 100%; height: 180px; border: none; }
-    .video-caption { padding: 0.7rem; color: #c9d1d9; }
-    body { margin: 0; font-family: sans-serif; background-color: lightgray; color: white; }
-    .hero-section { position: relative; height: 20vh; background: url('https://nasukafoods.site/fotodiscovery.jpg') no-repeat center center/cover; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 5px; }
-    .promo-text { text-align: center; margin-top: 2vh; font-size: 22px; font-weight: bold; text-shadow: 0 0 6px black; padding: 0 15px; }
-    .info, .sidebar { position: absolute; bottom: 10px; }
-    .info { left: 10px; }
-    .info .location { font-size: 11px; color: #ccc; }
-    .info .username { font-weight: bold; }
-    .info .desc { font-size: 13px; margin-top: 3px; }
-    .info .music { font-size: 11px; color: #ffbb00; }
-    .sidebar { right: 10px; display: flex; flex-direction: column; align-items: center; }
-    .sidebar div { margin: 4px 0; font-size: 11px; }
-    .scroll-gallery { overflow-x: auto; display: flex; gap: 10px; padding: 10px 15px; }
-    .scroll-item { flex: 0 0 auto; background-color: #222; border-radius: 10px; padding: 8px; width: 200px; }
-    .scroll-item video, .scroll-item img { width: 100%; border-radius: 10px; margin-bottom: 6px; object-fit: cover; }
-    .scroll-item img { aspect-ratio: 1/1; }
-    .scroll-item h4 { font-size: 15px; margin: 0 0 3px; }
-    .scroll-item p { font-size: 12px; margin: 0 0 8px; }
-    .scroll-item a { color: #00ffcc; text-decoration: none; }
-    h3 { text-align: center; margin: 10px 0 5px; }
-    p.intro { padding: 5px 10px; margin: 3px 0; color: black; }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;section class="hero-section"&gt;
-  &lt;div class="promo-text"&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/div&gt;
-  &lt;div class="info"&gt;
-    &lt;div class="location"&gt;📍Cibaduyut | Bandung | Jawa Barat&lt;/div&gt;
-    &lt;div class="username"&gt;✅ Licence nasuka foods&lt;/div&gt;
-    &lt;div class="desc"&gt;#indramayu #Bandung #Jakarta &lt;/div&gt;
-    &lt;div class="music"&gt;Marketing&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class="sidebar"&gt;
-    &lt;div&gt;❤️ 2.M&lt;/div&gt;
-    &lt;div&gt;💬 1.M&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/section&gt;
-
-&lt;div class="scroll-gallery"&gt;
-  &lt;div class="scroll-item"&gt;
-    &lt;h4&gt;Kode Script Leaflet&lt;/h4&gt;
-    &lt;p&gt;&lt;a href="#"&gt;Cara serlok selama nya&lt;/a&gt;&lt;/p&gt;
-  &lt;/div&gt;
-  &lt;div class="scroll-item"&gt;
-    &lt;h4&gt;Kode Script Sheet&lt;/h4&gt;
-    &lt;p&gt;&lt;a href="#"&gt;Cara bikin formulir Anonym&lt;/a&gt;&lt;/p&gt;
-  &lt;/div&gt;
-  &lt;div class="scroll-item"&gt;&lt;h4&gt;Resep Cilok Isian Gajih&lt;/h4&gt;&lt;p&gt;Cara membuat cilok isian gajih&lt;/p&gt;&lt;/div&gt;
-  &lt;div class="scroll-item"&gt;&lt;h4&gt;Pola ACP&lt;/h4&gt;&lt;p&gt;Tehnik membuat pola ACP&lt;/p&gt;&lt;/div&gt;
-  &lt;div class="scroll-item"&gt;&lt;h4&gt;Telor gulung&lt;/h4&gt;&lt;p&gt;Cara membuat telor gulung&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div style="text-align: center; padding-bottom: 15px;"&gt;
-  &lt;img src="https://nasukafoods.site/paketcilok.jpg" alt="Foto Cilok" style="width: 180px; border-radius: 10px; box-shadow: 0 0 6px rgba(0,0,0,0.4);" /&gt;
-&lt;/div&gt;
-
-&lt;div style="padding: 10px; background-color: white; color: black; border-radius: 10px; margin: 0 10px 15px;"&gt;
-  &lt;h3 style="text-align: center; margin-top: 0;"&gt;bersama kami dalam menciptakan camilan yang lezat&lt;/h3&gt;
-&lt;/div&gt;
-
-&lt;div style="max-width: 300px; margin: 15px auto; background: #222; border-radius: 10px; padding: 10px;"&gt;
-  &lt;video src="https://nasukafoods.site/kawasakifast.mp4" autoplay muted loop playsinline style="width: 100%; border-radius: 10px;"&gt;&lt;/video&gt;
-  &lt;h4 style="margin: 8px 0 4px; color: white; text-align: center;"&gt;Lemari Nasuka Foods&lt;/h4&gt;
-  &lt;p style="font-size: 13px; color: white; text-align: center;"&gt;Penyimpanan berkas untuk publik&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div class="scroll-gallery" style="gap: 4px; padding: 4px 10px;"&gt;
-  &lt;div class="scroll-item" style="width: 50px; padding: 2px;"&gt;&lt;img src="https://nasukafoods.site/paketcilok.jpg" alt="Cilok" style="aspect-ratio: 1/1;" /&gt;&lt;/div&gt;
-  &lt;div class="scroll-item" style="width: 50px; padding: 2px;"&gt;&lt;img src="https://nasukafoods.site/paketcilok.jpg" alt="Cilok" style="aspect-ratio: 1/1;" /&gt;&lt;/div&gt;
-  &lt;div class="scroll-item" style="width: 50px; padding: 2px;"&gt;&lt;img src="https://nasukafoods.site/paketcilok.jpg" alt="Cilok" style="aspect-ratio: 1/1;" /&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class="video-section"&gt;
-  &lt;iframe src="https://www.youtube.com/embed/HSwtqizuDBo" title="Nasuka on YouTube"&gt;&lt;/iframe&gt;
-  &lt;div class="video-caption"&gt;&lt;strong&gt;Nasuka on YouTube&lt;/strong&gt;&lt;br/&gt;&lt;small&gt;Short ku&lt;/small&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class="bottom-bar"&gt;
-  &lt;a href="#"&gt;🏠&lt;br&gt;Home&lt;/a&gt;
-  &lt;a href="#"&gt;🔍&lt;br&gt;Lemari&lt;/a&gt;
-  &lt;a href="#"&gt;➕&lt;br&gt;Catatan&lt;/a&gt;
-  &lt;a href="#"&gt;📨&lt;br&gt;Otomotif&lt;/a&gt;
-  &lt;a href="#"&gt;👤&lt;br&gt;Profile&lt;/a&gt;
-&lt;/div&gt;
-
-&lt;section class="gallery"&gt;
-  &lt;p&gt;&lt;strong&gt;Catatan dihapus ....&lt;/strong&gt;&lt;/p&gt;
-  &lt;div style="position:relative"&gt;&lt;pre id="htm2" class="code-box"&gt;0859109819017&lt;/pre&gt; &lt;button class="copy-btn" onclick="copyDOS('htm2')"&gt;Salin&lt;/button&gt;&lt;/div&gt;
-&lt;/section&gt;
-
-&lt;script&gt;
-function copyDOS(id) {
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text).then(() =&gt; {
-    alert('Kode berhasil disalin!');
-  });
-}
-&lt;/script&gt;
+&
 
 &lt;/body&gt;
 &lt;/html&gt;</pre> <button class="copy-btn" onclick="copyDOS('htm2')">Salin</ button></div></section>
